@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Quản lý thiết bị MDM</title>
+<style>
+  :root{--bg:#eef1f6;--card:#fff;--ink:#1e293b;--muted:#94a3b8;--line:#e2e8f0;--dark:#1f2a3d;--blue:#2563eb;--green:#16a34a;--red:#dc2626}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+  button{font-family:inherit;cursor:pointer;border:0}
+  .top{background:var(--dark);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;position:sticky;top:0;z-index:20}
+  .brand{font-weight:800;font-size:18px;display:flex;align-items:center;gap:8px}
+  .brand i{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#3b82f6,#60a5fa);display:grid;place-items:center;font-style:normal;font-size:15px}
+  .search{flex:1;min-width:200px;max-width:420px;position:relative}
+  .search input{width:100%;padding:9px 14px 9px 36px;border-radius:10px;border:1px solid #33425c;background:#2a374e;color:#fff;font-size:14px;outline:none}
+  .search input::placeholder{color:#8fa0bb}
+  .search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:#8fa0bb}
+  .user{margin-left:auto;font-size:13px;color:#b9c5db;display:flex;align-items:center;gap:8px}
+  .avatar{width:30px;height:30px;border-radius:50%;background:#3b82f6;display:grid;place-items:center;font-weight:700;color:#fff;font-size:13px}
+  .wrap{max-width:1280px;margin:0 auto;padding:20px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:18px}
+  .stat{background:var(--card);border-radius:14px;padding:14px 16px;box-shadow:0 1px 3px rgba(15,23,42,.06)}
+  .stat small{color:var(--muted);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+  .stat b{display:block;font-size:26px;margin-top:4px}
+  .stat.g b{color:var(--green)}.stat.r b{color:var(--red)}.stat.b b{color:var(--blue)}
+  .bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+  .chip{padding:7px 16px;border-radius:999px;background:#fff;color:#475569;font-weight:600;font-size:13px;box-shadow:0 1px 2px rgba(15,23,42,.06)}
+  .chip.on{background:var(--dark);color:#fff}
+  .bar .sp{flex:1}
+  .tbtn{background:#fff;color:#334155;padding:8px 14px;border-radius:10px;font-weight:700;font-size:13px;box-shadow:0 1px 2px rgba(15,23,42,.08)}
+  .tbtn.main{background:var(--blue);color:#fff}
+  .sw{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:#475569;cursor:pointer;user-select:none}
+  .sw input{display:none}
+  .sw i{width:34px;height:19px;border-radius:99px;background:#cbd5e1;position:relative;transition:.2s}
+  .sw i::after{content:"";position:absolute;left:2px;top:2px;width:15px;height:15px;background:#fff;border-radius:50%;transition:.2s}
+  .sw input:checked+i{background:var(--green)}.sw input:checked+i::after{left:17px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:18px}
+  .card{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(15,23,42,.08);display:flex;flex-direction:column}
+  .card-h{background:var(--dark);color:#fff;padding:12px 14px;display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap}
+  .card-h .t{flex:1;min-width:0}
+  .card-h h3{font-size:16px;font-weight:800;display:flex;align-items:center;gap:6px}
+  .card-h h3 button{background:none;color:#8fa0bb;font-size:12px;padding:0}
+  .card-h .model{font-size:12px;color:#b9c5db;margin-top:2px}
+  .tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid #6ee7b7;background:#ecfdf5;color:#047857}
+  .tag.vip{background:#fef3c7;color:#b45309;border-color:#fcd34d}
+  .tags{display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+  .ios{background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px}
+  .body{display:flex;gap:14px;padding:14px}
+  .phone{width:84px;min-width:84px;height:150px;border-radius:20px;border:4px solid #1f2a3d;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#fff;font-weight:700;font-size:12px;text-align:center;transition:.3s;cursor:pointer;position:relative;padding:4px}
+  .phone:hover{transform:scale(1.03)}
+  .phone.on{background:linear-gradient(160deg,#2f6bff,#1d4ed8 60%,#38bdf8)}
+  .phone.off{background:#2b364a;color:#94a3b8}
+  .phone.lock{background:linear-gradient(160deg,#f97316,#dc2626)}
+  .phone.wipe{background:linear-gradient(160deg,#64748b,#334155)}
+  .phone svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .phone .bell{position:absolute;top:6px;right:6px;background:#facc15;color:#713f12;width:18px;height:18px;border-radius:50%;font-size:10px;display:grid;place-items:center;animation:pop .5s}
+  @keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+  .info{flex:1;min-width:0;font-size:13px;display:flex;flex-direction:column;gap:6px}
+  .row{display:flex;align-items:center;gap:6px;color:#475569;flex-wrap:wrap}
+  .row .ic{width:16px;text-align:center;font-size:12px}
+  .st-on{color:var(--green);font-weight:700}.st-off{color:var(--red);font-weight:700}
+  .refresh{margin-left:auto;background:#eef2ff;color:#3730a3;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;border:1px solid #c7d2fe}
+  .refresh.spin::before,.spinner{content:"";display:inline-block;width:9px;height:9px;border:2px solid #818cf8;border-top-color:transparent;border-radius:50%;margin-right:5px;animation:sp .6s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .link{color:var(--muted);background:none;font-size:13px;text-align:left;padding:0;font-style:italic}
+  .serial b{font-family:ui-monospace,Menlo,monospace;color:#334155}
+  .act{font-weight:600;color:#b45309}.act.ok{color:#b45309}.act.bad{color:var(--red)}.act.warn{color:#ea580c}
+  .mini{font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;background:#dcfce7;color:#15803d}
+  .pkg{border:1px solid var(--line);border-radius:12px;padding:9px 11px;margin-top:2px}
+  .bar-bg{height:6px;background:#e5e7eb;border-radius:9px;margin:7px 0 6px;overflow:hidden}
+  .bar-fg{height:100%;background:#22c55e;border-radius:9px;transition:width .4s}
+  .bar-fg.warn{background:#f59e0b}.bar-fg.bad{background:#ef4444}
+  .pkg .l2{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#64748b;gap:6px}
+  .days{background:#dcfce7;color:#15803d;font-weight:700;padding:2px 9px;border-radius:7px;font-size:12px}
+  .days.warn{background:#fef3c7;color:#b45309}.days.bad{background:#fee2e2;color:#b91c1c}
+  .last{font-size:12px;color:#94a3b8}
+  .strip{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;border-radius:10px;padding:7px 10px;font-size:12px;font-weight:600}
+  .strip.q{background:#fffbeb;border-color:#fde68a;color:#b45309}
+  .strip .pb{height:4px;background:#dbeafe;border-radius:9px;margin-top:5px;overflow:hidden}
+  .strip .pb i{display:block;height:100%;background:#2563eb;transition:width .4s}
+  .acts{padding:0 14px 14px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .a{padding:10px 4px;border-radius:10px;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px;transition:.15s}
+  .a:hover{transform:translateY(-1px);filter:brightness(.96)}
+  .a.lock{background:#ffedd5;color:#c2410c}.a.open{background:#dbeafe;color:#1d4ed8}
+  .a.warn{background:#fef9c3;color:#a16207}.a.gray{background:#f1f5f9;color:#64748b}
+  .a.red{background:#fee2e2;color:#b91c1c}.a.pur{background:#f3e8ff;color:#7e22ce}
+  .a.grn{background:#dcfce7;color:#15803d}
+  .a.wide{grid-column:span 2}
+  .a.full{grid-column:1/-1}
+  .a:disabled{opacity:.4;cursor:not-allowed;transform:none;filter:none}
+  .dot{width:8px;height:8px;border-radius:50%;background:#ef4444;display:inline-block}
+  .ov{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+  .ov.show{display:flex}
+  .modal{background:#fff;border-radius:16px;padding:22px;width:100%;max-width:440px;box-shadow:0 20px 50px rgba(0,0,0,.3);max-height:92vh;overflow:auto}
+  .modal h4{font-size:17px;margin-bottom:8px}
+  .modal p{font-size:14px;color:#475569;margin-bottom:14px;line-height:1.5}
+  .modal label{font-size:12px;font-weight:700;color:#64748b;display:block;margin-bottom:4px}
+  .modal input,.modal select,.modal textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px;margin-bottom:12px;font-family:inherit;outline:none}
+  .modal input:focus,.modal select:focus,.modal textarea:focus{border-color:#60a5fa}
+  .modal .btns{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
+  .modal .btns button{padding:9px 16px;border-radius:10px;font-weight:700;font-size:13px}
+  .b-cancel{background:#f1f5f9;color:#475569}.b-ok{background:var(--blue);color:#fff}.b-danger{background:var(--red);color:#fff}
+  .b-ok:disabled,.b-danger:disabled{opacity:.4;cursor:not-allowed}
+  .modal.wide{max-width:600px}
+  .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+  .fsec{grid-column:1/-1;font-size:13px;font-weight:800;color:#334155;margin:4px 0 10px;padding-top:12px;border-top:1px solid var(--line)}
+  .fsec:first-child{border-top:0;padding-top:0;margin-top:0}
+  .pw{position:relative}.pw input{padding-right:44px}
+  .pw button{position:absolute;right:6px;top:5px;background:none;font-size:16px;padding:4px 6px}
+  .calc{grid-column:1/-1;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:10px 12px;font-size:13px;color:#166534;margin-bottom:12px;display:grid;gap:4px}
+  .calc div{display:flex;justify-content:space-between;gap:8px}
+  .calc .tot{font-weight:800;border-top:1px dashed #86efac;padding-top:5px;margin-top:2px}
+  .calc.empty{background:#f8fafc;border-color:var(--line);color:var(--muted)}
+  .ferr{grid-column:1/-1;color:#dc2626;font-size:12px;font-weight:600;margin:-4px 0 8px}
+  .loan{border:1px solid #fde68a;background:#fffbeb;border-radius:12px;padding:8px 11px;font-size:12px;color:#92400e;display:grid;gap:3px}
+  .loan div{display:flex;justify-content:space-between;gap:6px}
+  .loan b{color:#78350f}
+  .loan .tot{font-weight:800;border-top:1px dashed #fcd34d;padding-top:4px;margin-top:2px;font-size:13px}
+  @media(max-width:520px){.fgrid{grid-template-columns:1fr}}
+  .tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+  .tabs button{padding:6px 12px;border-radius:8px;background:#f1f5f9;font-weight:700;font-size:12px;color:#475569}
+  .tabs button.on{background:var(--dark);color:#fff}
+  dl.kv{display:grid;grid-template-columns:125px 1fr;gap:8px 10px;font-size:13px;margin-bottom:14px}
+  dl.kv dt{color:var(--muted)}dl.kv dd{font-weight:600;word-break:break-all}
+  .loglist{font-size:12px;max-height:300px;overflow:auto;margin-bottom:10px}
+  .loglist div{padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;gap:8px}
+  .loglist time{color:var(--muted);white-space:nowrap;min-width:118px}
+  .loglist .warn{color:#b45309}.loglist .err{color:var(--red)}.loglist .ok{color:#15803d}
+  .map{border-radius:12px;overflow:hidden;margin-bottom:10px;border:1px solid var(--line)}
+  .screen{width:230px;height:430px;margin:0 auto 14px;border-radius:36px;border:8px solid #111827;background:linear-gradient(170deg,#1e3a8a,#312e81 55%,#0f172a);color:#fff;position:relative;overflow:hidden;text-align:center;padding:48px 14px 0}
+  .screen.off{filter:grayscale(1) brightness(.5)}
+  .screen .clock{font-size:52px;font-weight:300;margin-top:10px}
+  .screen .dt{font-size:13px;opacity:.85}
+  .screen .lk{font-size:30px;margin-top:18px}
+  .screen .msg{margin-top:10px;background:rgba(255,255,255,.15);padding:10px;border-radius:14px;font-size:13px;line-height:1.4}
+  .screen .noti{position:absolute;left:10px;right:10px;bottom:36px;background:rgba(255,255,255,.92);color:#111827;border-radius:14px;padding:10px;text-align:left;font-size:12px}
+  .screen .noti b{display:block;font-size:11px;color:#6b7280;margin-bottom:2px}
+  .screen .home{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:80px;height:4px;border-radius:9px;background:#fff;opacity:.7}
+  .prog{height:8px;background:#e2e8f0;border-radius:9px;overflow:hidden;margin:6px 0 14px}.prog i{display:block;height:100%;background:var(--blue);width:0;transition:width .4s}
+  .stepl{font-size:13px;color:#334155;display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+  .stepl span.done{color:#15803d}.stepl span.cur{font-weight:700}
+  .drawer{position:fixed;top:0;right:-420px;width:400px;max-width:92vw;height:100vh;background:#fff;box-shadow:-6px 0 30px rgba(0,0,0,.2);z-index:40;transition:right .25s;display:flex;flex-direction:column}
+  .drawer.show{right:0}
+  .drawer header{padding:16px 18px;background:var(--dark);color:#fff;display:flex;justify-content:space-between;align-items:center;font-weight:700}
+  .drawer header button{background:none;color:#fff;font-size:18px}
+  .drawer .loglist{flex:1;max-height:none;padding:8px 16px}
+  #toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(30px);background:#0f172a;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transition:.25s;z-index:70;pointer-events:none;max-width:90vw;text-align:center}
+  #toast.show{opacity:1;transform:translateX(-50%)}
+  .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:50px 0}
+
+.finance-list{display:grid;gap:10px}.finance-item{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:8px}
+.finance-item .fi-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-weight:800}
+.pill{display:inline-flex;padding:3px 8px;border-radius:99px;font-size:11px;font-weight:800;background:#dcfce7;color:#166534}
+.pill.over{background:#fee2e2;color:#b91c1c}.fin-actions{display:flex;gap:7px;flex-wrap:wrap}
+.fin-actions button{padding:8px 10px;border-radius:8px;background:#eff6ff;color:#1d4ed8;font-weight:700;font-size:12px}
+.blacklist{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.lockscreen{position:fixed;inset:0;background:#101827;color:#fff;z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.lockscreen.show{display:flex}.lockbox{width:100%;max-width:360px;background:#fff;color:#1e293b;padding:24px;border-radius:18px;text-align:center}
+.lockbox input{width:100%;padding:13px;border:1px solid var(--line);border-radius:10px;margin:14px 0;font-size:20px;text-align:center;letter-spacing:8px}
+@media(max-width:700px){.wrap{padding:10px}.top{padding:12px}.brand{font-size:16px}.search{min-width:100%;max-width:none;order:3}.user{font-size:11px}.grid{grid-template-columns:minmax(0,1fr);gap:12px}.stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.stat{padding:11px}.stat b{font-size:21px}.bar{gap:6px}.bar .sp{display:none}.chip,.tbtn{font-size:11px;padding:8px 10px}.acts{grid-template-columns:repeat(2,minmax(0,1fr))}.a.wide,.a.full{grid-column:span 2}.body{gap:10px;padding:10px}.phone{width:68px;min-width:68px;height:125px}.info{font-size:12px}.modal{padding:16px;max-height:94dvh}.fgrid{grid-template-columns:1fr}.fsec,.calc,.ferr{grid-column:1}.modal.wide{max-width:100%}dl.kv{grid-template-columns:105px minmax(0,1fr);font-size:12px}}
+@media(min-width:701px) and (max-width:1050px){.grid{grid-template-columns:repeat(auto-fit,minmax(310px,1fr))}.wrap{padding:14px}}
+
+.app-lock-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:14px 0 18px}
+.app-lock-list label{display:flex;align-items:center;gap:9px;padding:11px 12px;border:1px solid var(--line,#e5e7eb);border-radius:10px;background:var(--surface,#f8fafc);font-size:13px;cursor:pointer}
+.app-lock-list input{width:17px;height:17px;accent-color:#7c3aed;flex:0 0 auto}
+@media(max-width:420px){.app-lock-list{grid-template-columns:1fr}.app-lock-list label{padding:10px}}
+
+.auth-screen{position:fixed;inset:0;z-index:999;background:linear-gradient(135deg,#0f172a,#1d4ed8 65%,#0ea5e9);display:flex;align-items:center;justify-content:center;padding:18px;overflow:auto}
+body:not(.auth-ok) .top,body:not(.auth-ok) main.wrap,body:not(.auth-ok) aside.drawer,body:not(.auth-ok) #ov,body:not(.auth-ok) #toast,body:not(.auth-ok) #appLockScreen{display:none!important}
+.auth-card{background:#fff;border-radius:22px;width:min(100%,480px);padding:26px;box-shadow:0 20px 60px #0004;color:#1e293b}
+.auth-card h1{font-size:23px;margin-bottom:6px}.auth-card p{color:#64748b;font-size:14px;line-height:1.5;margin:8px 0 16px}
+.auth-card label{display:block;font-size:12px;font-weight:700;color:#64748b;margin:12px 0 5px}
+.auth-card input,.auth-card select{width:100%;padding:11px 12px;border:1px solid #dbe3ee;border-radius:10px;font-size:14px}
+.auth-card button{padding:11px 14px;border-radius:10px;font-weight:700}
+.auth-primary{background:#2563eb;color:white;width:100%;margin-top:14px}
+.auth-secondary{background:#f1f5f9;color:#334155;margin-top:8px;width:100%}
+.auth-msg{padding:10px;border-radius:10px;background:#eff6ff;color:#1d4ed8;font-size:13px;margin:12px 0}
+.auth-warn{padding:10px;border-radius:10px;background:#fffbeb;color:#92400e;font-size:12px;margin-top:12px}
+.auth-admin{width:min(100%,980px);max-height:92vh;overflow:auto}
+.auth-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+.auth-table th,.auth-table td{text-align:left;border-bottom:1px solid #e2e8f0;padding:9px 7px;vertical-align:top}
+.auth-table th{color:#64748b}
+.auth-actions{display:flex;gap:5px;flex-wrap:wrap}
+.auth-actions button{padding:6px 8px;font-size:12px;background:#eaf2ff;color:#1d4ed8}
+.auth-actions .danger{background:#fee2e2;color:#b91c1c}
+.vqr{display:block;width:min(100%,280px);margin:12px auto;border:1px solid #e2e8f0;border-radius:12px}
+.auth-hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="auth-screen" id="authScreen">
+  <div class="auth-card" id="authCard">
+    <h1>MDM Manager · Tài khoản</h1>
+    <p id="authIntro">Đăng nhập tài khoản để sử dụng hệ thống.</p>
+    <div id="authContent"></div>
+    <div class="auth-warn">Bản GitHub Pages chỉ lưu dữ liệu ở trình duyệt này. Đây là demo, không phải hệ thống cấp quyền an toàn: dữ liệu có thể bị sửa/xóa từ trình duyệt và chưa đồng bộ giữa máy. Cần backend để bảo vệ tài khoản và xác thực thanh toán thật.</div>
+  </div>
+</div>
+
+
+<header class="top">
+  <div class="brand"><i>📱</i> MDM Manager</div>
+  <div class="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" placeholder="Tìm tên, serial, IMEI, số điện thoại...">
+  </div>
+  <div class="user"><span id="clock"></span><span>admin@shop.vn</span><div class="avatar">A</div></div>
+</header>
+
+<main class="wrap">
+  <section class="stats" id="stats"></section>
+  <div class="bar">
+    <button class="chip on" data-f="all">Tất cả</button>
+    <button class="chip" data-f="online">Online</button>
+    <button class="chip" data-f="offline">Offline</button>
+    <button class="chip" data-f="locked">Đang khóa</button>
+    <button class="chip" data-f="expired">Hết hạn</button>
+    <span class="sp"></span>
+    <label class="sw"><input type="checkbox" id="auto" checked><i></i>Mô phỏng mạng</label>
+    <button class="tbtn" id="skip" title="Tua thời gian để thử hết hạn gói">⏩ Tua 1 ngày</button>
+    <button class="tbtn" id="logBtn">📋 Nhật ký</button><button class="tbtn" id="financeBtn">💳 Quản lý vay</button><button class="tbtn" id="appLockBtn">🔐 Khóa ứng dụng</button>
+    <button class="tbtn" id="refreshAll">⟳ Làm mới tất cả</button>
+    <button class="tbtn main" id="addBtn">＋ Thêm thiết bị</button>
+  </div>
+  <section class="grid" id="grid"></section>
+  <p style="text-align:center;color:var(--muted);font-size:12px;margin-top:22px"><button class="tbtn" id="reset" style="font-size:12px">↺ Đặt lại dữ liệu mẫu</button></p>
+</main>
+
+<aside class="drawer" id="drawer">
+  <header><span>📋 Nhật ký hoạt động</span><button id="drawerX">✕</button></header>
+  <div class="loglist" id="gLog"></div>
+</aside>
+<div class="ov" id="ov"><div class="modal" id="modal"></div></div>
+<div id="toast"></div><div class="lockscreen" id="appLockScreen"><div class="lockbox"><h2>🔐 Ứng dụng đã khóa</h2><p>Nhập mã PIN để tiếp tục</p><input id="unlockPin" type="password" inputmode="numeric" maxlength="8" placeholder="••••"><button class="b-ok" id="unlockApp" style="width:100%;padding:12px;border-radius:10px">Mở khóa</button><p id="pinError" style="color:#dc2626;margin-top:10px"></p></div></div>
+
+<script>
+/* ================= STATE ================= */
+const DAY = 864e5, KEY = 'mdm-sim-v2';
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const pad = n => String(n).padStart(2, '0');
+const email = 'admin@shop.vn';
+const MODELS = ['iPhone 17 Pro Max','iPhone 17 Pro','iPhone 17','iPhone 16 Pro Max','iPhone 16','iPhone 15 Pro','iPhone 15','iPhone 14','iPhone 13','iPhone 12','iPhone 11'];
+const LOCS = [[21.0245,105.8547,'Tràng Tiền, Hoàn Kiếm'],[20.9996,105.8683,'Phố Huế, Hai Bà Trưng'],[21.0333,105.7906,'Cầu Giấy'],[20.9930,105.8080,'Nguyễn Trãi, Thanh Xuân'],[21.0130,105.8130,'Láng Hạ, Đống Đa'],[21.0320,105.8120,'Kim Mã, Ba Đình'],[20.9946,105.8680,'Times City, Hai Bà Trưng'],[21.0285,105.7650,'Mỹ Đình, Nam Từ Liêm']];
+
+let S = { offset: 0, auto: true, logs: [], devices: [] };
+const T = () => Date.now() + S.offset;
+let devices = [];
+
+const mkDev = (id, name, model, ios, serial, phone, online, o = {}) => Object.assign({
+  id, name, model, ios, serial, phone, online, locked: false, lockMsg: '', plan: 'Thường', total: 30,
+  expiry: T() + 27 * DAY, lastSeen: T() - 180000, offlineSince: online ? 0 : T() - 3.9 * 3600000,
+  bypass: false, icloud: 'locked', passCleared: 0, wiped: false, wipedAt: 0, expiredLocked: false,
+  notif: null, loc: null, queue: [], log: [], renewals: [], forceBackAt: 0,
+  modelNumber: '', imei: '', iccid: '', meid: '', seid: '', icloudAcc: '', icloudPw: '',
+  loanDate: 0, loanEndDate: 0, loanMonths: 1, loanAmount: 0, loanRate: 0, loanUnit: 'month', payments: [], blacklisted: false, lockedApps: []
+}, o);
+
+function seed() {
+  S = { offset: 0, auto: true, logs: [], devices: [] };
+  S.devices = [
+    mkDev(1,'Khách 01','iPhone 17 Pro','27.0.1','MWK166XJD6','',true,{expiry:T()+27*DAY,lastSeen:T()-3*60000,modelNumber:'MYWX3VN/A',imei:'356938035643809',iccid:'8984012345678901234',meid:'A1000012345678',seid:'040E0A1B2C3D4E5F',icloudAcc:'khach01@icloud.com',icloudPw:'Matkhau@01',loanDate:T()-12*DAY,loanAmount:15000000,loanRate:3,loanUnit:'month'}),
+    mkDev(2,'Khách 02','iPhone 17','27.0.1','KQ7TY22LMP','0912345678',true,{expiry:T()+26*DAY,lastSeen:T()-5*60000,icloud:'clean',modelNumber:'MYMW3VN/A',imei:'352099001761481',icloudAcc:'khach02@icloud.com',icloudPw:'Abc@12345',loanDate:T()-40*DAY,loanAmount:8000000,loanRate:2.5,loanUnit:'month'}),
+    mkDev(3,'Khách 03','iPhone 15 Pro','27.0','LLQ2QVHVQQ','0963985746',true,{expiry:T()+27*DAY,lastSeen:T()-2*60000}),
+    mkDev(4,'Khách 04','iPhone 14','26.6','KYVKV3MV72','0972806676',false,{expiry:T()+26*DAY,lastSeen:T()-3.9*3600000,offlineSince:T()-3.9*3600000}),
+    mkDev(5,'Khách 05','iPhone 13','26.5','F9HXC41PQ8','0905111222',true,{plan:'VIP',total:90,expiry:T()+8*DAY,locked:true,lockMsg:'Vui lòng thanh toán kỳ trả góp để mở khóa.',icloud:'clean',lastSeen:T()-60000,imei:'490154203237518',loanDate:T()-75*DAY,loanAmount:20000000,loanRate:0.1,loanUnit:'day'}),
+    mkDev(6,'Khách 06','iPhone 16 Pro Max','27.0','DN6VB09ZT3','',false,{expiry:T()+2*DAY,lastSeen:T()-26*3600000,offlineSince:T()-26*3600000}),
+  ];
+  devices = S.devices;
+  devices.forEach(d => log(d, 'Thiết bị đã được đăng ký vào hệ thống MDM'));
+  save();
+}
+function load() {
+  try {
+    const s = JSON.parse(localStorage.getItem(KEY));
+    if (!s || !s.devices) return false;
+    S = s; devices = S.devices;
+    devices.forEach(d => { d.step = null; d.running = false; d.queue.forEach(c => c.args && (c.args.ui = false)); });
+    return true;
+  } catch (e) { return false; }
+}
+function save() {
+  try {
+    const c = JSON.stringify(S, (k, v) => (k === 'step' || k === 'running') ? undefined : v);
+    localStorage.setItem(KEY, c);
+  } catch (e) {}
+}
+
+/* ================= HELPERS ================= */
+const fmtTime = t => { const d = new Date(t); return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())} ${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}` };
+const fmtDate = t => { const d = new Date(t); return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}` };
+const daysLeft = d => Math.max(0, Math.ceil((d.expiry - T()) / DAY));
+const isExp = d => d.expiry <= T();
+/* --- khoản vay & lãi --- */
+const RU = { month: ['%/tháng', 30], year: ['%/năm', 365], day: ['%/ngày', 1] };
+const fmtMoney = n => Math.round(n || 0).toLocaleString('vi-VN') + ' ₫';
+const ymd = t => { const d = new Date(t); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
+const parseYmd = v => { const [y, m, d] = v.split('-').map(Number); return new Date(y, m - 1, d).getTime(); };
+function loanCalc(d) {
+  if (!d.loanAmount) return null;
+  const unit = RU[d.loanUnit] || RU.month;
+  const perDay = d.loanAmount * (d.loanRate || 0) / 100 / unit[1];
+  const days = Math.max(0, Math.floor((T() - d.loanDate) / DAY));
+  const interest = Math.round(perDay * days);
+  const due = d.loanEndDate || (d.loanDate + (d.loanMonths || 1) * 30 * DAY);
+  return { perDay, days, interest, total: d.loanAmount + interest, overdue: Math.max(0, Math.ceil((T() - due) / DAY)), due };
+}
+function loanHtml(d) {
+  const c = loanCalc(d); if (!c) return '';
+  return `<div class="loan"><div><span>💰 Vay ngày ${fmtDate(d.loanDate)}</span><b>${fmtMoney(d.loanAmount)}</b></div><div><span>Lãi ${c.days} ngày (${d.loanRate}${RU[d.loanUnit || 'month'][0]})</span><b>+${fmtMoney(c.interest)}</b></div><div class="tot"><span>Tổng phải thu</span><b>${fmtMoney(c.total)}</b></div></div>`;
+}
+const offlineFor = d => { const m = Math.max(0, Math.floor((T() - d.offlineSince) / 60000)); return m >= 1440 ? `${Math.floor(m/1440)}d ${Math.floor(m%1440/60)}h` : m >= 60 ? `${Math.floor(m/60)}h ${pad(m%60)}m` : `${m}m` };
+function log(d, msg, type = '') {
+  const e = { t: T(), msg, type };
+  d.log.unshift(e); d.log.length = Math.min(d.log.length, 60);
+  S.logs.unshift({ ...e, dev: d.name }); S.logs.length = Math.min(S.logs.length, 200);
+  save(); renderLog();
+}
+let tt;
+function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2600); }
+function modal(html, wide) { const m = $('#modal'); m.className = 'modal' + (wide ? ' wide' : ''); m.innerHTML = html; $('#ov').classList.add('show'); }
+function close() { $('#ov').classList.remove('show'); }
+$('#ov').addEventListener('click', e => { if (e.target.id === 'ov') close(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { close(); $('#drawer').classList.remove('show'); } });
+const btns = (cancel, ok, okCls = 'b-ok') => `<div class="btns"><button class="b-cancel" id="mc">${cancel}</button>${ok ? `<button class="${okCls}" id="mo">${ok}</button>` : ''}</div>`;
+
+/* ================= RENDER ================= */
+const wifiOn = '<svg viewBox="0 0 24 24"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.3" r=".8" fill="currentColor"/><path d="M2 9a14.5 14.5 0 0 1 20 0"/></svg>';
+const wifiOff = '<svg viewBox="0 0 24 24"><path d="M5 12.5a10 10 0 0 1 5-2.7"/><path d="M8.5 16a5 5 0 0 1 3-1.4"/><circle cx="12" cy="19.3" r=".8" fill="currentColor"/><path d="M2 9a14.5 14.5 0 0 1 5-3"/><path d="m3 3 18 18"/></svg>';
+const refreshing = new Set();
+const pending = (d, t) => d.queue.some(c => c.type === t);
+
+function status(d) {
+  if (d.wiped) return ['Chờ kích hoạt lại', 'warn'];
+  if (isExp(d)) return ['Hết hạn · đã khóa', 'bad'];
+  if (d.locked) return ['Đang khóa', 'bad'];
+  return ['Đang hoạt động', 'ok'];
+}
+
+function card(d) {
+  const dl = daysLeft(d), exp = isExp(d);
+  const pct = Math.max(0, Math.min(100, dl / Math.max(d.total, 1) * 100));
+  const lvl = dl <= 3 ? 'bad' : dl <= 10 ? 'warn' : '';
+  const phoneCls = d.wiped ? 'wipe' : !d.online ? 'off' : (d.locked || exp) ? 'lock' : 'on';
+  const phoneTxt = d.wiped ? 'Reset' : !d.online ? 'Offline' : (d.locked || exp) ? 'Đã khóa' : 'Online';
+  const [stTxt, stCls] = status(d);
+  let strip = '';
+  if (d.step) strip = `<div class="strip"><span class="spinner"></span>${esc(d.step.label)}: ${esc(d.step.text)} · ${d.step.pct}%<div class="pb"><i style="width:${d.step.pct}%"></i></div></div>`;
+  else if (d.queue.length) strip = `<div class="strip q">⏳ ${d.queue.length} lệnh đang chờ ${d.online ? 'xử lý' : 'thiết bị online'}: ${d.queue.map(c => esc(c.label)).join(', ')}</div>`;
+  return `
+  <article class="card" data-id="${d.id}">
+    <div class="card-h">
+      <div class="t"><h3>${esc(d.name)} <button data-a="rename" title="Đổi tên">✎</button></h3><div class="model">${esc(d.model)}</div></div>
+      <div class="tags"><span class="tag ${d.plan === 'VIP' ? 'vip' : ''}">📦 ${esc(d.plan)}</span><span class="tag">✉ ${email}</span></div>
+    </div>
+    <div class="body">
+      <div class="phone ${phoneCls}" data-a="screen" title="Xem màn hình thiết bị">${d.online ? wifiOn : wifiOff}<span>${phoneTxt}</span>${d.notif && !d.notif.seen ? '<span class="bell">🔔</span>' : ''}</div>
+      <div class="info">
+        <div class="row">
+          ${d.online ? `<span class="st-on">● Online</span>` : `<span class="st-off">✕ Offline ${offlineFor(d)}</span>`}
+          ${d.ios ? `<span class="ios" style="margin-left:auto">iOS ${esc(d.ios)}</span>` : ''}
+        </div>
+        <div class="row serial">Serial: <b>${esc(d.serial)}</b></div>
+        ${d.imei ? `<div class="row serial">IMEI: <b>${esc(d.imei)}</b></div>` : ''}
+        <div class="row"><span class="ic">📞</span>
+          ${d.phone ? `<b data-a="phone" style="cursor:pointer" title="Sửa SĐT">${esc(d.phone)}</b>` : `<button class="link" data-a="phone">Thêm SĐT khách</button>`}
+          <button class="refresh ${refreshing.has(d.id) ? 'spin' : ''}" data-a="refresh">⟳ Làm mới</button>
+        </div>
+        <div class="row"><span class="ic">🛡</span><span class="act ${stCls}">${stTxt}</span>${d.bypass ? '<span class="mini">Bypass ON</span>' : ''}${d.passCleared ? '<span class="mini" style="background:#e0e7ff;color:#3730a3">Pass đã xóa</span>' : ''}</div>
+        <div class="pkg">
+          <div style="font-weight:600">⏱ Gói: ${esc(d.plan)}</div>
+          <div class="bar-bg"><div class="bar-fg ${lvl}" style="width:${pct}%"></div></div>
+          <div class="l2"><span>Hết hạn:</span><span class="days ${lvl}">${exp ? 'Đã hết hạn' : 'Còn ' + dl + ' ngày'}</span><span>${fmtDate(d.expiry)}</span></div>
+        </div>
+        ${loanHtml(d)}
+        ${strip}
+        <div class="last">Lần cuối: ${fmtTime(d.lastSeen)}</div>
+      </div>
+    </div>
+    <div class="acts">
+      <button class="a lock" data-a="lock" ${(d.locked || pending(d, 'lock')) ? 'disabled' : ''}>🔒 Khóa</button>
+      <button class="a open" data-a="unlock" ${(!d.locked || pending(d, 'unlock')) ? 'disabled' : ''}>🔓 Mở</button>
+      <button class="a pur" data-a="app-lock">📱 ${d.lockedApps && d.lockedApps.length ? `App đã khóa (${d.lockedApps.length})` : 'Khóa app'}</button>
+      <button class="a warn" data-a="alert">🔔 Cảnh báo</button>
+      <button class="a gray" data-a="locate">📍 Định vị</button>
+      <button class="a ${d.bypass ? 'grn' : 'gray'}" data-a="bypass">🛡 Bypass${d.bypass ? ' ✓' : ''}</button>
+      <button class="a red" data-a="icloud">☁ ${d.icloud === 'locked' ? '<span class="dot"></span>' : ''} iCloud</button>
+      <button class="a gray" data-a="clearpass">🔑 Clear Pass</button>
+      <button class="a pur" data-a="renew">🕒 Gia hạn</button>
+      <button class="a gray" data-a="detail">📄 Chi tiết</button>
+      <button class="a gray wide" data-a="wipe">🗑 Xóa trắng thiết bị</button>
+      <button class="a gray" data-a="mdm">⊘ Gỡ MDM</button>
+      <button class="a red full" data-a="remove">✕ Xóa thiết bị khỏi hệ thống</button>
+    </div>
+  </article>`;
+}
+
+let filter = 'all', query = '';
+function render() {
+  const list = devices.filter(d => {
+    if (filter === 'online' && !d.online) return false;
+    if (filter === 'offline' && d.online) return false;
+    if (filter === 'locked' && !(d.locked || isExp(d))) return false;
+    if (filter === 'expired' && !isExp(d)) return false;
+    return (d.name + d.serial + d.phone + d.model + (d.imei || '') + (d.icloudAcc || '')).toLowerCase().includes(query.toLowerCase());
+  });
+  $('#grid').innerHTML = list.length ? list.map(card).join('') : '<div class="empty">Không tìm thấy thiết bị</div>';
+  const on = devices.filter(d => d.online).length;
+  const lc = devices.map(d => ({ c: loanCalc(d), p: d.loanAmount })).filter(x => x.c).map(x => ({ p: x.p, i: x.c.interest }));
+  $('#stats').innerHTML = `
+    <div class="stat b"><small>Tổng thiết bị</small><b>${devices.length}</b></div>
+    <div class="stat g"><small>Online</small><b>${on}</b></div>
+    <div class="stat r"><small>Offline</small><b>${devices.length - on}</b></div>
+    <div class="stat"><small>Đang khóa</small><b>${devices.filter(d => d.locked || isExp(d)).length}</b></div>
+    <div class="stat r"><small>Sắp hết hạn (≤3 ngày)</small><b>${devices.filter(d => !isExp(d) && daysLeft(d) <= 3).length}</b></div>
+    <div class="stat b"><small>Tổng tiền vay</small><b style="font-size:18px;margin-top:8px">${fmtMoney(lc.reduce((a, c) => a + c.p, 0))}</b></div>
+    <div class="stat"><small>Lãi tạm tính</small><b style="font-size:18px;margin-top:8px;color:#b45309">${fmtMoney(lc.reduce((a, c) => a + c.i, 0))}</b></div>`;
+  $('#clock').textContent = fmtTime(T());
+}
+function renderLog() {
+  $('#gLog').innerHTML = S.logs.length ? S.logs.map(l => `<div><time>${fmtTime(l.t)}</time><span class="${l.type}"><b>${esc(l.dev)}</b> · ${esc(l.msg)}</span></div>`).join('') : '<div>Chưa có hoạt động</div>';
+}
+
+/* ================= COMMAND ENGINE ================= */
+const CMD = {
+  lock:    { label: 'Khóa máy', steps: ['Gửi lệnh tới APNs', 'Thiết bị đã nhận lệnh', 'Đang khóa màn hình'] },
+  unlock:  { label: 'Mở khóa', steps: ['Gửi lệnh tới APNs', 'Thiết bị đã nhận lệnh', 'Đang mở khóa'] },
+  alert:   { label: 'Gửi cảnh báo', steps: ['Gửi thông báo tới APNs', 'Thiết bị đã nhận'] },
+  locate:  { label: 'Định vị', steps: ['Gửi yêu cầu vị trí', 'Thiết bị đang dò GPS', 'Đang nhận tọa độ'] },
+  bypass:  { label: 'Bypass', steps: ['Gửi lệnh', 'Đang cấu hình profile', 'Áp dụng cấu hình'] },
+  icloudCheck:  { label: 'Kiểm tra iCloud', steps: ['Kết nối máy chủ', 'Đọc trạng thái Tìm iPhone'] },
+  icloudRemove: { label: 'Gỡ iCloud', steps: ['Kết nối Apple ID', 'Xác thực thiết bị', 'Gửi yêu cầu gỡ Activation Lock', 'Chờ Apple phản hồi', 'Hoàn tất'], ms: 850 },
+  clearpass:    { label: 'Clear Pass', steps: ['Gửi lệnh ClearPasscode', 'Thiết bị xác nhận', 'Đang xóa mật mã'] },
+  wipe:    { label: 'Xóa trắng', steps: ['Gửi lệnh EraseDevice', 'Thiết bị xác nhận', 'Đang xóa dữ liệu (1/3)', 'Đang xóa dữ liệu (2/3)', 'Đang xóa dữ liệu (3/3)'], ms: 950 },
+  mdm:     { label: 'Gỡ MDM', steps: ['Gửi lệnh RemoveProfile', 'Thiết bị xác nhận', 'Đang gỡ profile MDM', 'Hủy đăng ký DEP'], ms: 850 }
+};
+
+const EX = {
+  lock(d, a) { d.locked = true; d.lockMsg = a.msg || 'Thiết bị đã bị khóa. Vui lòng liên hệ cửa hàng.'; return 'Đã khóa máy thành công'; },
+  unlock(d) { d.locked = false; return 'Đã mở khóa máy'; },
+  alert(d, a) {
+    d.notif = { text: a.msg, ts: T(), seen: false };
+    const id = d.id, ts = d.notif.ts;
+    setTimeout(() => { const x = devices.find(z => z.id === id); if (x && x.notif && x.notif.ts === ts) { x.notif.seen = true; log(x, 'Khách đã xem thông báo', 'ok'); render(); } }, 5000 + Math.random() * 9000);
+    return 'Cảnh báo đã hiển thị trên máy';
+  },
+  locate(d) {
+    const b = LOCS[Math.floor(Math.random() * LOCS.length)];
+    d.loc = { lat: b[0] + (Math.random() - .5) * .004, lng: b[1] + (Math.random() - .5) * .004, addr: b[2], acc: Math.round(8 + Math.random() * 30), ts: T() };
+    return `Vị trí: ${b[2]}`;
+  },
+  bypass(d) { d.bypass = !d.bypass; return d.bypass ? 'Đã bật Bypass' : 'Đã tắt Bypass'; },
+  icloudCheck() { return 'Đã cập nhật trạng thái iCloud'; },
+  icloudRemove(d) { d.icloud = 'clean'; return 'Đã gỡ khóa iCloud thành công'; },
+  clearpass(d) { d.passCleared = T(); return 'Đã xóa mật mã. Khách cần đặt mật mã mới'; },
+  wipe(d) {
+    d.wiped = true; d.wipedAt = T(); d.locked = false; d.passCleared = 0; d.notif = null; d.bypass = false;
+    d.online = false; d.offlineSince = T(); d.forceBackAt = T() + 7000;
+    return 'Đã xóa trắng thiết bị, đang khởi động lại';
+  },
+  mdm(d) { devices.splice(devices.indexOf(d), 1); S.devices = devices; return 'Đã gỡ MDM và xóa thiết bị khỏi danh sách'; }
+};
+
+function enqueue(d, type, args = {}) {
+  if (pending(d, type)) return toast('Đã có lệnh tương tự đang chờ');
+  const c = { id: Math.random().toString(36).slice(2), type, args, label: CMD[type].label, steps: CMD[type].steps, ms: CMD[type].ms || 650 };
+  d.queue.push(c);
+  log(d, `Đã tạo lệnh: ${c.label}${d.online ? '' : ' (thiết bị offline – chờ gửi)'}`, d.online ? '' : 'warn');
+  if (!d.online) toast(`${d.name} đang offline – lệnh sẽ gửi khi thiết bị online`);
+  save(); render(); pump(d);
+}
+
+async function pump(d) {
+  if (d.running || !d.online) return;
+  d.running = true;
+  while (d.queue.length && d.online && devices.includes(d)) {
+    const c = d.queue[0]; let aborted = false;
+    for (let i = 0; i < c.steps.length; i++) {
+      d.step = { label: c.label, text: c.steps[i], pct: Math.round(i / c.steps.length * 100) };
+      render(); await sleep(c.ms);
+      if (!d.online || !devices.includes(d)) { aborted = true; break; }
+    }
+    if (aborted) { log(d, `Mất kết nối khi đang chạy "${c.label}" – lệnh được giữ lại`, 'err'); break; }
+    d.queue.shift();
+    const msg = EX[c.type](d, c.args);
+    if (!devices.includes(d)) { S.logs.unshift({ t: T(), msg, type: 'ok', dev: d.name }); toast(`${d.name}: ${msg}`); renderLog(); d.step = null; d.running = false; save(); render(); return; }
+    log(d, msg, 'ok'); toast(`${d.name}: ${msg}`);
+    if (c.args.ui) { if (c.type === 'locate') showMap(d); if (c.type === 'icloudCheck') showICloud(d); }
+  }
+  d.step = null; d.running = false; save(); render();
+}
+
+/* ================= ACTIONS / MODALS ================= */
+function typedConfirm(title, text, word, okLabel, fn) {
+  modal(`<h4>${title}</h4><p>${text}</p><label>Gõ <b>${esc(word)}</b> để xác nhận</label><input id="tc" autocomplete="off">${btns('Hủy', okLabel, 'b-danger')}`);
+  $('#mo').disabled = true;
+  $('#tc').oninput = e => $('#mo').disabled = e.target.value.trim().toUpperCase() !== word.toUpperCase();
+  $('#mc').onclick = close; $('#mo').onclick = () => { close(); fn(); };
+}
+
+function showMap(d) {
+  if (!d.loc) { modal(`<h4>Định vị</h4><p>Chưa có dữ liệu vị trí cho thiết bị này.</p>${btns('Đóng')}`); $('#mc').onclick = close; return; }
+  const l = d.loc, x = 50 + ((l.lng * 1e4) % 260 + 260) % 260, y = 40 + ((l.lat * 1e4) % 120 + 120) % 120;
+  const roads = [[0,50,360,70],[0,120,360,110],[0,180,360,190],[70,0,90,230],[170,0,150,230],[260,0,290,230]].map(r => `<line x1="${r[0]}" y1="${r[1]}" x2="${r[2]}" y2="${r[3]}" stroke="#fff" stroke-width="7"/>`).join('');
+  modal(`<h4>📍 Vị trí ${esc(d.name)}</h4>
+    <div class="map"><svg viewBox="0 0 360 230" width="100%"><rect width="360" height="230" fill="#dfe8f1"/><rect x="100" y="140" width="50" height="40" fill="#cfe8c9"/><rect x="190" y="20" width="60" height="35" fill="#cfe8c9"/><path d="M0 205 Q120 160 360 215 L360 230 L0 230Z" fill="#b6d7ee"/>${roads}
+    <circle cx="${x}" cy="${y}" r="${l.acc / 2 + 10}" fill="rgba(37,99,235,.18)"/><circle cx="${x}" cy="${y}" r="8" fill="#ef4444" stroke="#fff" stroke-width="3"/></svg></div>
+    <dl class="kv"><dt>Địa chỉ</dt><dd>${esc(l.addr)}</dd><dt>Tọa độ</dt><dd>${l.lat.toFixed(5)}, ${l.lng.toFixed(5)}</dd><dt>Độ chính xác</dt><dd>±${l.acc} m</dd><dt>Cập nhật</dt><dd>${fmtTime(l.ts)}${d.online ? '' : ' (vị trí cuối – máy đang offline)'}</dd></dl>
+    <div class="btns"><a class="b-cancel" style="padding:9px 16px;border-radius:10px;font-weight:700;font-size:13px;text-decoration:none" href="https://www.google.com/maps?q=${l.lat},${l.lng}" target="_blank" rel="noopener">Mở Google Maps</a><button class="b-ok" id="mc">Đóng</button></div>`);
+  $('#mc').onclick = close;
+}
+
+function showICloud(d) {
+  const lk = d.icloud === 'locked';
+  modal(`<h4>☁ iCloud – ${esc(d.name)}</h4>
+    <dl class="kv"><dt>Tìm iPhone</dt><dd>${lk ? '🔴 Đang bật' : '🟢 Đã tắt'}</dd><dt>Activation Lock</dt><dd>${lk ? '🔴 Đang khóa' : '🟢 Không'}</dd><dt>Apple ID</dt><dd>${d.icloudAcc ? esc(d.icloudAcc) : lk ? 'k•••••@icloud.com' : '—'}</dd><dt>Kiểm tra lúc</dt><dd>${fmtTime(T())}</dd></dl>
+    <div class="btns"><button class="b-cancel" id="mc">Đóng</button><button class="b-cancel" id="chk">Kiểm tra lại</button>${lk ? '<button class="b-danger" id="rm">Gỡ iCloud</button>' : ''}</div>`);
+  $('#mc').onclick = close;
+  $('#chk').onclick = () => { close(); enqueue(d, 'icloudCheck', { ui: true }); };
+  if (lk) $('#rm').onclick = () => { close(); typedConfirm('Gỡ khóa iCloud', `Yêu cầu Apple gỡ Activation Lock cho <b>${esc(d.name)}</b>.`, 'GỠ', 'Gỡ iCloud', () => enqueue(d, 'icloudRemove')); };
+}
+
+function showScreen(d) {
+  const t = new Date(T()), exp = isExp(d);
+  const lockedNow = d.locked || exp;
+  const msg = exp && !d.locked ? 'Gói dịch vụ đã hết hạn. Vui lòng liên hệ cửa hàng.' : d.lockMsg;
+  modal(`<h4>Màn hình ${esc(d.name)}</h4>
+    <div class="screen ${d.online ? '' : 'off'}">
+      <div class="dt">${['Chủ nhật','Thứ hai','Thứ ba','Thứ tư','Thứ năm','Thứ sáu','Thứ bảy'][t.getDay()]}, ${t.getDate()}/${t.getMonth() + 1}</div>
+      <div class="clock">${pad(t.getHours())}:${pad(t.getMinutes())}</div>
+      ${d.wiped ? '<div class="lk">👋</div><div class="msg">Xin chào – thiết lập iPhone</div>' : lockedNow ? `<div class="lk">🔒</div><div class="msg">${esc(msg || 'Thiết bị đã bị khóa.')}</div>` : '<div class="lk">🔓</div>'}
+      ${d.notif ? `<div class="noti"><b>CẢNH BÁO · ${fmtTime(d.notif.ts).slice(0, 5)}</b>${esc(d.notif.text)}</div>` : ''}
+      <div class="home"></div>
+    </div>
+    <p style="text-align:center;font-size:12px;margin-bottom:8px">${d.online ? 'Hiển thị trạng thái hiện tại' : 'Thiết bị offline – hiển thị trạng thái cuối cùng'}</p>${btns('Đóng')}`);
+  $('#mc').onclick = close;
+}
+
+function showDetail(d, tab = 'info') {
+  const [st] = status(d);
+  const dash = x => x ? esc(x) : '—';
+  const tabs = `<div class="tabs">${[['info','Thông tin'],['loan','Khoản vay'],['log','Nhật ký'],['ren','Gia hạn']].map(([k, v]) => `<button data-t="${k}" class="${tab === k ? 'on' : ''}">${v}</button>`).join('')}</div>`;
+  let body = '';
+  if (tab === 'info') body = `<dl class="kv"><dt>Tên thiết bị</dt><dd>${esc(d.name)}</dd><dt>Tên kiểu máy</dt><dd>${esc(d.model)}</dd><dt>Số máy</dt><dd>${dash(d.modelNumber)}</dd><dt>Phần mềm</dt><dd>${dash(d.ios)}</dd><dt>Số sê-ri</dt><dd>${esc(d.serial)}</dd>
+    <dt>IMEI</dt><dd>${dash(d.imei)}</dd><dt>ICCID</dt><dd>${dash(d.iccid)}</dd><dt>MEID</dt><dd>${dash(d.meid)}</dd><dt>SEID</dt><dd>${dash(d.seid)}</dd>
+    <dt>TK iCloud</dt><dd>${dash(d.icloudAcc)}</dd><dt>MK iCloud</dt><dd>${d.icloudPw ? `<span id="pwv">••••••••</span> <button class="link" id="pwt" style="font-style:normal;color:#2563eb;font-weight:600">Hiện</button>` : '—'}</dd>
+    <dt>SĐT khách</dt><dd>${dash(d.phone)}</dd>
+    <dt>Kết nối</dt><dd>${d.online ? 'Online' : 'Offline ' + offlineFor(d)}</dd><dt>Trạng thái</dt><dd>${st}</dd><dt>Gói</dt><dd>${esc(d.plan)} · còn ${daysLeft(d)} ngày</dd><dt>Hết hạn</dt><dd>${fmtDate(d.expiry)}</dd>
+    <dt>Bypass</dt><dd>${d.bypass ? 'Bật' : 'Tắt'}</dd><dt>Khóa iCloud</dt><dd>${d.icloud === 'locked' ? 'Đang khóa' : 'Sạch'}</dd><dt>Lần cuối</dt><dd>${fmtTime(d.lastSeen)}</dd><dt>Vị trí cuối</dt><dd>${d.loc ? esc(d.loc.addr) : '—'}</dd></dl>`;
+  if (tab === 'loan') {
+    const c = loanCalc(d);
+    body = c ? `<dl class="kv"><dt>Ngày vay</dt><dd>${fmtDate(d.loanDate)}</dd><dt>Kỳ hạn</dt><dd>${d.loanMonths||1} tháng</dd><dt>Ngày kết thúc</dt><dd>${d.loanEndDate?fmtDate(d.loanEndDate):'—'}</dd><dt>Đã đóng</dt><dd>${(d.payments||[]).reduce((a,p)=>a+(p.months||0),0)} tháng</dd><dt>Quá hạn</dt><dd>${c.overdue} ngày</dd><dt>Số tiền vay</dt><dd>${fmtMoney(d.loanAmount)}</dd><dt>Lãi suất</dt><dd>${d.loanRate} ${RU[d.loanUnit || 'month'][0]}</dd><dt>Lãi mỗi ngày</dt><dd>${fmtMoney(c.perDay)}</dd><dt>Số ngày vay</dt><dd>${c.days} ngày</dd><dt>Lãi phát sinh</dt><dd style="color:#b45309">${fmtMoney(c.interest)}</dd><dt>Tổng phải thu</dt><dd style="font-size:15px">${fmtMoney(c.total)}</dd></dl>
+      <p style="font-size:12px;color:var(--muted)">Lãi đơn, tính theo ngày (30 ngày = 1 tháng, 365 ngày = 1 năm) và tự cập nhật theo thời gian.</p>`
+      : '<p>Thiết bị chưa có khoản vay. Bấm “Sửa thông tin” để thêm số tiền vay và lãi suất.</p>';
+  }
+  if (tab === 'log') body = `<div class="loglist">${d.log.length ? d.log.map(l => `<div><time>${fmtTime(l.t)}</time><span class="${l.type}">${esc(l.msg)}</span></div>`).join('') : 'Chưa có nhật ký'}</div>`;
+  if (tab === 'ren') body = `<div class="loglist">${d.renewals.length ? d.renewals.map(r => `<div><time>${fmtTime(r.t)}</time><span>${esc(r.plan)} · +${r.days} ngày → ${fmtDate(r.to)}</span></div>`).join('') : 'Chưa có lần gia hạn nào'}</div>`;
+  modal(`<h4>Chi tiết thiết bị</h4>${tabs}${body}<div class="btns"><button class="b-cancel" id="mc">Đóng</button><button class="b-ok" id="ed">✎ Sửa thông tin</button></div>`);
+  $('#mc').onclick = close;
+  $('#ed').onclick = () => showEdit(d);
+  const pt = $('#pwt');
+  if (pt) pt.onclick = () => { const show = pt.textContent === 'Hiện'; $('#pwv').textContent = show ? d.icloudPw : '••••••••'; pt.textContent = show ? 'Ẩn' : 'Hiện'; };
+  document.querySelectorAll('.tabs [data-t]').forEach(b => b.onclick = () => showDetail(d, b.dataset.t));
+}
+
+function showRenew(d) {
+  modal(`<h4>Gia hạn gói – ${esc(d.name)}</h4>
+    <label>Gói</label><select id="rp"><option ${d.plan === 'Thường' ? 'selected' : ''}>Thường</option><option ${d.plan === 'VIP' ? 'selected' : ''}>VIP</option></select>
+    <label>Thời gian</label><select id="rd"><option value="30">30 ngày</option><option value="60">60 ngày</option><option value="90">90 ngày</option><option value="180">180 ngày</option></select>
+    <p id="rv"></p>${btns('Hủy', 'Gia hạn')}`);
+  const upd = () => { const n = +$('#rd').value, base = Math.max(d.expiry, T()); $('#rv').innerHTML = `Hạn mới: <b>${fmtDate(base + n * DAY)}</b>${isExp(d) ? ' (tính từ hôm nay)' : ''}`; };
+  $('#rd').onchange = upd; upd();
+  $('#mc').onclick = close;
+  $('#mo').onclick = () => {
+    const n = +$('#rd').value, plan = $('#rp').value, wasExp = isExp(d);
+    d.expiry = Math.max(d.expiry, T()) + n * DAY; d.plan = plan;
+    d.total = wasExp ? n : Math.max(d.total, daysLeft(d));
+    d.renewals.unshift({ t: T(), days: n, plan, to: d.expiry });
+    log(d, `Gia hạn gói ${plan} thêm ${n} ngày (đến ${fmtDate(d.expiry)})`, 'ok');
+    if (d.expiredLocked) { d.expiredLocked = false; d.queue = d.queue.filter(c => !(c.type === 'lock' && c.args.auto)); if (d.locked) enqueue(d, 'unlock'); }
+    close(); save(); render(); toast(`Đã gia hạn thêm ${n} ngày`);
+  };
+}
+
+/* ================= FORM THIẾT BỊ ================= */
+const moneyVal = () => +($('#f_lamt').value.replace(/\D/g, '')) || 0;
+const rateVal = () => parseFloat($('#f_lrate').value.replace(',', '.'));
+
+function devForm(d = {}) {
+  const v = k => esc(d[k] ?? '');
+  const isNew = !d.id;
+  const unit = d.loanUnit || 'month';
+  return `<div class="fgrid">
+    <div class="fsec">Thông tin thiết bị</div>
+    <div><label>Tên thiết bị *</label><input id="f_name" value="${v('name')}" placeholder="VD: Khách 07"></div>
+    <div><label>Tên kiểu máy *</label><input id="f_model" list="dl_models" value="${v('model')}" placeholder="VD: iPhone 15 Pro"><datalist id="dl_models">${MODELS.map(m => `<option value="${m}">`).join('')}</datalist></div>
+    <div><label>Số máy (model number)</label><input id="f_mn" value="${v('modelNumber')}" placeholder="VD: MTUS3VN/A" style="text-transform:uppercase"></div>
+    <div><label>Phiên bản phần mềm</label><input id="f_ios" value="${v('ios')}" placeholder="VD: 27.0.1"></div>
+    <div><label>Số sê-ri * (10–12 ký tự)</label><input id="f_serial" maxlength="12" value="${v('serial')}" placeholder="VD: F2LXK81ABC" style="text-transform:uppercase"></div>
+    <div><label>SĐT khách</label><input id="f_phone" inputmode="tel" value="${v('phone')}" placeholder="09xx xxx xxx"></div>
+    <div><label>IMEI (15 số)</label><input id="f_imei" inputmode="numeric" maxlength="15" value="${v('imei')}" placeholder="VD: 356938035643809"></div>
+    <div><label>ICCID (18–20 số)</label><input id="f_iccid" inputmode="numeric" maxlength="20" value="${v('iccid')}" placeholder="VD: 8984012345678901234"></div>
+    <div><label>MEID (14 ký tự hex)</label><input id="f_meid" maxlength="14" value="${v('meid')}" placeholder="VD: A1000012345678" style="text-transform:uppercase"></div>
+    <div><label>SEID</label><input id="f_seid" value="${v('seid')}" placeholder="VD: 040E0A1B2C3D4E5F"></div>
+    ${isNew ? '<div><label>Gói dịch vụ</label><select id="f_plan"><option>Thường</option><option>VIP</option></select></div>' : ''}
+    <div class="fsec">Tài khoản iCloud</div>
+    <div><label>Tài khoản</label><input id="f_acc" autocomplete="off" value="${v('icloudAcc')}" placeholder="email hoặc SĐT"></div>
+    <div><label>Mật khẩu</label><div class="pw"><input id="f_pw" type="password" autocomplete="new-password" value="${v('icloudPw')}"><button type="button" id="f_pwt" title="Hiện/ẩn mật khẩu">👁</button></div></div>
+    <div class="fsec">Khoản vay</div>
+    <div><label>Ngày bắt đầu vay</label><input id="f_ldate" type="date" value="${ymd(d.loanDate || T())}"></div>
+    <div><label>Thời hạn vay</label><select id="f_lmonths">${Array.from({length:12},(_,i)=>i+1).map(n=>`<option value="${n}" ${(d.loanMonths||1)===n?'selected':''}>${n} tháng</option>`).join('')}</select></div>
+    <div><label>Ngày kết thúc dự kiến</label><input id="f_lend" type="date" value="${ymd(d.loanEndDate || ((d.loanDate||T())+(d.loanMonths||1)*30*DAY))}"></div>
+    <div><label>Số tiền vay (₫)</label><input id="f_lamt" inputmode="numeric" value="${d.loanAmount ? d.loanAmount.toLocaleString('vi-VN') : ''}" placeholder="VD: 15.000.000"></div>
+    <div><label>Lãi suất</label><input id="f_lrate" inputmode="decimal" value="${d.loanAmount ? d.loanRate : 3}"></div>
+    <div><label>Đơn vị lãi</label><select id="f_lunit">${Object.entries(RU).map(([k, r]) => `<option value="${k}" ${unit === k ? 'selected' : ''}>${r[0]}</option>`).join('')}</select></div>
+    <div class="calc empty" id="f_calc"></div>
+    <div class="ferr" id="f_err"></div>
+  </div>`;
+}
+
+function wireForm() {
+  const calc = () => {
+    const f = { loanAmount: moneyVal(), loanDate: $('#f_ldate').value ? parseYmd($('#f_ldate').value) : T(), loanRate: rateVal() || 0, loanUnit: $('#f_lunit').value };
+    const c = loanCalc(f), box = $('#f_calc');
+    if (!c) { box.className = 'calc empty'; box.textContent = 'Nhập số tiền vay để tự động tính lãi'; return; }
+    box.className = 'calc';
+    box.innerHTML = `<div><span>Lãi mỗi ngày</span><b>${fmtMoney(c.perDay)}</b></div><div><span>Đã phát sinh ${c.days} ngày</span><b>${fmtMoney(c.interest)}</b></div><div class="tot"><span>Tổng phải thu hôm nay</span><b>${fmtMoney(c.total)}</b></div>`;
+  };
+  $('#f_lamt').addEventListener('input', e => { const n = e.target.value.replace(/\D/g, ''); e.target.value = n ? (+n).toLocaleString('vi-VN') : ''; calc(); });
+  ['f_ldate', 'f_lend', 'f_lmonths', 'f_lrate', 'f_lunit'].forEach(id => ['input', 'change'].forEach(ev => $('#' + id).addEventListener(ev, calc)));
+  $('#f_pwt').onclick = () => { const i = $('#f_pw'); i.type = i.type === 'password' ? 'text' : 'password'; };
+  calc();
+}
+
+function readForm(self) {
+  const g = id => $('#' + id).value.trim();
+  const f = {
+    name: g('f_name'), model: g('f_model'), modelNumber: g('f_mn').toUpperCase(), ios: g('f_ios'),
+    serial: g('f_serial').toUpperCase(), phone: g('f_phone'),
+    imei: g('f_imei').replace(/\s/g, ''), iccid: g('f_iccid').replace(/\s/g, ''), meid: g('f_meid').replace(/[\s:]/g, '').toUpperCase(), seid: g('f_seid'),
+    icloudAcc: g('f_acc'), icloudPw: $('#f_pw').value,
+    loanAmount: moneyVal(), loanDate: $('#f_ldate').value ? parseYmd($('#f_ldate').value) : 0, loanEndDate: $('#f_lend').value ? parseYmd($('#f_lend').value) : 0, loanMonths: +$('#f_lmonths').value || 1, payments: self ? (self.payments || []) : [], blacklisted: self ? !!self.blacklisted : false, loanRate: rateVal(), loanUnit: $('#f_lunit').value
+  };
+  let err = '';
+  if (!f.name) err = 'Vui lòng nhập tên thiết bị';
+  else if (!f.model) err = 'Vui lòng nhập tên kiểu máy';
+  else if (!/^[A-Z0-9]{10,12}$/.test(f.serial)) err = 'Số sê-ri phải gồm 10–12 chữ/số';
+  else if (devices.some(x => x !== self && x.serial === f.serial)) err = 'Số sê-ri đã tồn tại';
+  else if (f.imei && !/^\d{15}$/.test(f.imei)) err = 'IMEI phải gồm đúng 15 chữ số';
+  else if (f.iccid && !/^\d{18,20}$/.test(f.iccid)) err = 'ICCID phải gồm 18–20 chữ số';
+  else if (f.meid && !/^[0-9A-F]{14}$/.test(f.meid)) err = 'MEID phải gồm 14 ký tự hex (0–9, A–F)';
+  else if (f.loanAmount) {
+    if (!f.loanDate) err = 'Vui lòng chọn ngày vay';
+    else if (isNaN(f.loanRate) || f.loanRate < 0) err = 'Vui lòng nhập lãi suất hợp lệ';
+  }
+  if (!f.loanAmount) { f.loanDate = 0; f.loanRate = 0; }
+  return { f, err };
+}
+
+function showAdd() {
+  modal(`<h4>Thêm thiết bị</h4>${devForm()}${btns('Hủy', 'Đăng ký')}`, true);
+  wireForm();
+  $('#mc').onclick = close;
+  $('#mo').onclick = async () => {
+    const { f, err } = readForm(null);
+    if (err) return $('#f_err').textContent = err;
+    const plan = $('#f_plan').value;
+    const steps = ['Kiểm tra serial với Apple DEP', 'Gán profile MDM', 'Chờ thiết bị check-in', 'Hoàn tất đăng ký'];
+    modal(`<h4>Đang đăng ký thiết bị…</h4><div class="prog"><i id="pb"></i></div><div class="stepl" id="sl">${steps.map(s => `<span>○ ${s}</span>`).join('')}</div>`);
+    for (let i = 0; i < steps.length; i++) {
+      $('#sl').innerHTML = steps.map((s, j) => `<span class="${j < i ? 'done' : j === i ? 'cur' : ''}">${j < i ? '✓' : j === i ? '⟳' : '○'} ${s}</span>`).join('');
+      $('#pb').style.width = (i / steps.length * 100) + '%'; await sleep(800);
+    }
+    const days = plan === 'VIP' ? 90 : 30;
+    const d = mkDev(Date.now(), f.name, f.model, f.ios, f.serial, f.phone, true, { ...f, plan, total: days, expiry: T() + days * DAY, lastSeen: T(), icloud: 'clean' });
+    devices.push(d); log(d, 'Thiết bị đã được đăng ký vào hệ thống MDM', 'ok');
+    if (d.loanAmount) log(d, `Tạo khoản vay ${fmtMoney(d.loanAmount)} · lãi ${d.loanRate}${RU[d.loanUnit][0]}`, 'ok');
+    close(); render(); toast(`Đã thêm ${f.name}`);
+  };
+}
+
+function showRemove(d) {
+  const c = loanCalc(d);
+  const warn = c ? `<br><br>⚠ Thiết bị đang có khoản vay <b>${fmtMoney(d.loanAmount)}</b>, tổng phải thu hiện tại <b>${fmtMoney(c.total)}</b>. Dữ liệu khoản vay sẽ bị xóa cùng thiết bị.` : '';
+  typedConfirm('Xóa thiết bị khỏi hệ thống',
+    `Xóa <b>${esc(d.name)}</b> (${esc(d.serial)}) khỏi danh sách quản lý, kèm toàn bộ nhật ký, lệnh đang chờ và thông tin khoản vay. <b>Không thể khôi phục.</b><br><br>Lưu ý: thao tác này chỉ xóa dữ liệu trong hệ thống, <b>không gửi lệnh tới máy</b>. Nếu máy vẫn đang bị khóa hoặc còn profile MDM, hãy mở khóa / dùng "Gỡ MDM" trước.${warn}`,
+    'XÓA', 'Xóa khỏi hệ thống', () => {
+      const i = devices.indexOf(d); if (i < 0) return;
+      devices.splice(i, 1); S.devices = devices;
+      S.logs.unshift({ t: T(), msg: `Đã xóa thiết bị khỏi hệ thống (${d.serial})`, type: 'warn', dev: d.name });
+      save(); render(); renderLog(); toast(`Đã xóa ${d.name} khỏi hệ thống`);
+    });
+}
+
+function showEdit(d) {
+  modal(`<h4>Sửa thông tin – ${esc(d.name)}</h4>${devForm(d)}${btns('Hủy', 'Lưu')}`, true);
+  wireForm();
+  $('#mc').onclick = () => showDetail(d);
+  $('#mo').onclick = () => {
+    const { f, err } = readForm(d);
+    if (err) return $('#f_err').textContent = err;
+    if (f.name !== d.name) log(d, `Đổi tên "${d.name}" → "${f.name}"`);
+    Object.assign(d, f);
+    log(d, 'Cập nhật thông tin thiết bị / khoản vay', 'ok');
+    save(); render(); showDetail(d); toast('Đã lưu thông tin');
+  };
+}
+
+$('#grid').addEventListener('click', e => {
+  const b = e.target.closest('[data-a]'); if (!b) return;
+  const d = devices.find(x => x.id == b.closest('.card').dataset.id); if (!d) return;
+  const a = b.dataset.a;
+  if (a === 'refresh') {
+    if (refreshing.has(d.id)) return; refreshing.add(d.id); render();
+    setTimeout(() => {
+      refreshing.delete(d.id);
+      if (d.online) { d.lastSeen = T(); toast(`${d.name}: đã cập nhật trạng thái`); } else toast(`${d.name}: không phản hồi (timeout)`);
+      render();
+    }, 900); return;
+  }
+  if (a === 'screen') return showScreen(d);
+  if (a === 'lock') {
+    modal(`<h4>Khóa thiết bị</h4><p>Khóa <b>${esc(d.name)}</b> (${esc(d.model)}). Nội dung hiển thị trên màn hình khóa:</p><textarea id="lm" rows="2">Vui lòng thanh toán kỳ trả góp để mở khóa thiết bị.</textarea>${btns('Hủy', 'Khóa')}`);
+    $('#mc').onclick = close; $('#mo').onclick = () => { const msg = $('#lm').value.trim(); close(); enqueue(d, 'lock', { msg }); }; return;
+  }
+  if (a === 'unlock') return enqueue(d, 'unlock');
+  if (a === 'app-lock') {
+    const appCatalog = [
+      ['phone','Điện thoại'],['messages','Tin nhắn'],['facetime','FaceTime'],
+      ['camera','Camera'],['photos','Ảnh'],['safari','Safari'],
+      ['appstore','App Store'],['settings','Cài đặt'],['youtube','YouTube'],
+      ['facebook','Facebook'],['zalo','Zalo'],['tiktok','TikTok']
+    ];
+    const selected = new Set(d.lockedApps || []);
+    modal(`<h4>📱 Khóa ứng dụng – ${esc(d.name)}</h4>
+      <p>Chọn những ứng dụng cần khóa trên riêng thiết bị này. Thiết lập được lưu độc lập theo từng máy.</p>
+      <div class="app-lock-list">${appCatalog.map(([id,label]) => `<label><input type="checkbox" class="app-lock-check" value="${id}" ${selected.has(id)?'checked':''}> <span>${label}</span></label>`).join('')}</div>
+      <div class="btns"><button class="b-cancel" id="mc">Hủy</button><button class="b-cancel" id="clearApps">Mở khóa tất cả app</button><button class="b-ok" id="saveApps">Lưu thiết lập</button></div>`);
+    $('#mc').onclick = close;
+    $('#clearApps').onclick = () => { d.lockedApps = []; log(d, 'Đã mở khóa tất cả ứng dụng'); save(); close(); render(); toast(`${d.name}: đã mở khóa tất cả app`); };
+    $('#saveApps').onclick = () => {
+      d.lockedApps = [...$('#modal').querySelectorAll('.app-lock-check:checked')].map(x => x.value);
+      log(d, d.lockedApps.length ? `Đã khóa ${d.lockedApps.length} ứng dụng: ${d.lockedApps.join(', ')}` : 'Đã mở khóa tất cả ứng dụng');
+      save(); close(); render(); toast(`${d.name}: đã lưu ${d.lockedApps.length} ứng dụng bị khóa`);
+    };
+    return;
+  }
+  if (a === 'alert') {
+    modal(`<h4>Gửi cảnh báo</h4><p>Hiển thị thông báo trên màn hình <b>${esc(d.name)}</b>:</p><textarea id="am2" rows="2">Quý khách vui lòng thanh toán kỳ trả góp đúng hạn.</textarea>${btns('Hủy', 'Gửi')}`);
+    $('#mc').onclick = close; $('#mo').onclick = () => { const msg = $('#am2').value.trim(); if (!msg) return; close(); enqueue(d, 'alert', { msg }); }; return;
+  }
+  if (a === 'locate') { if (!d.online && d.loc) { showMap(d); toast('Thiết bị offline – hiển thị vị trí cuối'); return; } return enqueue(d, 'locate', { ui: true }); }
+  if (a === 'bypass') return d.bypass
+    ? enqueue(d, 'bypass')
+    : (modal(`<h4>Bật Bypass</h4><p>Áp dụng cấu hình bypass kích hoạt cho <b>${esc(d.name)}</b>?</p>${btns('Hủy', 'Bật Bypass')}`), $('#mc').onclick = close, $('#mo').onclick = () => { close(); enqueue(d, 'bypass'); });
+  if (a === 'icloud') return showICloud(d);
+  if (a === 'clearpass') { modal(`<h4>Clear Pass</h4><p>Xóa mật mã màn hình của <b>${esc(d.name)}</b>? Khách sẽ phải đặt mật mã mới.</p>${btns('Hủy', 'Xác nhận')}`); $('#mc').onclick = close; $('#mo').onclick = () => { close(); enqueue(d, 'clearpass'); }; return; }
+  if (a === 'renew') return showRenew(d);
+  if (a === 'detail') return showDetail(d);
+  if (a === 'phone') {
+    modal(`<h4>SĐT khách</h4><input id="ph" inputmode="tel" placeholder="09xx xxx xxx" value="${esc(d.phone)}">${btns('Hủy', 'Lưu')}`);
+    $('#mc').onclick = close; $('#mo').onclick = () => { d.phone = $('#ph').value.trim(); log(d, 'Cập nhật SĐT khách'); close(); render(); toast('Đã lưu số điện thoại'); }; return;
+  }
+  if (a === 'rename') {
+    modal(`<h4>Đổi tên thiết bị</h4><input id="nm" value="${esc(d.name)}">${btns('Hủy', 'Lưu')}`);
+    $('#mc').onclick = close; $('#mo').onclick = () => { const v = $('#nm').value.trim(); if (!v) return; log(d, `Đổi tên "${d.name}" → "${v}"`); d.name = v; close(); render(); }; return;
+  }
+  if (a === 'remove') return showRemove(d);
+  if (a === 'wipe') return typedConfirm('Xóa trắng thiết bị', `Toàn bộ dữ liệu trên <b>${esc(d.name)}</b> sẽ bị xóa và <b>không thể khôi phục</b>.`, d.serial.slice(-4), 'Xóa trắng', () => enqueue(d, 'wipe'));
+  if (a === 'mdm') return typedConfirm('Gỡ MDM', `Gỡ quản lý khỏi <b>${esc(d.name)}</b>. Thiết bị sẽ bị xóa khỏi danh sách và không còn bị khóa/giám sát.`, 'GỠ', 'Gỡ MDM', () => enqueue(d, 'mdm'));
+});
+
+
+/* Quản lý khoản vay, thanh toán và danh sách đen */
+function showFinance(){
+ const active=devices.filter(d=>d.loanAmount>0);
+ const paid=d=>(d.payments||[]).reduce((n,p)=>n+(+p.months||0),0);
+ const late=d=>d.loanEndDate&&T()>d.loanEndDate&&paid(d)<(d.loanMonths||1);
+ const rows=active.map(d=>{const c=loanCalc(d);return `<div class="finance-item">
+ <div class="fi-head"><span>${esc(d.name)} · ${esc(d.phone||'Chưa có SĐT')}</span><span class="pill ${late(d)?'over':''}">${late(d)?'QUÁ HẠN':'ĐANG THEO DÕI'}</span></div>
+ <div>Vay ${fmtMoney(d.loanAmount)} · ${d.loanMonths||1} tháng · ${fmtDate(d.loanDate)} đến ${d.loanEndDate?fmtDate(d.loanEndDate):'—'}</div>
+ <div>Đã đóng <b>${paid(d)} tháng</b> · Còn <b>${Math.max(0,(d.loanMonths||1)-paid(d))} tháng</b> · Quá hạn <b>${late(d)?Math.ceil((T()-d.loanEndDate)/DAY)+' ngày':'Không'}</b></div>
+ <div>Tổng phải thu tạm tính: <b>${fmtMoney(c.total)}</b></div>
+ <div class="fin-actions"><button data-pay="${d.id}">＋ Ghi nhận thanh toán</button><button data-black="${d.id}">${d.blacklisted?'Bỏ danh sách đen':'Đưa vào danh sách đen'}</button><button data-detail="${d.id}">Chi tiết</button></div>
+ ${(d.payments||[]).length?`<small>Lịch sử: ${d.payments.map(p=>`${p.months} tháng (${fmtDate(p.date)})`).join(' · ')}</small>`:''}</div>`}).join('');
+ const blacks=active.filter(d=>d.blacklisted);
+ modal(`<h4>💳 Quản lý vay & thanh toán</h4><div class="stats"><div class="stat"><small>Khách vay</small><b>${active.length}</b></div><div class="stat g"><small>Đã đóng</small><b>${active.reduce((a,d)=>a+paid(d),0)} tháng</b></div><div class="stat r"><small>Quá hạn</small><b>${active.filter(late).length}</b></div><div class="stat"><small>Danh sách đen</small><b>${blacks.length}</b></div></div>
+ <div class="finance-list">${rows||'<p>Chưa có khoản vay nào.</p>'}</div><div class="blacklist"><h4>⛔ Danh sách đen</h4>${blacks.length?blacks.map(d=>`<p>${esc(d.name)} · ${esc(d.phone||'—')}</p>`).join(''):'<p>Chưa có khách trong danh sách đen.</p>'}</div>${btns('Đóng')}`,true);
+ $('#mc').onclick=close;
+ $('#modal').querySelectorAll('[data-pay]').forEach(b=>b.onclick=()=>{const d=devices.find(x=>x.id==b.dataset.pay);if(!d)return;modal(`<h4>Ghi nhận thanh toán – ${esc(d.name)}</h4><label>Số tháng đã đóng</label><input id="payMonths" type="number" min="1" max="12" value="1"><label>Ngày thanh toán</label><input id="payDate" type="date" value="${ymd(T())}"><label>Số tiền nhận (₫)</label><input id="payAmount" inputmode="numeric" placeholder="Không bắt buộc">${btns('Hủy','Lưu thanh toán')}`);$('#mc').onclick=showFinance;$('#mo').onclick=()=>{const months=Math.max(1,Math.min(12,+$('#payMonths').value||1));d.payments=d.payments||[];d.payments.unshift({months,date:parseYmd($('#payDate').value||ymd(T())),amount:+$('#payAmount').value.replace(/\D/g,'')||0});log(d,`Khách thanh toán ${months} tháng`,'ok');save();showFinance();};});
+ $('#modal').querySelectorAll('[data-black]').forEach(b=>b.onclick=()=>{const d=devices.find(x=>x.id==b.dataset.black);if(!d)return;d.blacklisted=!d.blacklisted;log(d,d.blacklisted?'Đưa khách vào danh sách đen':'Gỡ khỏi danh sách đen',d.blacklisted?'warn':'ok');save();showFinance();});
+ $('#modal').querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>{const d=devices.find(x=>x.id==b.dataset.detail);if(d)showDetail(d,'loan');});
+}
+function setupAppLock(){
+ const old=localStorage.getItem('mdm-app-pin');
+ modal(`<h4>🔐 Khóa ứng dụng</h4><p>${old?'Nhập PIN hiện tại và PIN mới (để trống nếu giữ nguyên).':'Tạo PIN từ 4 đến 8 chữ số.'}</p><label>${old?'PIN hiện tại':'PIN mới'}</label><input id="pinA" type="password" inputmode="numeric" maxlength="8"><label>${old?'PIN mới':'Nhập lại PIN'}</label><input id="pinB" type="password" inputmode="numeric" maxlength="8">${btns('Hủy','Khóa ứng dụng')}`);
+ $('#mc').onclick=close;$('#mo').onclick=()=>{const a=$('#pinA').value,b=$('#pinB').value;if(old&&a!==old)return toast('PIN hiện tại không đúng');if(!old&&(!/^\\d{4,8}$/.test(a)||a!==b))return toast('PIN phải gồm 4–8 số và trùng khớp');if(old&&b&&!/^\\d{4,8}$/.test(b))return toast('PIN mới không hợp lệ');localStorage.setItem('mdm-app-pin',b||old||a);close();$('#appLockScreen').classList.add('show');$('#unlockPin').value='';};
+}
+$('#unlockApp').onclick=()=>{if($('#unlockPin').value===localStorage.getItem('mdm-app-pin')){$('#appLockScreen').classList.remove('show');$('#pinError').textContent='';}else $('#pinError').textContent='PIN không chính xác';};
+$('#unlockPin').addEventListener('keydown',e=>{if(e.key==='Enter')$('#unlockApp').click();});
+
+/* ================= TOOLBAR ================= */
+document.querySelectorAll('.chip').forEach(c => c.onclick = () => {
+  document.querySelectorAll('.chip').forEach(x => x.classList.remove('on'));
+  c.classList.add('on'); filter = c.dataset.f; render();
+});
+$('#q').addEventListener('input', e => { query = e.target.value; render(); });
+$('#addBtn').onclick = showAdd;
+$('#logBtn').onclick = () => { renderLog(); $('#drawer').classList.toggle('show'); };
+$('#financeBtn').onclick=showFinance; $('#appLockBtn').onclick=setupAppLock;
+$('#drawerX').onclick = () => $('#drawer').classList.remove('show');
+$('#auto').onchange = e => { S.auto = e.target.checked; save(); toast(S.auto ? 'Bật mô phỏng mạng' : 'Tắt mô phỏng mạng'); };
+$('#skip').onclick = () => { S.offset += DAY; save(); tick(true); toast('Đã tua thời gian +1 ngày'); };
+$('#refreshAll').onclick = () => { let n = 0; devices.forEach(d => { if (d.online) { d.lastSeen = T(); n++; } }); render(); toast(`Đã làm mới ${n}/${devices.length} thiết bị (còn lại không phản hồi)`); };
+$('#reset').onclick = () => { try { localStorage.removeItem(KEY); } catch (e) {} seed(); $('#auto').checked = true; render(); renderLog(); toast('Đã đặt lại dữ liệu mẫu'); };
+
+/* ================= SIMULATION TICK ================= */
+let tk = 0;
+function tick(force) {
+  tk++; let ch = !!force;
+  devices.slice().forEach(d => {
+    if (d.forceBackAt && T() >= d.forceBackAt) { d.forceBackAt = 0; d.online = true; d.lastSeen = T(); log(d, 'Thiết bị khởi động lại và online', 'ok'); ch = true; pump(d); }
+    if (!d.expiredLocked && d.expiry <= T()) {
+      d.expiredLocked = true; log(d, 'Gói hết hạn – tự động gửi lệnh khóa', 'warn'); ch = true;
+      if (!d.locked) enqueue(d, 'lock', { msg: 'Gói dịch vụ đã hết hạn. Vui lòng liên hệ cửa hàng để gia hạn.', auto: 1 });
+    }
+    if (d.wiped && d.online && T() - d.wipedAt > 15000) { d.wiped = false; log(d, 'Thiết bị kích hoạt lại và đăng ký MDM lại', 'ok'); ch = true; }
+    if (S.auto && tk % 6 === 0 && !d.running && !d.forceBackAt) {
+      const p = d.online ? 0.03 : (d.queue.length ? 0.35 : 0.12);
+      if (Math.random() < p) {
+        d.online = !d.online;
+        if (d.online) { d.lastSeen = T(); log(d, 'Thiết bị đã online', 'ok'); toast(`${d.name} đã online`); pump(d); }
+        else { d.offlineSince = T(); log(d, 'Thiết bị mất kết nối', 'warn'); }
+        ch = true;
+      }
+    }
+    if (d.online && tk % 10 === 0) { d.lastSeen = T(); ch = true; }
+  });
+  if (ch || tk % 5 === 0) { save(); render(); }
+  else $('#clock').textContent = fmtTime(T());
+}
+
+/* ================= INIT ================= */
+function initDeviceApp(){
+  if (!load()) {
+    if(currentUser && currentUser.role==='tenant') { S={offset:0,auto:true,logs:[],devices:[]}; devices=[]; save(); }
+    else seed();
+  }
+  $('#auto').checked = S.auto;
+  render(); renderLog();
+  devices.forEach(d => pump(d));
+  if (!window.__mdmTickStarted) { setInterval(tick, 1000); window.__mdmTickStarted = true; }
+}
+
+/* Chỉ hạn chế thao tác zoom và phím tắt phổ biến; không thể khóa tuyệt đối DevTools/mã nguồn */
+document.addEventListener('gesturestart',e=>e.preventDefault(),{passive:false});
+document.addEventListener('gesturechange',e=>e.preventDefault(),{passive:false});
+document.addEventListener('gestureend',e=>e.preventDefault(),{passive:false});
+document.addEventListener('touchend',e=>{const n=Date.now();if(n-(window.__lastTouch||0)<300)e.preventDefault();window.__lastTouch=n;},{passive:false});
+document.addEventListener('wheel',e=>{if(e.ctrlKey)e.preventDefault();},{passive:false});
+document.addEventListener('keydown',e=>{if((e.ctrlKey&&['+','=','-','0'].includes(e.key))||e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C'].includes(e.key.toUpperCase()))||(e.ctrlKey&&e.key.toUpperCase()==='U'))e.preventDefault();});
+
+/* =============== AUTH / SUBSCRIPTION DEMO =============== */
+const AUTH_KEY='mdm-local-auth-v1', USER_DATA_PREFIX='mdm-user-devices-';
+const BANK='TCB', BANK_ACC='99999999983868', BANK_NAME='PHAM VAN HOA', ADMIN_PHONE='0869719516';
+const ROOT_USERNAME='admin22122002', ROOT_PASSWORD='22122002@@';
+const BANK_OPTIONS=[['VCB','Vietcombank'],['BIDV','BIDV'],['CTG','VietinBank'],['TCB','Techcombank'],['ACB','ACB'],['MBB','MB Bank'],['VPB','VPBank'],['TPB','TPBank'],['VIB','VIB'],['STB','Sacombank'],['SHB','SHB'],['HDB','HDBank'],['OCB','OCB'],['MSB','MSB'],['EIB','Eximbank'],['LPB','LPBank'],['ABB','ABBank'],['BAB','Bac A Bank'],['BVB','BaoViet Bank'],['CBB','CBBank'],['CIMB','CIMB'],['DBS','DBS'],['GPB','GPBank'],['HLB','Hong Leong'],['IVB','Indovina'],['KLB','KienlongBank'],['NAB','Nam A Bank'],['NCB','NCB'],['PGB','PGBank'],['PBVN','Public Bank Vietnam'],['SCB','SCB'],['SEAB','SeABank'],['SGB','Saigonbank'],['SHBVN','Shinhan'],['UOB','UOB'],['WVN','Woori'],['CAKE','CAKE'],['Ubank','Ubank'],['ViettelMoney','Viettel Money'],['VNPTMoney','VNPT Money']];
+const ZALO_LINK='https://zalo.me/'+ADMIN_PHONE;
+let authDb={users:[],monthlyPrice:0,rootId:null,payment:{bank:'TCB',account:'99999999983868',holder:'PHAM VAN HOA',qrUrl:''}};
+let currentUser=null, authView='login';
+const getAuth=()=>{try{return JSON.parse(localStorage.getItem(AUTH_KEY)||'{}')}catch{return {}}};
+function setAuthDb(){localStorage.setItem(AUTH_KEY,JSON.stringify(authDb))}
+async function passHash(p){const bytes=new TextEncoder().encode(p);const h=await crypto.subtle.digest('SHA-256',bytes);return [...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function fmtRemain(ms){if(ms<=0)return 'Đã hết hạn';let s=Math.floor(ms/1000),d=Math.floor(s/86400);s%=86400;let h=Math.floor(s/3600);s%=3600;let m=Math.floor(s/60);s%=60;return `${d} ngày ${h} giờ ${m} phút ${s} giây`}
+function initAuth(){
+  authDb=getAuth();
+  authDb.payment=authDb.payment||{bank:'TCB',account:'99999999983868',holder:'PHAM VAN HOA',qrUrl:''};
+  if(!authDb.users?.length){const id='root-admin';authDb={users:[{id,username:ROOT_USERNAME,passwordHash:'',role:'admin',status:'active',expiry:0,created:Date.now(),devicesKey:id}],monthlyPrice:0,rootId:id,payment:authDb.payment};}
+  const root=authDb.users.find(u=>u.id===authDb.rootId)||authDb.users.find(u=>u.role==='admin');
+  if(root){authDb.rootId=root.id;root.username=ROOT_USERNAME;root.role='admin';root.status='active';}
+  setAuthDb();
+  renderAuth();
+}
+function authMessage(msg,type='info'){const el=document.querySelector('#authMsg');if(el){el.textContent=msg;el.className='auth-msg';}}
+function renderAuth(){
+  const c=document.querySelector('#authContent'), intro=document.querySelector('#authIntro');
+  if(currentUser && authView!=='admin'){document.body.classList.add('auth-ok');document.querySelector('#authScreen').classList.add('auth-hidden');return;}
+  if(!currentUser)document.body.classList.remove('auth-ok');document.querySelector('#authScreen').classList.remove('auth-hidden');
+  if(!authDb.users.length){const id='root-admin';authDb.users=[{id,username:ROOT_USERNAME,passwordHash:'',role:'admin',status:'active',expiry:0,created:Date.now(),devicesKey:id}];authDb.rootId=id;setAuthDb();}
+  if(authView==='setup'){
+    intro.textContent='Tài khoản Admin gốc mặc định được tạo sẵn.';
+    c.innerHTML=`<div class="auth-msg">Tên đăng nhập Admin: <b>${ROOT_USERNAME}</b><br>Mật khẩu Admin: <b>${ROOT_PASSWORD}</b></div><button class="auth-primary" id="setupBtn">Tiếp tục đăng nhập</button>`;
+    $('#setupBtn').onclick=()=>{authView='login';renderAuth();};
+    return;
+  }
+  if(authView==='register'){
+    intro.textContent='Đăng ký thuê tài khoản. Sau thanh toán cần Admin kích hoạt.';
+    c.innerHTML=`<label>Tên đăng nhập</label><input id="aUser" autocomplete="username"><label>Mật khẩu</label><input id="aPass" type="password" autocomplete="new-password"><label>Nhập lại mật khẩu</label><input id="aPass2" type="password" autocomplete="new-password"><label>Thời hạn thuê</label><select id="aMonths">${Array.from({length:12},(_,i)=>`<option value="${i+1}">${i+1} tháng</option>`).join('')}</select><div id="aPrice" class="auth-msg"></div><button class="auth-primary" id="registerBtn">Đăng ký & hiển thị QR</button><button class="auth-secondary" id="backBtn">Quay lại đăng nhập</button>`;
+    const calc=()=>{let m=+$('#aMonths').value,price=authDb.monthlyPrice||0;$('#aPrice').textContent=price?`Phí ${m} tháng: ${price.toLocaleString('vi-VN')} × ${m} = ${(price*m).toLocaleString('vi-VN')} ₫`:'Admin chưa cài giá thuê/tháng; số tiền chuyển khoản sẽ được ghi là 0. Vui lòng hỏi Admin trước khi chuyển.'};$('#aMonths').onchange=calc;calc();
+    $('#backBtn').onclick=()=>{authView='login';renderAuth()};
+    $('#registerBtn').onclick=async()=>{let u=$('#aUser').value.trim(),p=$('#aPass').value,p2=$('#aPass2').value,m=+$('#aMonths').value;if(!u||p.length<8||p!==p2)return alert('Tên tài khoản cần có, mật khẩu tối thiểu 8 ký tự và nhập lại trùng nhau.');if(authDb.users.some(x=>x.username.toLowerCase()===u.toLowerCase()))return alert('Tên đăng nhập đã tồn tại.');let id='u'+Date.now(),amount=(authDb.monthlyPrice||0)*m;authDb.users.push({id,username:u,passwordHash:await passHash(p),role:'tenant',status:'pending',months:m,amount,expiry:0,created:Date.now(),devicesKey:id,paymentStatus:'pending'});setAuthDb();authView='payment';renderAuth();};
+    return;
+  }
+  if(authView==='payment'){
+    const pending=authDb.users.slice().sort((a,b)=>b.created-a.created).find(x=>x.status==='pending'&&x.paymentStatus==='pending');
+    if(!pending){authView='login';renderAuth();return;}
+    intro.textContent='Đăng ký đã tạo. Chuyển khoản đúng số tiền rồi bấm “Tôi đã thanh toán”.';
+    let amt=pending.amount||0,pay=authDb.payment||{},bankCode=pay.bank||BANK,account=pay.account||BANK_ACC,holder=pay.holder||BANK_NAME,transferText='THUE TK '+pending.username+' '+pending.months+' THANG';
+    let generatedQr=`https://img.vietqr.io/image/${encodeURIComponent(bankCode)}-${encodeURIComponent(account)}-compact2.png?amount=${amt}&addInfo=${encodeURIComponent(transferText)}&accountName=${encodeURIComponent(holder)}`;
+    let qr=pay.qrUrl||generatedQr;
+    c.innerHTML=`<div class="auth-msg"><b>Tài khoản:</b> ${esc(pending.username)}<br><b>Gói:</b> ${pending.months} tháng<br><b>Số tiền:</b> ${amt.toLocaleString('vi-VN')} ₫</div><img class="vqr" src="${esc(qr)}" alt="QR thanh toán"><div class="auth-msg"><b>Ngân hàng:</b> ${esc(bankCode)}<br><b>Số tài khoản:</b> ${esc(account)}<br><b>Chủ tài khoản:</b> ${esc(holder)}<br><b>Nội dung chuyển khoản:</b> ${esc(transferText)}</div><button class="auth-primary" id="paidBtn">Tôi đã thanh toán</button><button class="auth-secondary" id="zaloBtn">Liên hệ Admin qua Zalo</button><button class="auth-secondary" id="backBtn">Quay lại đăng nhập</button>`;
+    $('#paidBtn').onclick=()=>{pending.paymentStatus='reported';pending.reportedAt=Date.now();setAuthDb();c.innerHTML=`<div class="auth-msg">Vui lòng liên hệ Admin: <b>${ADMIN_PHONE}</b> để yêu cầu kích hoạt tài khoản. Chỉ được đăng nhập sau khi Admin xác nhận thanh toán và kích hoạt.</div><button class="auth-primary" id="zaloBtn">Mở Zalo yêu cầu kích hoạt</button><button class="auth-secondary" id="backBtn">Về đăng nhập</button>`;$('#zaloBtn').onclick=()=>window.open(ZALO_LINK,'_blank','noopener');$('#backBtn').onclick=()=>{authView='login';renderAuth();};};
+    $('#zaloBtn').onclick=()=>window.open(ZALO_LINK,'_blank','noopener');$('#backBtn').onclick=()=>{authView='login';renderAuth();};
+    return;
+  }
+  if(authView==='admin'){
+    const list=authDb.users.filter(u=>u.id!==authDb.rootId);
+    intro.textContent='Quản trị tài khoản thuê · Admin';
+    const pay=authDb.payment||{bank:'TCB',account:BANK_ACC,holder:BANK_NAME,qrUrl:''};
+    c.innerHTML=`<h3 style="margin:8px 0">Thiết lập thanh toán (Admin gốc)</h3><div class="auth-msg">Giá thuê mỗi tháng (₫): <input id="monthlyPrice" type="number" min="0" value="${authDb.monthlyPrice||0}" style="max-width:180px;display:inline-block"><button id="priceSave" style="background:#2563eb;color:#fff">Lưu giá</button></div><div class="auth-msg"><label>Ngân hàng</label><select id="payBank">${BANK_OPTIONS.map(([code,name])=>`<option value="${code}" ${pay.bank===code?'selected':''}>${code} · ${name}</option>`).join('')}</select><label>Mã ngân hàng tùy chỉnh (nếu không có trong danh sách)</label><input id="customBank" placeholder="Ví dụ: mã BIN/VietQR" value=""><label>Số tài khoản</label><input id="payAccount" value="${esc(pay.account||'')}"/><label>Tên chủ tài khoản</label><input id="payHolder" value="${esc(pay.holder||'')}"/><label>URL QR tùy chỉnh (để trống dùng QR VietQR tự tạo theo ngân hàng + STK + số tiền + nội dung)</label><input id="payQrUrl" value="${esc(pay.qrUrl||'')}" placeholder="https://.../qr.png"/><button id="paymentSave" class="auth-primary">Lưu thông tin QR thanh toán</button></div><button id="adminAdd" class="auth-primary">＋ Thêm tài khoản thuê</button><div style="overflow:auto"><table class="auth-table"><thead><tr><th>Tài khoản</th><th>Trạng thái</th><th>Gói / thời hạn</th><th>Thanh toán</th><th>Thao tác</th></tr></thead><tbody>${list.map(u=>`<tr><td>${esc(u.username)}</td><td>${u.status==='active'?'Đang hoạt động':u.status==='pending'?'Chờ kích hoạt':u.status==='expired'?'Hết hạn':'Đã khóa'}</td><td>${u.expiry?fmtRemain(u.expiry-Date.now()):u.status==='pending'?'Chưa kích hoạt':'—'}<br>${u.months||0} tháng</td><td>${u.paymentStatus==='reported'?'Khách báo đã thanh toán':u.paymentStatus==='approved'?'Đã xác nhận':'Chưa thanh toán'}</td><td><div class="auth-actions"><button data-act="activate" data-id="${u.id}">Kích hoạt / gia hạn</button><button data-act="edit" data-id="${u.id}">Sửa / đổi mật khẩu</button><button data-act="devices" data-id="${u.id}">Thiết bị</button><button class="danger" data-act="delete" data-id="${u.id}">Xóa</button></div></td></tr>`).join('')}</tbody></table></div><button class="auth-secondary" id="backApp">Về hệ thống</button><button class="auth-secondary" id="logoutBtn">Đăng xuất</button>`;
+    $('#priceSave').onclick=()=>{authDb.monthlyPrice=Math.max(0,+$('#monthlyPrice').value||0);setAuthDb();alert('Đã lưu giá gói/tháng');renderAuth();};
+    $('#paymentSave').onclick=()=>{authDb.payment={bank:$('#customBank').value.trim()||$('#payBank').value,account:$('#payAccount').value.trim(),holder:$('#payHolder').value.trim(),qrUrl:$('#payQrUrl').value.trim()};if(!authDb.payment.account||!authDb.payment.holder)return alert('Cần nhập số tài khoản và tên chủ tài khoản.');setAuthDb();alert('Đã lưu cấu hình thanh toán QR.');renderAuth();};
+    $('#adminAdd').onclick=()=>{authView='register';renderAuth();};
+    $('#backApp').onclick=()=>enterApp(currentUser);$('#logoutBtn').onclick=logout;
+    c.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>adminAction(b.dataset.act,b.dataset.id));
+    return;
+  }
+  intro.textContent='Đăng nhập tài khoản để sử dụng MDM Manager.';
+  c.innerHTML=`<label>Tên đăng nhập</label><input id="aUser" autocomplete="username"><label>Mật khẩu</label><input id="aPass" type="password" autocomplete="current-password"><button class="auth-primary" id="loginBtn">Đăng nhập</button><button class="auth-secondary" id="registerBtn">Đăng ký tài khoản mới</button>`;
+  $('#loginBtn').onclick=async()=>{const u=$('#aUser').value.trim(),p=$('#aPass').value;const found=authDb.users.find(x=>x.username.toLowerCase()===u.toLowerCase());if(found&&found.id===authDb.rootId){if(u!==ROOT_USERNAME||p!==ROOT_PASSWORD)return alert('Sai tên đăng nhập hoặc mật khẩu Admin gốc.');}else if(!found||found.passwordHash!==await passHash(p))return alert('Sai tên đăng nhập hoặc mật khẩu.');if(found.status==='pending')return alert('Tài khoản đang chờ Admin kích hoạt.');if(found.status==='blocked')return alert('Tài khoản đã bị khóa. Vui lòng liên hệ Admin.');if(found.role!=='admin'&&found.expiry<=Date.now())return alert('Gói tài khoản đã hết hạn. Không thể đăng nhập.');enterApp(found);};
+  $('#registerBtn').onclick=()=>{authView='register';renderAuth();};
+}
+function enterApp(user){
+  currentUser=user;
+  document.body.classList.add('auth-ok');$('#authScreen').classList.add('auth-hidden');
+  // Account-isolated storage: tenant owns a separate local demo dataset.
+  window.__oldKey=KEY;window.__userKey=USER_DATA_PREFIX+user.devicesKey;
+  if(user.role==='admin'&&user.id===authDb.rootId&&!localStorage.getItem(window.__userKey)&&localStorage.getItem(window.__oldKey)){
+    localStorage.setItem(window.__userKey,localStorage.getItem(window.__oldKey));
+  }
+  window.KEY=window.__userKey;
+  // Existing const KEY is immutable; redirect its storage calls by temporarily replacing storage methods for app key.
+  const originalGet=localStorage.getItem.bind(localStorage),originalSet=localStorage.setItem.bind(localStorage),originalRemove=localStorage.removeItem.bind(localStorage);
+  localStorage.getItem=(k)=>originalGet(k===window.__oldKey?window.__userKey:k);
+  localStorage.setItem=(k,v)=>originalSet(k===window.__oldKey?window.__userKey:k,v);
+  localStorage.removeItem=(k)=>originalRemove(k===window.__oldKey?window.__userKey:k);
+  initDeviceApp();
+  if(user.role==='admin'){addAdminToolbar();}
+  if(user.role==='tenant'){addTenantInfo();}
+}
+function addAdminToolbar(){
+  const bar=$('.bar');if($('#accountAdminBtn'))return;
+  let b=document.createElement('button');b.className='tbtn';b.id='accountAdminBtn';b.textContent='👥 Quản lý tài khoản';b.onclick=()=>{authView='admin';renderAuth();};bar.insertBefore(b,bar.firstChild);
+  let out=document.createElement('button');out.className='tbtn';out.id='accountLogout';out.textContent='Đăng xuất';out.onclick=logout;bar.append(out);
+}
+function addTenantInfo(){
+  const user=currentUser;let d=document.createElement('div');d.className='stat';d.style.marginBottom='12px';d.id='tenantExpiry';d.innerHTML=`<small>Thời hạn tài khoản</small><b id="tenantTimer" style="font-size:17px">${fmtRemain(user.expiry-Date.now())}</b>`;$('.wrap').prepend(d);
+  setInterval(()=>{if(currentUser&&currentUser.role==='tenant'){let remain=currentUser.expiry-Date.now();$('#tenantTimer').textContent=fmtRemain(remain);if(remain<=0){logout();alert('Tài khoản hết hạn, đăng nhập bị khóa.');}}},1000);
+}
+function logout(){currentUser=null;authView='login';document.body.classList.remove('auth-ok');$('#authScreen').classList.remove('auth-hidden');renderAuth();}
+function adminAction(act,id){
+ const u=authDb.users.find(x=>x.id===id);if(!u)return;
+ if(u.id===authDb.rootId)return alert('Admin gốc được bảo vệ, không thể sửa/xóa bằng quản lý tài khoản thuê.');
+ if(act==='delete'){if(confirm(`Xóa tài khoản ${u.username}?`)){authDb.users=authDb.users.filter(x=>x.id!==id);localStorage.removeItem(USER_DATA_PREFIX+u.devicesKey);setAuthDb();renderAuth();}return;}
+ if(act==='activate'){let m=prompt('Gia hạn bao nhiêu tháng? (1–12)',String(u.months||1));m=Math.max(1,Math.min(12,parseInt(m)||0));if(!m)return;let base=u.expiry>Date.now()?u.expiry:Date.now();u.expiry=base+m*30*86400000;u.months=m;u.status='active';u.paymentStatus='approved';u.activatedAt=Date.now();setAuthDb();renderAuth();return;}
+ if(act==='edit'){let name=prompt('Tên đăng nhập mới:',u.username);if(!name)return;u.username=name;let newp=prompt('Mật khẩu mới (để trống nếu không đổi):');if(newp){if(newp.length<8)return alert('Mật khẩu ít nhất 8 ký tự');passHash(newp).then(h=>{u.passwordHash=h;setAuthDb();renderAuth();});}else{setAuthDb();renderAuth();}return;}
+ if(act==='devices'){alert('Danh sách thiết bị tài khoản này được lưu riêng theo tài khoản trên trình duyệt hiện tại. Bản demo không thể xem thiết bị của người dùng ở máy khác nếu chưa có backend.');}
+}
+function initAuthAndBoot(){initAuth();}
+document.addEventListener('DOMContentLoaded',initAuthAndBoot);
+</script>
+</body>
+</html>

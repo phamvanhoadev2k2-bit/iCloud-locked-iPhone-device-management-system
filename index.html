@@ -1003,9 +1003,10 @@ body.app-in .wrap{animation:appWrap .65s .06s cubic-bezier(.2,.8,.2,1) backwards
 .bklist li.none:hover{background:none}
 .bkok{margin-top:6px;font-size:12px;font-weight:700;color:var(--green)}
 .bkok[hidden]{display:none}
-.ic{width:18px;height:18px;object-fit:contain;vertical-align:-4px;margin-right:2px;flex:none;-webkit-user-drag:none;user-select:none;pointer-events:none}
-h4 .ic{width:22px;height:22px;vertical-align:-5px}
-button:disabled .ic{filter:grayscale(.6);opacity:.7}
+img.ic{width:18px;height:18px;object-fit:contain;vertical-align:-4px;margin-right:2px;flex:none;-webkit-user-drag:none;user-select:none;pointer-events:none}
+h4 img.ic{width:22px;height:22px;vertical-align:-5px}
+button:disabled img.ic{filter:grayscale(.6);opacity:.7}
+.row img.ic{width:18px;height:18px;margin:0 2px 0 0}
 .ic-f{width:22px;height:22px;vertical-align:-6px;margin-right:2px}
 .ic-lg{width:24px;height:24px;vertical-align:-6px}
 .ic-hi{width:30px;height:30px;vertical-align:-8px;margin-left:2px}
@@ -1029,6 +1030,12 @@ button:disabled .ic{filter:grayscale(.6);opacity:.7}
 #wgo.b-ok:hover{background:linear-gradient(180deg,#fff0a8,#ffc21a 55%,#e69a00)!important}
 #wgo.b-ok:active{box-shadow:0 1px 0 #a86a00,0 4px 8px rgba(217,145,0,.45)!important}
 #wgo.b-ok:disabled{filter:grayscale(.5);opacity:.6}
+/* nút mệnh giá nạp tiền: xám */
+.wal-quick button[data-v]{background:#e5e7eb!important;color:#374151!important;border:1px solid #d1d5db!important;box-shadow:0 2px 0 #cbd5e1}
+.wal-quick button[data-v]:hover{background:#d1d5db!important}
+.wal-quick button[data-v]:active{transform:translateY(2px);box-shadow:none}
+html[data-theme=dark] .wal-quick button[data-v]{background:#334155!important;color:#e2e8f0!important;border-color:#475569!important;box-shadow:0 2px 0 #1e293b}
+html[data-theme=dark] .wal-quick button[data-v]:hover{background:#475569!important}
 </style>
 </head>
 <body>
@@ -1090,7 +1097,7 @@ button:disabled .ic{filter:grayscale(.6);opacity:.7}
  <div class="fld"><label for="rg_pw2">Nhập lại mật khẩu</label><div class="pwwrap"><input id="rg_pw2" name="new-password" type="password" autocomplete="new-password"><button type="button" class="pwtoggle" data-for="rg_pw2" title="Hiện/ẩn mật khẩu">Hiện</button></div></div>
  <div class="fld"><label for="rt_months">Thời hạn thuê</label><input type="hidden" id="rt_months" value="1"><div class="terms" id="termList"></div></div>
  <div class="ownerbox"><div class="ob-h"><span class="ob-av">PH</span><div><b>Phạm Văn Hoà Programmer 🇻🇳</b><small>Admin chính chủ · Đã xác minh</small></div><span class="ob-ck"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span></div>
-<div class="ob-r"><span>📞 Zalo / SĐT</span><b>0869 719 516</b><a href="https://zalo.me/0869719516" target="_blank" rel="noopener">Nhắn Zalo</a></div>
+<div class="ob-r"><span><img class="ic" src="https://img.icons8.com/color/48/apple-phone.png" alt="" draggable="false" data-fb="📞" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Zalo / SĐT</span><b>0869 719 516</b><a href="https://zalo.me/0869719516" target="_blank" rel="noopener">Nhắn Zalo</a></div>
 <div class="ob-r"><span>✉ Email</span><b>phamvanhoaprogrammer@gmail.com</b><a href="mailto:phamvanhoaprogrammer@gmail.com">Gửi mail</a></div>
 <small class="ob-n">Chỉ tin thông tin liên hệ chính chủ này. Mọi hỗ trợ đăng ký &amp; duyệt đơn vui lòng liên hệ đúng số/email trên.</small></div>
 <div class="autherr" id="rg_err"></div>
@@ -1185,9 +1192,10 @@ const ICO = {
   basic: 'https://img.icons8.com/cute-clipart/64/user.png',
   maint: 'https://img.icons8.com/glassmorphism/48/work.png',
   restore: 'https://img.icons8.com/avantgarde/100/restart.png',
-  bank: 'https://img.icons8.com/emoji/48/bank-emoji.png'
+  bank: 'https://img.icons8.com/emoji/48/bank-emoji.png',
+  phone: 'https://img.icons8.com/color/48/apple-phone.png'
 };
-const ICO_FB = { icloud: '☁', appstore: '📱', pass: '🔑', loc: '📍', lock: '🔒', user: '👥', money: '💳', trash: '🗑', note: '📄', delmdm: '⊘', dev: '👤', zalo: '💬', mail: '✉', cloud3d: '☁', ok: '✅', hello: '👋', error: '⛔', success: '✅', wallet: '💰', vip: '👑', basic: '📦', maint: '🛠', restore: '♻', bank: '🏦' };
+const ICO_FB = { icloud: '☁', appstore: '📱', pass: '🔑', loc: '📍', lock: '🔒', user: '👥', money: '💳', trash: '🗑', note: '📄', delmdm: '⊘', dev: '👤', zalo: '💬', mail: '✉', cloud3d: '☁', ok: '✅', hello: '👋', error: '⛔', success: '✅', wallet: '💰', vip: '👑', basic: '📦', maint: '🛠', restore: '♻', bank: '🏦', phone: '📞' };
 const ic = (k, c = '') => `<img class="ic ${c}" src="${ICO[k]}" alt="" draggable="false" data-fb="${ICO_FB[k]}" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))">`;
 
 /* ================= LOADER ĐĂNG NHẬP / ĐĂNG XUẤT ================= */
@@ -1358,7 +1366,7 @@ function card(d) {
         </div>
         <div class="row serial">Serial: <b>${esc(d.serial)}</b></div>
         ${d.imei ? `<div class="row serial">IMEI: <b>${esc(d.imei)}</b></div>` : ''}
-        <div class="row"><span class="ic">📞</span>
+        <div class="row">${ic('phone')}
           ${d.phone ? `<b data-a="phone" style="cursor:pointer" title="Sửa SĐT">${esc(d.phone)}</b>` : `<button class="link" data-a="phone">Thêm SĐT khách</button>`}
           <button class="refresh ${refreshing.has(d.id) ? 'spin' : ''}" data-a="refresh">⟳ Làm mới</button>
         </div>
@@ -2103,7 +2111,7 @@ function showAccounts() {
     const q = s === 'processing' ? `<button type="button" class="ib ok" data-q="approved" title="Duyệt">${IC.ok}</button><button type="button" class="ib no" data-q="rejected" title="Từ chối">${IC.no}</button>`
       : s === 'approved' ? `<button type="button" class="ib no" data-q="rejected" title="Từ chối / thu hồi">${IC.no}</button>`
       : `<button type="button" class="ib ok" data-q="approved" title="Duyệt lại">${IC.ok}</button>`;
-    const contact = [u.phone ? '📞 ' + esc(u.phone) : '', u.email ? '✉ ' + esc(u.email) : ''].filter(Boolean).join(' · ') || 'Chưa có SĐT / email';
+    const contact = [u.phone ? ic('phone') + ' ' + esc(u.phone) : '', u.email ? '✉ ' + esc(u.email) : ''].filter(Boolean).join(' · ') || 'Chưa có SĐT / email';
     const when = s === 'approved' && u.expiresAt ? `Hết hạn: ${fmtTime(u.expiresAt)}` : `Đăng ký: ${fmtTime(u.created)}`;
     return `<div class="ar" data-n="${esc(u.name)}">
       <div class="ar-main">${stIcon(s)}

@@ -1006,6 +1006,11 @@ body.app-in .wrap{animation:appWrap .65s .06s cubic-bezier(.2,.8,.2,1) backwards
 .ic{width:18px;height:18px;object-fit:contain;vertical-align:-4px;margin-right:2px;flex:none;-webkit-user-drag:none;user-select:none;pointer-events:none}
 h4 .ic{width:22px;height:22px;vertical-align:-5px}
 button:disabled .ic{filter:grayscale(.6);opacity:.7}
+.ic-f{width:22px;height:22px;vertical-align:-6px;margin-right:2px}
+.ic-lg{width:24px;height:24px;vertical-align:-6px}
+.ic-hi{width:30px;height:30px;vertical-align:-8px;margin-left:2px}
+.nt.error .ni,.nt.success .ni{flex:0 0 32px!important;height:32px!important;border-radius:0!important;background:none!important;box-shadow:none!important}
+.ic-toast{width:32px;height:32px;margin:0;vertical-align:0}
 </style>
 </head>
 <body>
@@ -1029,15 +1034,15 @@ button:disabled .ic{filter:grayscale(.6);opacity:.7}
     <button class="chip" data-f="locked">Đang khóa</button>
     <button class="chip" data-f="expired">Hết hạn</button>
     <span class="sp"></span>
-    <button class="tbtn" id="histBtn">📜 Lịch sử nạp / rút</button><button class="tbtn" id="logBtn">📋 Nhật ký</button><button class="tbtn" id="financeBtn">💳 Quản lý vay</button>
+    <button class="tbtn" id="histBtn">📜 Lịch sử nạp / rút</button><button class="tbtn" id="logBtn">📋 Nhật ký</button><button class="tbtn" id="financeBtn"><img class="ic" src="https://img.icons8.com/3d-fluency/94/money.png" alt="" draggable="false" data-fb="💳" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Quản lý vay</button>
     <button class="tbtn" id="refreshAll">⟳ Làm mới tất cả</button>
-    <button class="tbtn" id="accBtn" style="display:none">👥 Quản lý tài khoản</button><button class="tbtn" id="cfgBtn" style="display:none">⚙ Giá thuê &amp; mã QR</button>
+    <button class="tbtn" id="accBtn" style="display:none"><img class="ic" src="https://img.icons8.com/fluency/48/user-male-circle--v1.png" alt="" draggable="false" data-fb="👥" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Quản lý tài khoản</button><button class="tbtn" id="cfgBtn" style="display:none">⚙ Giá thuê &amp; mã QR</button>
     <button class="tbtn" id="mtBtn" style="display:none">🛠 Bảo trì</button><button class="tbtn" id="rsBtn" style="display:none">♻ Restore hệ thống</button><button class="tbtn main" id="addBtn">＋ Thêm thiết bị</button>
   </div>
   <section class="grid" id="grid"></section>
   <p style="text-align:center;color:var(--muted);font-size:12px;margin-top:22px"><button class="tbtn" id="reset" style="font-size:12px">↺ Đặt lại dữ liệu mẫu</button></p>
 </main>
-<footer class="adminfoot">👤 Admin: <b>Phạm Văn Hoà Programmer</b> 🇻🇳<br>Zalo: <a href="https://zalo.me/0869719516" target="_blank" rel="noopener">0869 719 516</a> · Email: <a href="mailto:phamvanhoaprogrammer@gmail.com">phamvanhoaprogrammer@gmail.com</a><br><a href="#" class="ck-reopen">🍪 Quản lý cookie</a></footer>
+<footer class="adminfoot"><img class="ic ic-f" src="https://img.icons8.com/3d-fluent/100/developer.png" alt="" draggable="false" data-fb="👤" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Admin: <b>Phạm Văn Hoà Programmer</b> 🇻🇳<br><img class="ic ic-f" src="https://img.icons8.com/color/48/zalo.png" alt="" draggable="false" data-fb="💬" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Zalo: <a href="https://zalo.me/0869719516" target="_blank" rel="noopener">0869 719 516</a> · <img class="ic ic-f" src="https://img.icons8.com/fluency/48/new-post.png" alt="" draggable="false" data-fb="✉" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Email: <a href="mailto:phamvanhoaprogrammer@gmail.com">phamvanhoaprogrammer@gmail.com</a><br><a href="#" class="ck-reopen">🍪 Quản lý cookie</a></footer>
 
 <aside class="drawer" id="drawer">
   <header><span>📋 Nhật ký hoạt động</span><button id="drawerX" class="xclose static" aria-label="Đóng" title="Đóng"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
@@ -1086,7 +1091,7 @@ button:disabled .ic{filter:grayscale(.6);opacity:.7}
 </form>
 <div class="lookup" id="lookupBox"><h5>🔎 Tra cứu đơn hàng</h5><div class="lk-row"><input id="lk_code" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Nhập mã đơn (MDM…)"><button type="button" id="lk_btn">Tra cứu</button></div><div id="lk_res"></div></div>
 <p class="authnote">Mật khẩu admin được mã hóa (PBKDF2). Tài khoản thuê do Admin cấp sau khi duyệt.</p>
-<footer class="adminfoot">👤 Admin: <b>Phạm Văn Hoà Programmer</b> 🇻🇳<br>Zalo: <a href="https://zalo.me/0869719516" target="_blank" rel="noopener">0869 719 516</a> · Email: <a href="mailto:phamvanhoaprogrammer@gmail.com">phamvanhoaprogrammer@gmail.com</a><br><a href="#" class="ck-reopen">🍪 Quản lý cookie</a></footer>
+<footer class="adminfoot"><img class="ic ic-f" src="https://img.icons8.com/3d-fluent/100/developer.png" alt="" draggable="false" data-fb="👤" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Admin: <b>Phạm Văn Hoà Programmer</b> 🇻🇳<br><img class="ic ic-f" src="https://img.icons8.com/color/48/zalo.png" alt="" draggable="false" data-fb="💬" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Zalo: <a href="https://zalo.me/0869719516" target="_blank" rel="noopener">0869 719 516</a> · <img class="ic ic-f" src="https://img.icons8.com/fluency/48/new-post.png" alt="" draggable="false" data-fb="✉" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Email: <a href="mailto:phamvanhoaprogrammer@gmail.com">phamvanhoaprogrammer@gmail.com</a><br><a href="#" class="ck-reopen">🍪 Quản lý cookie</a></footer>
 </div></div>
 <div class="cookie" id="cookieBar" role="alertdialog" aria-modal="true" aria-labelledby="ckTitle">
 <div class="ck2">
@@ -1143,10 +1148,24 @@ const ICO = {
   appstore: 'https://img.icons8.com/color/48/apple-app-store--v3.png',
   pass: 'https://img.icons8.com/pulsar-gradient/48/pass.png',
   loc: 'https://img.icons8.com/fluency/48/location--v1.png',
-  lock: 'https://img.icons8.com/color/48/lock-2.png'
+  lock: 'https://img.icons8.com/color/48/lock-2.png',
+  user: 'https://img.icons8.com/fluency/48/user-male-circle--v1.png',
+  money: 'https://img.icons8.com/3d-fluency/94/money.png',
+  trash: 'https://img.icons8.com/liquid-glass/48/filled-trash.png',
+  note: 'https://img.icons8.com/lollipop/48/note.png',
+  delmdm: 'https://img.icons8.com/color/48/delete-forever.png',
+  dev: 'https://img.icons8.com/3d-fluent/100/developer.png',
+  zalo: 'https://img.icons8.com/color/48/zalo.png',
+  mail: 'https://img.icons8.com/fluency/48/new-post.png',
+  cloud3d: 'https://img.icons8.com/3d-fluent/100/cloud--v2.png',
+  ok: 'https://img.icons8.com/3d-fluent/100/ok--v1.png',
+  hello: 'https://img.icons8.com/3d-fluent/100/user--v1.png',
+  error: 'https://img.icons8.com/3d-fluent/100/error.png',
+  success: 'https://img.icons8.com/emoji/48/check-mark-button-emoji.png',
+  wallet: 'https://img.icons8.com/3d-fluency/94/wallet.png'
 };
-const ICO_FB = { icloud: '☁', appstore: '📱', pass: '🔑', loc: '📍', lock: '🔒' };
-const ic = k => `<img class="ic" src="${ICO[k]}" alt="" draggable="false" data-fb="${ICO_FB[k]}" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))">`;
+const ICO_FB = { icloud: '☁', appstore: '📱', pass: '🔑', loc: '📍', lock: '🔒', user: '👥', money: '💳', trash: '🗑', note: '📄', delmdm: '⊘', dev: '👤', zalo: '💬', mail: '✉', cloud3d: '☁', ok: '✅', hello: '👋', error: '⛔', success: '✅', wallet: '💰' };
+const ic = (k, c = '') => `<img class="ic ${c}" src="${ICO[k]}" alt="" draggable="false" data-fb="${ICO_FB[k]}" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))">`;
 
 /* ================= LOADER ĐĂNG NHẬP / ĐĂNG XUẤT ================= */
 const Loader = (() => {
@@ -1266,7 +1285,7 @@ function toast(m, type) {
   let box = document.getElementById('toasts');
   if (!box) { box = document.createElement('div'); box.id = 'toasts'; document.body.appendChild(box); }
   const el = document.createElement('div'); el.className = 'nt ' + type;
-  el.innerHTML = `<div class="ni"><svg viewBox="0 0 24 24">${TI[type][1]}</svg></div><div><b>${TI[type][0]}</b><span class="m">${esc(m)}</span></div><button class="x" aria-label="Đóng">✕</button><i class="pg"></i>`;
+  el.innerHTML = `<div class="ni">${type === 'error' ? ic('error', 'ic-toast') : type === 'success' ? ic('success', 'ic-toast') : `<svg viewBox="0 0 24 24">${TI[type][1]}</svg>`}</div><div><b>${TI[type][0]}</b><span class="m">${esc(m)}</span></div><button class="x" aria-label="Đóng">✕</button><i class="pg"></i>`;
   const kill = () => { el.classList.add('out'); setTimeout(() => el.remove(), 230); };
   el.querySelector('.x').onclick = kill; box.appendChild(el);
   while (box.children.length > 3) box.firstChild.remove();
@@ -1341,10 +1360,10 @@ function card(d) {
       <button class="a red" data-a="icloud">${ic('icloud')} ${d.icloud === 'locked' ? '<span class="dot"></span>' : ''} iCloud</button>
       <button class="a gray" data-a="clearpass">${ic('pass')} Clear Pass</button>
       <button class="a pur" data-a="renew">🕒 Gia hạn</button>
-      <button class="a gray" data-a="detail">📄 Chi tiết</button>
+      <button class="a gray" data-a="detail">${ic('note')} Chi tiết</button>
       <button class="a gray wide" data-a="wipe">🗑 Xóa trắng thiết bị</button>
-      <button class="a gray" data-a="mdm">⊘ Gỡ MDM</button>
-      <button class="a red full" data-a="remove">✕ Xóa thiết bị khỏi hệ thống</button>
+      <button class="a gray" data-a="mdm">${ic('delmdm')} Gỡ MDM</button>
+      <button class="a red full" data-a="remove">${ic('trash')} Xóa thiết bị khỏi hệ thống</button>
     </div>
   </article>`;
 }
@@ -1582,7 +1601,7 @@ function devForm(d = {}) {
     <div><label>MEID (14 ký tự hex)</label><input id="f_meid" maxlength="14" value="${v('meid')}" placeholder="VD: A1000012345678" style="text-transform:uppercase"></div>
     <div><label>SEID</label><input id="f_seid" value="${v('seid')}" placeholder="VD: 040E0A1B2C3D4E5F"></div>
     ${isNew ? '<div><label>Gói dịch vụ</label><select id="f_plan"><option>Thường</option><option>VIP</option></select></div>' : ''}
-    <div class="fsec">Tài khoản iCloud</div>
+    <div class="fsec">${ic('cloud3d', 'ic-lg')} Tài khoản iCloud</div>
     <div><label>Tài khoản</label><input id="f_acc" autocomplete="off" value="${v('icloudAcc')}" placeholder="email hoặc SĐT"></div>
     <div><label>Mật khẩu</label><div class="pw"><input id="f_pw" type="password" autocomplete="new-password" value="${v('icloudPw')}"><button type="button" id="f_pwt" title="Hiện/ẩn mật khẩu">Hiện</button></div></div>
     <div class="fsec">Khoản vay</div>
@@ -1698,7 +1717,7 @@ function showRemove(d) {
 }
 
 function showEdit(d) {
-  modal(`<h4>Sửa thông tin – ${esc(d.name)}</h4>${devForm(d)}${btns('Hủy', 'Lưu')}`, true);
+  modal(`<h4>Sửa thông tin – ${esc(d.name)}</h4>${devForm(d)}${btns('Hủy', ic('ok', 'ic-lg') + ' Lưu')}`, true);
   wireForm(d);
   $('#mc').onclick = () => showDetail(d);
   $('#mo').onclick = () => {
@@ -1790,7 +1809,7 @@ function showFinance(){
  <div class="fin-actions"><button data-pay="${d.id}">＋ Ghi nhận thanh toán</button><button data-black="${d.id}">${d.blacklisted?'Bỏ danh sách đen':'Đưa vào danh sách đen'}</button><button data-detail="${d.id}">Chi tiết</button></div>
  ${(d.payments||[]).length?`<small>Lịch sử: ${d.payments.map(p=>`${p.months} tháng (${fmtDate(p.date)})${p.amount?' · '+fmtMoney(p.amount):''}`).join(' · ')}</small>`:''}</div>`}).join('');
  const blacks=active.filter(d=>d.blacklisted);
- modal(`<h4>💳 Quản lý vay & thanh toán</h4><div class="stats"><div class="stat"><small>Khách vay</small><b>${active.length}</b></div><div class="stat g"><small>Đã đóng</small><b>${active.reduce((a,d)=>a+paid(d),0)} tháng</b></div><div class="stat r"><small>Quá hạn</small><b>${active.filter(late).length}</b></div><div class="stat"><small>Danh sách đen</small><b>${blacks.length}</b></div></div>
+ modal(`<h4>${ic('money')} Quản lý vay & thanh toán</h4><div class="stats"><div class="stat"><small>Khách vay</small><b>${active.length}</b></div><div class="stat g"><small>Đã đóng</small><b>${active.reduce((a,d)=>a+paid(d),0)} tháng</b></div><div class="stat r"><small>Quá hạn</small><b>${active.filter(late).length}</b></div><div class="stat"><small>Danh sách đen</small><b>${blacks.length}</b></div></div>
  <div class="finance-list">${rows||'<p>Chưa có khoản vay nào.</p>'}</div><div class="blacklist"><h4>⛔ Danh sách đen</h4>${blacks.length?blacks.map(d=>`<p>${esc(d.name)} · ${esc(d.phone||'—')}</p>`).join(''):'<p>Chưa có khách trong danh sách đen.</p>'}</div>${btns('Đóng')}`,true);
  $('#mc').onclick=close;
  $('#modal').querySelectorAll('[data-pay]').forEach(b=>b.onclick=()=>{const d=devices.find(x=>x.id==b.dataset.pay);if(!d)return;modal(`<h4>Ghi nhận thanh toán – ${esc(d.name)}</h4><label>Số tháng đã đóng</label><input id="payMonths" type="number" min="1" max="12" value="1"><label>Ngày thanh toán</label><input id="payDate" type="date" value="${ymd(T())}"><label>Số tiền nhận (₫)</label><input id="payAmount" inputmode="numeric" placeholder="Không bắt buộc" value="${hasRent(d)&&paid(d)<(d.loanMonths||1)?rentSum(d,paid(d),1).toLocaleString('vi-VN'):''}">${btns('Hủy','Lưu thanh toán')}`);$('#mc').onclick=showFinance;let amtEdited=false;$('#payAmount').addEventListener('input',e=>{amtEdited=true;const n=e.target.value.replace(/\D/g,'');e.target.value=n?(+n).toLocaleString('vi-VN'):'';});$('#payMonths').addEventListener('input',()=>{if(amtEdited||!hasRent(d))return;const m=Math.max(1,Math.min(12,+$('#payMonths').value||1));const t=rentSum(d,paid(d),m);$('#payAmount').value=t?t.toLocaleString('vi-VN'):'';});$('#mo').onclick=()=>{const months=Math.max(1,Math.min(12,+$('#payMonths').value||1));d.payments=d.payments||[];d.payments.unshift({months,date:parseYmd($('#payDate').value||ymd(T())),amount:+$('#payAmount').value.replace(/\D/g,'')||0});log(d,`Khách thanh toán ${months} tháng`,'ok');save();showFinance();};});
@@ -2065,8 +2084,8 @@ function showAccounts() {
     const when = s === 'approved' && u.expiresAt ? `Hết hạn: ${fmtTime(u.expiresAt)}` : `Đăng ký: ${fmtTime(u.created)}`;
     return `<div class="ar" data-n="${esc(u.name)}">
       <div class="ar-main">${stIcon(s)}
-        <div class="ar-info"><b>${esc(u.name)}</b><small>${esc(u.order || '—')} · ${u.months} tháng · ${fmtMoney(u.price)}</small><small>${contact}</small><small>${when}</small><small class="walline">💰 Số dư: <b>${fmtMoney(u.balance)}</b>${lockTxt(u)}</small></div>
-        <div class="ar-act">${q}<button type="button" class="ib" data-wal title="Ví / nạp tiền">💰</button><button type="button" class="ib ${isLk(u) ? 'no' : ''}" data-lock title="Khoá tài khoản / chức năng">${isLk(u) ? '🔒' : '🔓'}</button><button type="button" class="ib" data-edit title="Chỉnh sửa">${IC.edit}</button><button type="button" class="ib no" data-del title="Xoá">${IC.del}</button></div>
+        <div class="ar-info"><b>${esc(u.name)}</b><small>${esc(u.order || '—')} · ${u.months} tháng · ${fmtMoney(u.price)}</small><small>${contact}</small><small>${when}</small><small class="walline">${ic('wallet')} Số dư: <b>${fmtMoney(u.balance)}</b>${lockTxt(u)}</small></div>
+        <div class="ar-act">${q}<button type="button" class="ib" data-wal title="Ví / nạp tiền">${ic('wallet')}</button><button type="button" class="ib ${isLk(u) ? 'no' : ''}" data-lock title="Khoá tài khoản / chức năng">${isLk(u) ? '🔒' : '🔓'}</button><button type="button" class="ib" data-edit title="Chỉnh sửa">${IC.edit}</button><button type="button" class="ib no" data-del title="Xoá">${IC.del}</button></div>
       </div>
       <div class="ar-edit">
         <div class="g2"><div><label>Tài khoản</label><input class="ac_u" value="${esc(u.name)}"></div><div><label>Mật khẩu</label><input class="ac_p" value="${esc(u.pwPlain || '')}" placeholder="≥8 ký tự, 1 hoa, 1 số"></div>
@@ -2074,7 +2093,7 @@ function showAccounts() {
         <div><label>Trạng thái</label><select class="ac_s">${ST.map(x => `<option value="${x[0]}" ${x[0] === s ? 'selected' : ''}>${x[1]}</option>`).join('')}</select></div><div class="sv"><button type="button" data-save>Lưu thay đổi</button></div></div>
       </div></div>`;
   };
-  modal(`<h4>👥 Quản lý tài khoản</h4><p class="acc-sum">Tổng ${us.length} tài khoản thuê</p>
+  modal(`<h4>${ic('user')} Quản lý tài khoản</h4><p class="acc-sum">Tổng ${us.length} tài khoản thuê</p>
     <details class="acc-root"><summary>🛡 Admin gốc <span class="pill">Quản trị tối cao</span></summary>
       <div class="g3"><div><label>Tài khoản</label><input id="rt_u" value="${esc(rt.name)}"></div><div><label>Mật khẩu mới</label><input id="rt_p" placeholder="Để trống nếu giữ nguyên"></div><div><button class="b-ok" id="rt_save" type="button">Cập nhật</button></div></div>
       <small>Sau khi cập nhật, hệ thống sẽ đăng xuất để bạn đăng nhập lại.</small></details>
@@ -2197,7 +2216,7 @@ function genOrder() {
 function enterApp(name) {
   $('#authScreen').classList.remove('show'); applyRole(name);
   $('#curEmail').textContent = 'Xin chào, ' + name; $('#curUser').textContent = ROLE === 'admin' ? 'Quản trị viên gốc' : 'Tài khoản thuê'; $('#curAvatar').textContent = name.charAt(0).toUpperCase();
-  $('#helloName').textContent = 'Xin chào, ' + name + ' 👋'; $('#helloRole').textContent = ROLE === 'admin' ? 'Quản trị viên gốc' : 'Tài khoản thuê';
+  $('#helloName').innerHTML = esc('Xin chào, ' + name) + ' ' + ic('hello', 'ic-hi'); $('#helloRole').textContent = ROLE === 'admin' ? 'Quản trị viên gốc' : 'Tài khoản thuê';
   $('#helloSub').textContent = new Date().toLocaleDateString(LCODE, { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' }) + ' · Chúc bạn một ngày làm việc hiệu quả';
 }
 function showAuth(tab) {
@@ -2426,13 +2445,13 @@ const walLine = w => `<div class="wl"><div><b class="${w.amt >= 0 ? 'pos' : 'neg
 let lastBal = null;
 function walletRefresh() {
   const c = $('#walletChip'); if (!c || !CUR) return;
-  if (isFree()) { c.className = 'walletchip'; c.innerHTML = `💰 <span>${fmtMoney(myBal())}</span><i>＋</i>`; return; }
+  if (isFree()) { c.className = 'walletchip'; c.innerHTML = `${ic('wallet')} <span>${fmtMoney(myBal())}</span><i>＋</i>`; return; }
   const b = myBal(), low = devFee() > 0 && b < devFee();
-  c.className = 'walletchip' + (low ? ' low' : ''); c.innerHTML = `💰 <span>${fmtMoney(b)}</span><i>＋</i>`;
+  c.className = 'walletchip' + (low ? ' low' : ''); c.innerHTML = `${ic('wallet')} <span>${fmtMoney(b)}</span><i>＋</i>`;
   lastBal = b;
 }
 const walletNote = () => isFree() ? '<div class="walnote ok">👑 Admin gốc: thêm thiết bị <b>miễn phí</b></div>'
-  : `<div class="walnote ${myBal() < devFee() ? 'bad' : ''}">💰 Số dư: <b>${fmtMoney(myBal())}</b> · Phí thêm thiết bị: <b>${devFee() ? fmtMoney(devFee()) : 'Miễn phí'}</b></div>`;
+  : `<div class="walnote ${myBal() < devFee() ? 'bad' : ''}">${ic('wallet')} Số dư: <b>${fmtMoney(myBal())}</b> · Phí thêm thiết bị: <b>${devFee() ? fmtMoney(devFee()) : 'Miễn phí'}</b></div>`;
 function walletGuard() {
   const u = meUser();
   if (!isFree() && u && u.locked) { enforceLock(); return false; }
@@ -2455,7 +2474,7 @@ function showWallet() {
   const u = meUser() || {}, b = +u.balance || 0, fee = isFree() ? 0 : devFee();
   const tops = getTopups().filter(x => x.user === CUR).sort((a, c) => c.t - a.t).slice(0, 8);
   const stTxt = { pending: ['Chờ duyệt', 'wait'], approved: ['Đã cộng', 'ok'], rejected: ['Từ chối', 'no'] };
-  modal(`<h4>💰 Ví của tôi</h4>
+  modal(`<h4>${ic('wallet')} Ví của tôi</h4>
     <div class="wal-card"><small>Số dư khả dụng</small><b>${fmtMoney(b)}</b><span>Phí thêm 1 thiết bị: ${fee ? fmtMoney(fee) : 'Miễn phí'}${fee ? ` · đủ cho ${Math.floor(b / fee)} thiết bị` : ''}</span></div>
     ${(!isFree() && +RC.topupBonus) ? `<div class="walnote ok">🎁 Ưu đãi nạp tiền: <b>tặng thêm +${+RC.topupBonus}%</b> số tiền nạp</div>` : ''}<label>Số tiền muốn nạp (₫)</label><input id="wa" inputmode="numeric" placeholder="Tối thiểu 10.000">
     <div class="wal-quick">${[50000, 100000, 200000, 500000, 1000000].map(v => `<button type="button" data-v="${v}">${(v / 1000).toLocaleString('vi-VN')}k</button>`).join('')}</div>
@@ -2518,7 +2537,7 @@ function decideTopup(id, ok) {
 /* admin: chỉnh số dư tuỳ ý */
 function showWalletAdmin(name) {
   const u = getUsers().find(x => x.name === name); if (!u) return;
-  modal(`<h4>💰 Ví · ${esc(name)}</h4>
+  modal(`<h4>${ic('wallet')} Ví · ${esc(name)}</h4>
     <div class="wal-card"><small>Số dư hiện tại</small><b>${fmtMoney(u.balance)}</b><span>${u.locked ? '🔒 Tài khoản đang bị khoá' : 'Tài khoản đang hoạt động'}</span></div>
     <label>Số tiền (₫)</label><input id="wm" inputmode="numeric" placeholder="VD: 100.000">
     <label>Ghi chú (không bắt buộc)</label><input id="wn" placeholder="VD: Tặng thêm / Hoàn tiền">

@@ -1003,6 +1003,9 @@ body.app-in .wrap{animation:appWrap .65s .06s cubic-bezier(.2,.8,.2,1) backwards
 .bklist li.none:hover{background:none}
 .bkok{margin-top:6px;font-size:12px;font-weight:700;color:var(--green)}
 .bkok[hidden]{display:none}
+.ic{width:18px;height:18px;object-fit:contain;vertical-align:-4px;margin-right:2px;flex:none;-webkit-user-drag:none;user-select:none;pointer-events:none}
+h4 .ic{width:22px;height:22px;vertical-align:-5px}
+button:disabled .ic{filter:grayscale(.6);opacity:.7}
 </style>
 </head>
 <body>
@@ -1133,6 +1136,17 @@ const DAY = 864e5, KEY = 'mdm-sim-v2';
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+/* --- icon chức năng thiết bị --- */
+const ICO = {
+  icloud: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAEYUlEQVR4nO2T+0+VdRzHqX+g1g+trR9yqzbn3NryB1ZLs1qm6US5GggEegDP4SKIiuEFEUUgIlIEhXPn4OGOQOANRyJeknSalivDNC8gejjnec7zPN9zjpxXw6TNrdlWP7Q233/A67XXZ99vSMjT/W+WfdD9gr5L3prWoVzStclSUrOsJu73Xo63KzsT23n+X8Fzjkjv5Bzy3srq8ZLeqbCqXSGlWWGFUyXJoZJoVUdjLf45/wi+sd/zel6f17P2kEJOj8LqLpX0dhV9i0qKU0VXr5BkVUk0Cc/yPb6ZfwssPqvNLT4rfbvtjEctHJTHNg7INzf2aWw4rLGuV2NNl2B1h0ZGi4a+USPVoaGzCpLMgsRaMfBE+M7v1bd3fif5dpyVKTojU3jSS/4Jic++8ZJ/RJDXK1jbLcjpEGS1CNKdAr1DkGL1sdLs49N9PpKfVFF2QRosPS8zJSg4JbNpUCL/uMxkRf5BwfqvBbkHBDktgsxGH+kOH6tsflLMfpJr/cRXPcj4S3jdcGBe+QW3r+y8TPFUwSkvWyYL+mXWH1FY162xplMju02Q1STIdAoyHX4M1gB6c4DUugBJewLmLVt49jG48SdtR+0PWrDiosRkQfGQTNFpmc0DEhv6JXKPSmT3esk6oJDRpqJvUknbr5Lm0MhwCLLsPrImJXUBdFUTxH8+cTWuhDcfwu3DYrH5qqDuimD3RYWyRyfafFImr99Dbt84mYfcGA5IpLZKrGiWSXZ6SXJ4SW1Q0TtUDDaBwezDUBtgxVcTJJQH+aRkYjx8G6+E2IaV45ZHgppLgvJzCoWnZfIGPGQfc5N+2EVal0xyq0RCs0ScUyLWIRNrl0huUNDZFHRWlVSTD12Nn+TK4B+C4iBRhZhC7NdU96TAeEWw95LgiyFBwQkva/skDL0eVnZ6SGhzE9MyToTTRViDi7D6cSLq3cTWS8TbZBLNCol1GvFVPhIqJ1heFiRmR5CIQq5NCpSpgqoLGiVnNDb1e8k+LKHr9hDbNs7SJhcfO+8zzzHGB/Yx3reOscDmYonNTaTFQ7RRJqZGZdkuQdyXAeIeCcK3oobYh7XBqYLK8xpFpxQ2HJMxHPSQ0OkmovU+8xvvMds+ylu2EUKtI4SaR5ltvct8i4uFJjeLayWWVnuJ3K0RU+FnWdkE0duDhBcwFGIbVqMsPwtqr2hUnFMpPKmQe0wmtcfDsg4Xi5rGmOMYYZb9DjOst5huvskM4y3eMI4wx3SPD4wuFuz1sLhaJny3RmSFj+jSB0QXBVlSgO7hS7Jc1cprf5y8v0bBCYU1R2VW9riJanfxUeNdQu23mWH9jWmW67xs+pVpphtMN95mVt0o7xrv8+FeNwurJcJ2qURU+IgsCRC9faIhBJ758y/suahGlQ5ppzcNyNrqoxJJ3eOEtd7jvf2jzLLf5jXLDV40XeM50y+8ZLrOq3U3mbnvDqE1d5lb7WJ+lcSiSq8/rEK7vLT0geEx+NP9p/sd80+co5McrSoAAAAASUVORK5CYII=',
+  appstore: 'https://img.icons8.com/color/48/apple-app-store--v3.png',
+  pass: 'https://img.icons8.com/pulsar-gradient/48/pass.png',
+  loc: 'https://img.icons8.com/fluency/48/location--v1.png',
+  lock: 'https://img.icons8.com/color/48/lock-2.png'
+};
+const ICO_FB = { icloud: '☁', appstore: '📱', pass: '🔑', loc: '📍', lock: '🔒' };
+const ic = k => `<img class="ic" src="${ICO[k]}" alt="" draggable="false" data-fb="${ICO_FB[k]}" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))">`;
 
 /* ================= LOADER ĐĂNG NHẬP / ĐĂNG XUẤT ================= */
 const Loader = (() => {
@@ -1318,14 +1332,14 @@ function card(d) {
       </div>
     </div>
     <div class="acts">
-      <button class="a lock" data-a="lock" ${(d.locked || pending(d, 'lock')) ? 'disabled' : ''}>🔒 Khóa</button>
+      <button class="a lock" data-a="lock" ${(d.locked || pending(d, 'lock')) ? 'disabled' : ''}>${ic('lock')} Khóa</button>
       <button class="a open" data-a="unlock" ${(!d.locked || pending(d, 'unlock')) ? 'disabled' : ''}>🔓 Mở</button>
-      <button class="a pur" data-a="app-lock">📱 ${d.lockedApps && d.lockedApps.length ? `App đã khóa (${d.lockedApps.length})` : 'Khóa app'}</button>
+      <button class="a pur" data-a="app-lock">${ic('appstore')} ${d.lockedApps && d.lockedApps.length ? `App đã khóa (${d.lockedApps.length})` : 'Khóa app'}</button>
       <button class="a warn" data-a="alert">🔔 Cảnh báo</button>
-      <button class="a gray" data-a="locate">📍 Định vị</button>
+      <button class="a gray" data-a="locate">${ic('loc')} Định vị</button>
       <button class="a ${d.bypass ? 'grn' : 'gray'}" data-a="bypass">🛡 Bypass${d.bypass ? ' ✓' : ''}</button>
-      <button class="a red" data-a="icloud">☁ ${d.icloud === 'locked' ? '<span class="dot"></span>' : ''} iCloud</button>
-      <button class="a gray" data-a="clearpass">🔑 Clear Pass</button>
+      <button class="a red" data-a="icloud">${ic('icloud')} ${d.icloud === 'locked' ? '<span class="dot"></span>' : ''} iCloud</button>
+      <button class="a gray" data-a="clearpass">${ic('pass')} Clear Pass</button>
       <button class="a pur" data-a="renew">🕒 Gia hạn</button>
       <button class="a gray" data-a="detail">📄 Chi tiết</button>
       <button class="a gray wide" data-a="wipe">🗑 Xóa trắng thiết bị</button>
@@ -1467,7 +1481,7 @@ function showMap(d) {
   if (!d.loc) { modal(`<h4>Định vị</h4><p>Chưa có dữ liệu vị trí cho thiết bị này.</p>${btns('Đóng')}`); $('#mc').onclick = close; return; }
   const l = d.loc, x = 50 + ((l.lng * 1e4) % 260 + 260) % 260, y = 40 + ((l.lat * 1e4) % 120 + 120) % 120;
   const roads = [[0,50,360,70],[0,120,360,110],[0,180,360,190],[70,0,90,230],[170,0,150,230],[260,0,290,230]].map(r => `<line x1="${r[0]}" y1="${r[1]}" x2="${r[2]}" y2="${r[3]}" stroke="#fff" stroke-width="7"/>`).join('');
-  modal(`<h4>📍 Vị trí ${esc(d.name)}</h4>
+  modal(`<h4>${ic('loc')} Vị trí ${esc(d.name)}</h4>
     <div class="map"><svg viewBox="0 0 360 230" width="100%"><rect width="360" height="230" fill="#dfe8f1"/><rect x="100" y="140" width="50" height="40" fill="#cfe8c9"/><rect x="190" y="20" width="60" height="35" fill="#cfe8c9"/><path d="M0 205 Q120 160 360 215 L360 230 L0 230Z" fill="#b6d7ee"/>${roads}
     <circle cx="${x}" cy="${y}" r="${l.acc / 2 + 10}" fill="rgba(37,99,235,.18)"/><circle cx="${x}" cy="${y}" r="8" fill="#ef4444" stroke="#fff" stroke-width="3"/></svg></div>
     <dl class="kv"><dt>Địa chỉ</dt><dd>${esc(l.addr)}</dd><dt>Tọa độ</dt><dd>${l.lat.toFixed(5)}, ${l.lng.toFixed(5)}</dd><dt>Độ chính xác</dt><dd>±${l.acc} m</dd><dt>Cập nhật</dt><dd>${fmtTime(l.ts)}${d.online ? '' : ' (vị trí cuối – máy đang offline)'}</dd></dl>
@@ -1477,7 +1491,7 @@ function showMap(d) {
 
 function showICloud(d) {
   const lk = d.icloud === 'locked';
-  modal(`<h4>☁ iCloud – ${esc(d.name)}</h4>
+  modal(`<h4>${ic('icloud')} iCloud – ${esc(d.name)}</h4>
     <dl class="kv"><dt>Tìm iPhone</dt><dd>${lk ? '🔴 Đang bật' : '🟢 Đã tắt'}</dd><dt>Activation Lock</dt><dd>${lk ? '🔴 Đang khóa' : '🟢 Không'}</dd><dt>Apple ID</dt><dd>${d.icloudAcc ? esc(d.icloudAcc) : lk ? 'k•••••@icloud.com' : '—'}</dd><dt>Kiểm tra lúc</dt><dd>${fmtTime(T())}</dd></dl>
     <div class="btns"><button class="b-cancel" id="mc">Đóng</button><button class="b-cancel" id="chk">Kiểm tra lại</button>${lk ? '<button class="b-danger" id="rm">Gỡ iCloud</button>' : ''}</div>`);
   $('#mc').onclick = close;

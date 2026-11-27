@@ -1378,6 +1378,33 @@ html[data-theme=dark] .a.gray{color:#c3cfe3}
 .a.lock:disabled,.a.open:disabled{opacity:.7}
 #walletChip i{background:#15803d!important;color:#fff!important}
 </style>
+<style id="usermenu-css">
+.usermenu{position:relative;flex:0 0 auto}
+.menubtn{display:inline-grid;place-items:center;width:38px;height:38px;padding:0!important;border-radius:10px;background:rgba(255,255,255,.1)!important;border:1px solid rgba(255,255,255,.16)!important;color:#fff;cursor:pointer;transition:background .15s}
+.menubtn:hover,.menubtn[aria-expanded=true]{background:rgba(255,255,255,.2)!important}
+.menubtn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.menupop{position:absolute;right:0;top:calc(100% + 10px);z-index:300;min-width:230px;padding:6px;border-radius:14px;background:#fff;color:#0f172a;border:1px solid #e2e8f0;box-shadow:0 18px 40px -10px rgba(15,23,42,.35),0 4px 12px rgba(15,23,42,.12);transform-origin:top right;animation:mpIn .16s ease both}
+.menupop[hidden]{display:none}
+@keyframes mpIn{from{opacity:0;transform:translateY(-6px) scale(.97)}to{opacity:1;transform:none}}
+.mp-head{padding:10px 12px 10px;margin-bottom:4px;border-bottom:1px solid #e2e8f0}
+.mp-head b{display:block;font-size:14px;font-weight:700;color:#0f172a;word-break:break-all}
+.mp-head small{display:block;margin-top:2px;font-size:12px;font-weight:500;color:#475569}
+.mp-item{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:9px;background:transparent!important;border:0!important;box-shadow:none!important;color:#1e293b!important;font-size:14px;font-weight:600;text-align:left;cursor:pointer}
+.mp-item svg{width:18px;height:18px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mp-item:hover,.mp-item:focus-visible{background:#f1f5f9!important;outline:none}
+.mp-item.danger{color:#b91c1c!important}
+.mp-item.danger:hover,.mp-item.danger:focus-visible{background:#fef2f2!important}
+html[data-theme=dark] .menupop{background:#152033;color:#e6edf7;border-color:#2a3850;box-shadow:0 18px 40px -10px rgba(0,0,0,.7)}
+html[data-theme=dark] .mp-head{border-bottom-color:#2a3850}
+html[data-theme=dark] .mp-head b{color:#e6edf7}
+html[data-theme=dark] .mp-head small{color:#a9b8d0}
+html[data-theme=dark] .mp-item{color:#dbe5f5!important}
+html[data-theme=dark] .mp-item:hover,html[data-theme=dark] .mp-item:focus-visible{background:#1f2e47!important}
+html[data-theme=dark] .mp-item.danger{color:#fca5a5!important}
+html[data-theme=dark] .mp-item.danger:hover,html[data-theme=dark] .mp-item.danger:focus-visible{background:rgba(220,38,38,.18)!important}
+@media(max-width:560px){.menupop{min-width:210px}}
+@media(prefers-reduced-motion:reduce){.menupop{animation:none}}
+</style>
 </head>
 <body>
 
@@ -1387,7 +1414,7 @@ html[data-theme=dark] .a.gray{color:#c3cfe3}
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="q" placeholder="Tìm tên, serial, IMEI, số điện thoại...">
   </div>
-  <div class="user"><span id="rentClock" class="mini" style="display:none;background:#fef3c7;color:#92400e;padding:4px 9px;font-size:12px"></span><span id="clock"></span><button type="button" class="walletchip" id="walletChip" title="Ví của tôi"></button><div class="who"><b id="curEmail">phamvanhoaprogrammer@gmail.com</b><small id="curUser">—</small></div><div class="avatar" id="curAvatar">P</div><button class="logout" id="logoutBtn" title="Đăng xuất"><svg viewBox="0 0 24 24"><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3"/><path d="m16 8 4 4-4 4M20 12H9"/></svg> <span>Đăng xuất</span></button></div>
+  <div class="user"><span id="rentClock" class="mini" style="display:none;background:#fef3c7;color:#92400e;padding:4px 9px;font-size:12px"></span><span id="clock"></span><button type="button" class="walletchip" id="walletChip" title="Ví của tôi"></button><div class="who"><b id="curEmail">phamvanhoaprogrammer@gmail.com</b><small id="curUser">—</small></div><div class="avatar" id="curAvatar">P</div><div class="usermenu" id="userMenu"><button type="button" class="menubtn" id="menuBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="menuPop" title="Menu tài khoản"><svg viewBox="0 0 24 24"><path d="M4 6.5h16M4 12h16M4 17.5h16"/></svg></button><div class="menupop" id="menuPop" role="menu" hidden><div class="mp-head"><b id="mpName">—</b><small id="mpRole">—</small></div><button type="button" class="mp-item" id="switchBtn" role="menuitem"><svg viewBox="0 0 24 24"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg><span>Chuyển tài khoản</span></button><button type="button" class="mp-item danger" id="logoutBtn" role="menuitem" title="Đăng xuất"><svg viewBox="0 0 24 24"><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3"/><path d="m16 8 4 4-4 4M20 12H9"/></svg><span>Đăng xuất</span></button></div></div></div>
 </header>
 
 <main class="wrap">
@@ -2752,6 +2779,19 @@ $('#loginForm').addEventListener('submit', async e => {
 $('#logoutBtn').onclick = () => {
   doLogout('Đã đăng xuất khỏi hệ thống');
 };
+(function () {
+  const btn = $('#menuBtn'), pop = $('#menuPop'); if (!btn || !pop) return;
+  const close = () => { pop.hidden = true; btn.setAttribute('aria-expanded', 'false'); };
+  const open = () => {
+    $('#mpName').textContent = ($('#curEmail').textContent || '').replace(/^Xin chào,\s*/, '') || '—';
+    $('#mpRole').textContent = $('#curUser').textContent || '';
+    pop.hidden = false; btn.setAttribute('aria-expanded', 'true');
+  };
+  btn.addEventListener('click', e => { e.stopPropagation(); pop.hidden ? open() : close(); });
+  document.addEventListener('click', e => { if (!pop.hidden && !e.target.closest('#userMenu')) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !pop.hidden) { close(); btn.focus(); } });
+  $('#switchBtn').onclick = () => { close(); doLogout('Hãy đăng nhập bằng tài khoản khác'); };
+})();
 async function resetRootOnce() {
   try { if (localStorage.getItem('mdm-root-reset-2')) return; } catch (e) {}
   let us = getUsers(); const r = us.find(x => x.root);

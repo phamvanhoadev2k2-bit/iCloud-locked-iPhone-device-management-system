@@ -307,7 +307,7 @@ body{font-family:Inter,'Segoe UI',system-ui,-apple-system,Roboto,sans-serif}
 #payOv{background:rgba(15,23,42,.68);backdrop-filter:blur(4px)}
 .modal.pay{max-width:460px;padding:0;border-radius:22px}
 .pay-h{display:flex;gap:12px;align-items:center;padding:18px 22px;background:linear-gradient(120deg,#1d4ed8,#4f46e5);color:#fff}
-.pay-h h4{margin:0;font-size:17px}.pay-h p{margin:2px 0 0;font-size:12px;color:#dbeafe}
+.pay-h h4{margin:0;font-size:17px;color:#fff}.pay-h p{margin:2px 0 0;font-size:12px;color:#dbeafe}
 .pay-ic{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.18);display:grid;place-items:center}
 .pay-ic svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .pay-amt{text-align:center;padding:16px 22px 4px}.pay-amt small{color:#64748b;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.6px}
@@ -1036,6 +1036,107 @@ button:disabled img.ic{filter:grayscale(.6);opacity:.7}
 .wal-quick button[data-v]:active{transform:translateY(2px);box-shadow:none}
 html[data-theme=dark] .wal-quick button[data-v]{background:#334155!important;color:#e2e8f0!important;border-color:#475569!important;box-shadow:0 2px 0 #1e293b}
 html[data-theme=dark] .wal-quick button[data-v]:hover{background:#475569!important}
+/* ===== Khung thanh toán VietQR ===== */
+.vq{padding:0 18px}
+.vq-card{margin-top:14px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px 16px 6px;color:#111827;box-shadow:0 6px 18px rgba(15,23,42,.08)}
+.vq-logo{text-align:center;font-weight:900;font-style:italic;letter-spacing:-.6px;font-size:21px;color:#1e3a8a;line-height:1}
+.vq-card .vq-logo b{display:inline;color:#e11d48;font-size:27px;margin-right:1px}
+.vq-qrrow{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:10px 0 6px}
+.vq-act{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none!important;color:#4b5563!important;font-size:11px;font-weight:800;padding:8px 2px;border-radius:10px;box-shadow:none!important}
+.vq-act:hover{background:#f3f4f6!important}
+.vq-act svg{width:24px;height:24px;fill:none;stroke:#4b5563;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.vq-qr{flex:0 0 auto;width:min(190px,52vw);aspect-ratio:1/1;border:1px solid #cbd5e1;padding:4px;background:#fff}
+.vq-qr img{display:block;width:100%;height:100%;object-fit:contain;background:#f8fafc}
+.vq-qr .qr-fail{height:100%}
+.vq-partners{display:flex;align-items:center;justify-content:center;gap:10px;font-size:11px;margin:6px 0 10px}
+.vq-napas{font-weight:900;font-style:italic;color:#1d4ed8;letter-spacing:-.3px}.vq-napas em{color:#f97316}
+.vq-sep{width:1px;height:16px;background:#cbd5e1}.vq-bn{font-weight:900;color:#1d4ed8;letter-spacing:.3px}
+.vq-bank{display:flex;align-items:center;gap:10px;padding:8px 0 10px;border-bottom:1px solid #f1f5f9}
+.vq-bl{flex:0 0 36px;width:36px;height:36px;border-radius:50%;border:1.5px solid #0d9488;background:#fff;display:grid;place-items:center;overflow:hidden;font-size:9px;font-weight:900;color:#0d9488}
+.vq-bl img{width:100%;height:100%;object-fit:contain;padding:4px}
+.vq-card small{display:block;font-size:12.5px;color:#6b7280;font-weight:500}
+.vq-card b{display:block;font-size:14.5px;color:#111827;font-weight:800;word-break:break-word}
+.vq-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #f1f5f9}
+.vq-row:last-child{border:0}
+.vq-row.hl b{color:#15803d;letter-spacing:.3px}
+.vq-row .cp,.vq-card .cp{background:#eceff1;color:#4b5563;font-size:11.5px;font-weight:700;padding:6px 10px;border-radius:6px;flex:none}
+.vq-card .cp.done{background:#dcfce7;color:#15803d}
+.vq-timer{display:flex;align-items:center;justify-content:center;gap:12px;margin:12px 18px 0;color:#64748b;font-size:12px;font-weight:700}
+.vq-timer .ring{width:62px;height:62px}.vq-timer .ring circle{stroke-width:7}
+.vq-timer .ring span{inset:11px;font-size:12.5px;letter-spacing:0}
+.vq-btns{display:flex;gap:10px;margin:14px 18px 22px}
+.vq-btns button{padding:13px 10px;border-radius:6px;font-weight:800;font-size:12.5px;letter-spacing:.4px;text-transform:uppercase;transition:filter .15s,transform .1s}
+.vq-no{flex:0 0 34%;background:#d1d5db!important;color:#4b5563!important}
+.vq-ok{flex:1;background:#16a34a!important;color:#fff!important;box-shadow:0 6px 14px rgba(22,163,74,.3)}
+.vq-btns button:hover{filter:brightness(.96)}.vq-btns button:active{transform:translateY(1px)}
+html[data-theme=dark] .vq-timer{color:#9fb0c9}
+@media(max-width:420px){.vq{padding:0 12px}.vq-btns,.vq-timer{margin-left:12px;margin-right:12px}}
+/* thẻ kết quả: mọi giá trị thẳng hàng bên phải; nút Sao chép nằm cạnh nhãn */
+.od div{align-items:center}
+.od div span{order:0;flex:none}
+.od div .cp{order:1;margin-left:8px!important;align-self:center}
+.od div b{order:2;margin-left:auto;text-align:right;min-width:0}
+.pay-done h4{padding:0!important;margin-left:0!important;margin-right:0!important;text-align:center;width:100%}
+.pay-done .st{display:table;margin-left:auto;margin-right:auto}
+.ic-av{width:100%;height:100%;margin:0;padding:2px;vertical-align:0;object-fit:contain}
+#curAvatar{overflow:hidden}
+.ic-f,img.ic,.ic-toast,.ic-lang{image-rendering:auto;-webkit-backface-visibility:hidden;backface-visibility:hidden;transform:translateZ(0)}
+@media (max-width:640px),(pointer:coarse){
+  img.ic{width:20px;height:20px}
+  h4 img.ic{width:26px;height:26px}
+  .row img.ic{width:20px;height:20px}
+  .ic-lg{width:26px;height:26px}.ic-f{width:24px;height:24px}.ic-hi{width:32px;height:32px}
+  .ic-toast{width:34px;height:34px}.ic-lang{width:24px;height:24px}
+  .tag img.ic{width:18px;height:18px}
+}
+#addBtn img.ic{width:22px;height:22px;margin-right:4px;vertical-align:-6px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+.chip img.ic{width:20px;height:20px;margin-right:2px;vertical-align:-5px}
+/* nút lọc trạng thái màu riêng */
+.chip[data-f=online]{background:linear-gradient(180deg,#34d399,#16a34a)!important;color:#fff!important;border-color:transparent!important;opacity:.9;box-shadow:0 2px 6px rgba(22,163,74,.38)!important}
+.chip[data-f=online]:hover{opacity:1}
+.chip[data-f=online].on{opacity:1;box-shadow:0 0 0 3px rgba(22,163,74,.38),0 6px 14px -4px rgba(22,163,74,.38)!important;transform:translateY(-1px)}
+.chip[data-f=offline]{background:linear-gradient(180deg,#f87171,#dc2626)!important;color:#fff!important;border-color:transparent!important;opacity:.9;box-shadow:0 2px 6px rgba(220,38,38,.38)!important}
+.chip[data-f=offline]:hover{opacity:1}
+.chip[data-f=offline].on{opacity:1;box-shadow:0 0 0 3px rgba(220,38,38,.38),0 6px 14px -4px rgba(220,38,38,.38)!important;transform:translateY(-1px)}
+.chip[data-f=locked]{background:linear-gradient(180deg,#fb923c,#ea580c)!important;color:#fff!important;border-color:transparent!important;opacity:.9;box-shadow:0 2px 6px rgba(234,88,12,.38)!important}
+.chip[data-f=locked]:hover{opacity:1}
+.chip[data-f=locked].on{opacity:1;box-shadow:0 0 0 3px rgba(234,88,12,.38),0 6px 14px -4px rgba(234,88,12,.38)!important;transform:translateY(-1px)}
+.chip[data-f=expired]{background:linear-gradient(180deg,#ef4444,#b91c1c)!important;color:#fff!important;border-color:transparent!important;opacity:.9;box-shadow:0 2px 6px rgba(185,28,28,.38)!important}
+.chip[data-f=expired]:hover{opacity:1}
+.chip[data-f=expired].on{opacity:1;box-shadow:0 0 0 3px rgba(185,28,28,.38),0 6px 14px -4px rgba(185,28,28,.38)!important;transform:translateY(-1px)}
+/* nút Bảo trì / Restore hệ thống: nền trắng */
+html #mtBtn.tbtn,html #rsBtn.tbtn{background:#fff!important;color:#1e293b!important;border:1px solid #e2e8f0!important;backdrop-filter:none!important;box-shadow:0 2px 8px rgba(15,23,42,.18)!important}
+html #mtBtn.tbtn:hover,html #rsBtn.tbtn:hover{background:#f8fafc!important}
+/* màu riêng cho các nút thanh công cụ */
+html #histBtn.tbtn,html #logBtn.tbtn,html #cfgBtn.tbtn{background:#fff!important;color:#1e293b!important;border:1px solid #e2e8f0!important;backdrop-filter:none!important;box-shadow:0 2px 8px rgba(15,23,42,.18)!important}
+html #histBtn.tbtn:hover,html #logBtn.tbtn:hover,html #cfgBtn.tbtn:hover{background:#f8fafc!important}
+html #financeBtn.tbtn{background:linear-gradient(180deg,#a78bfa,#7c3aed)!important;color:#fff!important;border:0!important;backdrop-filter:none!important;box-shadow:0 3px 0 #5b21b6,0 8px 14px -4px rgba(124,58,237,.55),0 1px 0 rgba(255,255,255,.4) inset!important;text-shadow:0 1px 0 rgba(0,0,0,.12)}
+html #financeBtn.tbtn:hover{filter:brightness(1.06)}
+html #financeBtn.tbtn:active{transform:translateY(2px);box-shadow:0 1px 0 #5b21b6!important}
+html #refreshAll.tbtn{background:linear-gradient(180deg,#fde047,#f59e0b)!important;color:#4a2800!important;border:0!important;backdrop-filter:none!important;box-shadow:0 3px 0 #b45309,0 8px 14px -4px rgba(245,158,11,.55),0 1px 0 rgba(255,255,255,.4) inset!important;text-shadow:0 1px 0 rgba(0,0,0,.12)}
+html #refreshAll.tbtn:hover{filter:brightness(1.06)}
+html #refreshAll.tbtn:active{transform:translateY(2px);box-shadow:0 1px 0 #b45309!important}
+html #accBtn.tbtn{background:linear-gradient(180deg,#fb923c,#ea580c)!important;color:#fff!important;border:0!important;backdrop-filter:none!important;box-shadow:0 3px 0 #9a3412,0 8px 14px -4px rgba(234,88,12,.55),0 1px 0 rgba(255,255,255,.4) inset!important;text-shadow:0 1px 0 rgba(0,0,0,.12)}
+html #accBtn.tbtn:hover{filter:brightness(1.06)}
+html #accBtn.tbtn:active{transform:translateY(2px);box-shadow:0 1px 0 #9a3412!important}
+/* căn icon cân đối trong nút */
+.tbtn{display:inline-flex;align-items:center;justify-content:center;gap:7px;line-height:1.15}
+.tbtn img.ic{margin:0!important;vertical-align:0!important;width:20px;height:20px}
+#addBtn.tbtn{gap:9px;padding-top:9px;padding-bottom:9px}
+#addBtn img.ic{width:24px;height:24px;margin:-2px 0!important;filter:drop-shadow(0 1px 1px rgba(0,0,0,.28))}
+@media (max-width:640px),(pointer:coarse){.tbtn img.ic{width:22px;height:22px}#addBtn img.ic{width:26px;height:26px}}
+/* nhật ký hệ thống: nền tối, chữ màu theo mức độ */
+.loglist{background:#0b1220;color:#f8fafc;border-radius:12px;padding:4px 12px!important}
+.drawer .loglist{margin:10px 14px 14px;border-radius:14px}
+.loglist div{border-bottom:1px solid rgba(148,163,184,.18)!important}
+.loglist div:last-child{border-bottom:0!important}
+.loglist time{color:#94a3b8!important}
+.loglist span{color:#f8fafc}.loglist b{color:inherit}
+.loglist span.lc-red{color:#f87171}
+.loglist span.lc-white{color:#f8fafc}
+.loglist span.lc-blue{color:#60a5fa}\n.loglist span.lc-green{color:#60a5fa}
+.loglist span.lc-orange{color:#fb923c}
+.loglist span.lc-yellow{color:#facc15}
 </style>
 </head>
 <body>
@@ -1053,24 +1154,24 @@ html[data-theme=dark] .wal-quick button[data-v]:hover{background:#475569!importa
   <div class="hello"><div><h2 id="helloName">Xin chào</h2><p id="helloSub"></p></div><span class="badge" id="helloRole"></span></div>
   <section class="stats" id="stats"></section>
   <div class="bar">
-    <button class="chip on" data-f="all">Tất cả</button>
+    <button class="chip on" data-f="all"><img class="ic" src="https://img.icons8.com/glassmorphism/96/check-all.png" alt="" decoding="async" draggable="false" data-fb="✔" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Tất cả</button>
     <button class="chip" data-f="online">Online</button>
     <button class="chip" data-f="offline">Offline</button>
     <button class="chip" data-f="locked">Đang khóa</button>
     <button class="chip" data-f="expired">Hết hạn</button>
     <span class="sp"></span>
-    <button class="tbtn" id="histBtn">📜 Lịch sử nạp / rút</button><button class="tbtn" id="logBtn">📋 Nhật ký</button><button class="tbtn" id="financeBtn"><img class="ic" src="https://img.icons8.com/3d-fluency/94/money.png" alt="" draggable="false" data-fb="💳" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Quản lý vay</button>
+    <button class="tbtn" id="histBtn">📜 Lịch sử nạp / rút</button><button class="tbtn" id="logBtn"><img class="ic" src="https://img.icons8.com/glassmorphism/96/opened-folder.png" alt="" decoding="async" draggable="false" data-fb="📋" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Nhật ký</button><button class="tbtn" id="financeBtn"><img class="ic" src="https://img.icons8.com/3d-fluency/96/money.png" alt="" draggable="false" data-fb="💳" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Quản lý vay</button>
     <button class="tbtn" id="refreshAll">⟳ Làm mới tất cả</button>
-    <button class="tbtn" id="accBtn" style="display:none"><img class="ic" src="https://img.icons8.com/fluency/48/user-male-circle--v1.png" alt="" draggable="false" data-fb="👥" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Quản lý tài khoản</button><button class="tbtn" id="cfgBtn" style="display:none">⚙ Giá thuê &amp; mã QR</button>
-    <button class="tbtn" id="mtBtn" style="display:none"><img class="ic" src="https://img.icons8.com/glassmorphism/48/work.png" alt="" draggable="false" data-fb="🛠" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Bảo trì</button><button class="tbtn" id="rsBtn" style="display:none"><img class="ic" src="https://img.icons8.com/avantgarde/100/restart.png" alt="" draggable="false" data-fb="♻" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Restore hệ thống</button><button class="tbtn main" id="addBtn">＋ Thêm thiết bị</button>
+    <button class="tbtn" id="accBtn" style="display:none"><img class="ic" src="https://img.icons8.com/fluency/96/user-male-circle--v1.png" alt="" draggable="false" data-fb="👥" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Quản lý tài khoản</button><button class="tbtn" id="cfgBtn" style="display:none">⚙ Giá thuê &amp; mã QR</button>
+    <button class="tbtn" id="mtBtn" style="display:none"><img class="ic" src="https://img.icons8.com/glassmorphism/96/work.png" alt="" draggable="false" data-fb="🛠" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Bảo trì</button><button class="tbtn" id="rsBtn" style="display:none"><img class="ic" src="https://img.icons8.com/avantgarde/100/restart.png" alt="" draggable="false" data-fb="♻" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Restore hệ thống</button><button class="tbtn main" id="addBtn"><img class="ic" src="https://img.icons8.com/3d-fluency/96/plus.png" alt="" decoding="async" draggable="false" data-fb="＋" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Thêm thiết bị</button>
   </div>
   <section class="grid" id="grid"></section>
   <p style="text-align:center;color:var(--muted);font-size:12px;margin-top:22px"><button class="tbtn" id="reset" style="font-size:12px">↺ Đặt lại dữ liệu mẫu</button></p>
 </main>
-<footer class="adminfoot"><img class="ic ic-f" src="https://img.icons8.com/3d-fluent/100/developer.png" alt="" draggable="false" data-fb="👤" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Admin: <b>Phạm Văn Hoà Programmer</b> 🇻🇳<br><img class="ic ic-f" src="https://img.icons8.com/color/48/zalo.png" alt="" draggable="false" data-fb="💬" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Zalo: <a href="https://zalo.me/0869719516" target="_blank" rel="noopener">0869 719 516</a> · <img class="ic ic-f" src="https://img.icons8.com/fluency/48/new-post.png" alt="" draggable="false" data-fb="✉" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Email: <a href="mailto:phamvanhoaprogrammer@gmail.com">phamvanhoaprogrammer@gmail.com</a><br><a href="#" class="ck-reopen">🍪 Quản lý cookie</a></footer>
+<footer class="adminfoot"><img class="ic ic-f" src="https://img.icons8.com/3d-fluent/100/developer.png" alt="" draggable="false" data-fb="👤" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Admin: <b>Phạm Văn Hoà Programmer</b> 🇻🇳<br><img class="ic ic-f" src="https://img.icons8.com/color/96/zalo.png" alt="" draggable="false" data-fb="💬" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Zalo: <a href="https://zalo.me/0869719516" target="_blank" rel="noopener">0869 719 516</a> · <img class="ic ic-f" src="https://img.icons8.com/fluency/96/new-post.png" alt="" draggable="false" data-fb="✉" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Email: <a href="mailto:phamvanhoaprogrammer@gmail.com">phamvanhoaprogrammer@gmail.com</a><br><a href="#" class="ck-reopen">🍪 Quản lý cookie</a></footer>
 
 <aside class="drawer" id="drawer">
-  <header><span>📋 Nhật ký hoạt động</span><button id="drawerX" class="xclose static" aria-label="Đóng" title="Đóng"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
+  <header><span><img class="ic" src="https://img.icons8.com/glassmorphism/96/opened-folder.png" alt="" decoding="async" draggable="false" data-fb="📋" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Nhật ký hoạt động</span><button id="drawerX" class="xclose static" aria-label="Đóng" title="Đóng"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
   <div class="loglist" id="gLog"></div>
 </aside>
 <div class="ov" id="ov"><div class="modal" id="modal"></div></div>
@@ -1097,7 +1198,7 @@ html[data-theme=dark] .wal-quick button[data-v]:hover{background:#475569!importa
  <div class="fld"><label for="rg_pw2">Nhập lại mật khẩu</label><div class="pwwrap"><input id="rg_pw2" name="new-password" type="password" autocomplete="new-password"><button type="button" class="pwtoggle" data-for="rg_pw2" title="Hiện/ẩn mật khẩu">Hiện</button></div></div>
  <div class="fld"><label for="rt_months">Thời hạn thuê</label><input type="hidden" id="rt_months" value="1"><div class="terms" id="termList"></div></div>
  <div class="ownerbox"><div class="ob-h"><span class="ob-av">PH</span><div><b>Phạm Văn Hoà Programmer 🇻🇳</b><small>Admin chính chủ · Đã xác minh</small></div><span class="ob-ck"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span></div>
-<div class="ob-r"><span><img class="ic" src="https://img.icons8.com/color/48/apple-phone.png" alt="" draggable="false" data-fb="📞" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Zalo / SĐT</span><b>0869 719 516</b><a href="https://zalo.me/0869719516" target="_blank" rel="noopener">Nhắn Zalo</a></div>
+<div class="ob-r"><span><img class="ic" src="https://img.icons8.com/color/96/apple-phone.png" alt="" draggable="false" data-fb="📞" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Zalo / SĐT</span><b>0869 719 516</b><a href="https://zalo.me/0869719516" target="_blank" rel="noopener">Nhắn Zalo</a></div>
 <div class="ob-r"><span>✉ Email</span><b>phamvanhoaprogrammer@gmail.com</b><a href="mailto:phamvanhoaprogrammer@gmail.com">Gửi mail</a></div>
 <small class="ob-n">Chỉ tin thông tin liên hệ chính chủ này. Mọi hỗ trợ đăng ký &amp; duyệt đơn vui lòng liên hệ đúng số/email trên.</small></div>
 <div class="autherr" id="rg_err"></div>
@@ -1116,7 +1217,7 @@ html[data-theme=dark] .wal-quick button[data-v]:hover{background:#475569!importa
 </form>
 <div class="lookup" id="lookupBox"><h5>🔎 Tra cứu đơn hàng</h5><div class="lk-row"><input id="lk_code" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Nhập mã đơn (MDM…)"><button type="button" id="lk_btn">Tra cứu</button></div><div id="lk_res"></div></div>
 <p class="authnote">Mật khẩu admin được mã hóa (PBKDF2). Tài khoản thuê do Admin cấp sau khi duyệt.</p>
-<footer class="adminfoot"><img class="ic ic-f" src="https://img.icons8.com/3d-fluent/100/developer.png" alt="" draggable="false" data-fb="👤" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Admin: <b>Phạm Văn Hoà Programmer</b> 🇻🇳<br><img class="ic ic-f" src="https://img.icons8.com/color/48/zalo.png" alt="" draggable="false" data-fb="💬" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Zalo: <a href="https://zalo.me/0869719516" target="_blank" rel="noopener">0869 719 516</a> · <img class="ic ic-f" src="https://img.icons8.com/fluency/48/new-post.png" alt="" draggable="false" data-fb="✉" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Email: <a href="mailto:phamvanhoaprogrammer@gmail.com">phamvanhoaprogrammer@gmail.com</a><br><a href="#" class="ck-reopen">🍪 Quản lý cookie</a></footer>
+<footer class="adminfoot"><img class="ic ic-f" src="https://img.icons8.com/3d-fluent/100/developer.png" alt="" draggable="false" data-fb="👤" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Admin: <b>Phạm Văn Hoà Programmer</b> 🇻🇳<br><img class="ic ic-f" src="https://img.icons8.com/color/96/zalo.png" alt="" draggable="false" data-fb="💬" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Zalo: <a href="https://zalo.me/0869719516" target="_blank" rel="noopener">0869 719 516</a> · <img class="ic ic-f" src="https://img.icons8.com/fluency/96/new-post.png" alt="" draggable="false" data-fb="✉" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"> Email: <a href="mailto:phamvanhoaprogrammer@gmail.com">phamvanhoaprogrammer@gmail.com</a><br><a href="#" class="ck-reopen">🍪 Quản lý cookie</a></footer>
 </div></div>
 <div class="cookie" id="cookieBar" role="alertdialog" aria-modal="true" aria-labelledby="ckTitle">
 <div class="ck2">
@@ -1128,7 +1229,7 @@ html[data-theme=dark] .wal-quick button[data-v]:hover{background:#475569!importa
 <div class="ck2-bt"><button type="button" id="ckYes">Chấp nhận tất cả</button><button type="button" id="ckNo">Từ chối không cần thiết</button></div>
 </div></div>
 <div class="lockedscreen" id="lockedScreen" role="alertdialog" aria-modal="true"><div class="lk-box"><div class="lk-ic">🔒</div><h3>Tài khoản đã bị khoá</h3><p>Admin đã khoá toàn bộ chức năng của tài khoản này. Vui lòng liên hệ Admin để được hỗ trợ mở khoá.</p><p class="lk-ct">Zalo <a href="https://zalo.me/0869719516" target="_blank" rel="noopener">0869 719 516</a><br><a href="mailto:phamvanhoaprogrammer@gmail.com">phamvanhoaprogrammer@gmail.com</a></p><button type="button" id="lockOut">Đăng xuất</button></div></div>
-<div class="langbox"><img class="ic ic-lang" src="https://img.icons8.com/color/48/google-translate.png" alt="" draggable="false" data-fb="🌐" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"><select id="langSel" aria-label="Language"><option value="vi">🇻🇳 Tiếng Việt</option><option value="en">🇬🇧 English</option><option value="zh">🇨🇳 简体中文</option></select></div>
+<div class="langbox"><img class="ic ic-lang" src="https://img.icons8.com/color/96/google-translate.png" alt="" draggable="false" data-fb="🌐" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))"><select id="langSel" aria-label="Language"><option value="vi">🇻🇳 Tiếng Việt</option><option value="en">🇬🇧 English</option><option value="zh">🇨🇳 简体中文</option></select></div>
 <div id="toast"></div>
 <button type="button" class="themebtn floating" id="themeBtn" title="Chế độ sáng / tối" aria-label="Đổi chế độ sáng tối"><svg class="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
 
@@ -1169,34 +1270,38 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 /* --- icon chức năng thiết bị --- */
 const ICO = {
-  icloud: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAEYUlEQVR4nO2T+0+VdRzHqX+g1g+trR9yqzbn3NryB1ZLs1qm6US5GggEegDP4SKIiuEFEUUgIlIEhXPn4OGOQOANRyJeknSalivDNC8gejjnec7zPN9zjpxXw6TNrdlWP7Q233/A67XXZ99vSMjT/W+WfdD9gr5L3prWoVzStclSUrOsJu73Xo63KzsT23n+X8Fzjkjv5Bzy3srq8ZLeqbCqXSGlWWGFUyXJoZJoVUdjLf45/wi+sd/zel6f17P2kEJOj8LqLpX0dhV9i0qKU0VXr5BkVUk0Cc/yPb6ZfwssPqvNLT4rfbvtjEctHJTHNg7INzf2aWw4rLGuV2NNl2B1h0ZGi4a+USPVoaGzCpLMgsRaMfBE+M7v1bd3fif5dpyVKTojU3jSS/4Jic++8ZJ/RJDXK1jbLcjpEGS1CNKdAr1DkGL1sdLs49N9PpKfVFF2QRosPS8zJSg4JbNpUCL/uMxkRf5BwfqvBbkHBDktgsxGH+kOH6tsflLMfpJr/cRXPcj4S3jdcGBe+QW3r+y8TPFUwSkvWyYL+mXWH1FY162xplMju02Q1STIdAoyHX4M1gB6c4DUugBJewLmLVt49jG48SdtR+0PWrDiosRkQfGQTNFpmc0DEhv6JXKPSmT3esk6oJDRpqJvUknbr5Lm0MhwCLLsPrImJXUBdFUTxH8+cTWuhDcfwu3DYrH5qqDuimD3RYWyRyfafFImr99Dbt84mYfcGA5IpLZKrGiWSXZ6SXJ4SW1Q0TtUDDaBwezDUBtgxVcTJJQH+aRkYjx8G6+E2IaV45ZHgppLgvJzCoWnZfIGPGQfc5N+2EVal0xyq0RCs0ScUyLWIRNrl0huUNDZFHRWlVSTD12Nn+TK4B+C4iBRhZhC7NdU96TAeEWw95LgiyFBwQkva/skDL0eVnZ6SGhzE9MyToTTRViDi7D6cSLq3cTWS8TbZBLNCol1GvFVPhIqJ1heFiRmR5CIQq5NCpSpgqoLGiVnNDb1e8k+LKHr9hDbNs7SJhcfO+8zzzHGB/Yx3reOscDmYonNTaTFQ7RRJqZGZdkuQdyXAeIeCcK3oobYh7XBqYLK8xpFpxQ2HJMxHPSQ0OkmovU+8xvvMds+ylu2EUKtI4SaR5ltvct8i4uFJjeLayWWVnuJ3K0RU+FnWdkE0duDhBcwFGIbVqMsPwtqr2hUnFMpPKmQe0wmtcfDsg4Xi5rGmOMYYZb9DjOst5huvskM4y3eMI4wx3SPD4wuFuz1sLhaJny3RmSFj+jSB0QXBVlSgO7hS7Jc1cprf5y8v0bBCYU1R2VW9riJanfxUeNdQu23mWH9jWmW67xs+pVpphtMN95mVt0o7xrv8+FeNwurJcJ2qURU+IgsCRC9faIhBJ758y/suahGlQ5ppzcNyNrqoxJJ3eOEtd7jvf2jzLLf5jXLDV40XeM50y+8ZLrOq3U3mbnvDqE1d5lb7WJ+lcSiSq8/rEK7vLT0geEx+NP9p/sd80+co5McrSoAAAAASUVORK5CYII=',
-  appstore: 'https://img.icons8.com/color/48/apple-app-store--v3.png',
-  pass: 'https://img.icons8.com/pulsar-gradient/48/pass.png',
-  loc: 'https://img.icons8.com/fluency/48/location--v1.png',
-  lock: 'https://img.icons8.com/color/48/lock-2.png',
-  user: 'https://img.icons8.com/fluency/48/user-male-circle--v1.png',
-  money: 'https://img.icons8.com/3d-fluency/94/money.png',
-  trash: 'https://img.icons8.com/liquid-glass/48/filled-trash.png',
-  note: 'https://img.icons8.com/lollipop/48/note.png',
-  delmdm: 'https://img.icons8.com/color/48/delete-forever.png',
+  icloud: 'https://img.icons8.com/external-those-icons-flat-those-icons/96/external-iCloud-logos-and-brands-those-icons-flat.png',
+  appstore: 'https://img.icons8.com/color/96/apple-app-store--v3.png',
+  pass: 'https://img.icons8.com/pulsar-gradient/96/pass.png',
+  loc: 'https://img.icons8.com/fluency/96/location--v1.png',
+  lock: 'https://img.icons8.com/color/96/lock-2.png',
+  user: 'https://img.icons8.com/fluency/96/user-male-circle--v1.png',
+  money: 'https://img.icons8.com/3d-fluency/96/money.png',
+  trash: 'https://img.icons8.com/liquid-glass/96/filled-trash.png',
+  note: 'https://img.icons8.com/lollipop/96/note.png',
+  delmdm: 'https://img.icons8.com/color/96/delete-forever.png',
   dev: 'https://img.icons8.com/3d-fluent/100/developer.png',
-  zalo: 'https://img.icons8.com/color/48/zalo.png',
-  mail: 'https://img.icons8.com/fluency/48/new-post.png',
+  zalo: 'https://img.icons8.com/color/96/zalo.png',
+  mail: 'https://img.icons8.com/fluency/96/new-post.png',
   cloud3d: 'https://img.icons8.com/3d-fluent/100/cloud--v2.png',
   ok: 'https://img.icons8.com/3d-fluent/100/ok--v1.png',
   hello: 'https://img.icons8.com/3d-fluent/100/user--v1.png',
   error: 'https://img.icons8.com/3d-fluent/100/error.png',
-  success: 'https://img.icons8.com/emoji/48/check-mark-button-emoji.png',
-  wallet: 'https://img.icons8.com/3d-fluency/94/wallet.png',
-  vip: 'https://img.icons8.com/3d-fluency/94/vip.png',
-  basic: 'https://img.icons8.com/cute-clipart/64/user.png',
-  maint: 'https://img.icons8.com/glassmorphism/48/work.png',
+  success: 'https://img.icons8.com/emoji/96/check-mark-button-emoji.png',
+  wallet: 'https://img.icons8.com/3d-fluency/96/wallet.png',
+  vip: 'https://img.icons8.com/3d-fluency/96/vip.png',
+  basic: 'https://img.icons8.com/cute-clipart/96/user.png',
+  maint: 'https://img.icons8.com/glassmorphism/96/work.png',
   restore: 'https://img.icons8.com/avantgarde/100/restart.png',
-  bank: 'https://img.icons8.com/emoji/48/bank-emoji.png',
-  phone: 'https://img.icons8.com/color/48/apple-phone.png'
+  bank: 'https://img.icons8.com/emoji/96/bank-emoji.png',
+  phone: 'https://img.icons8.com/color/96/apple-phone.png',
+  plus: 'https://img.icons8.com/3d-fluency/96/plus.png',
+  active: 'https://img.icons8.com/glassmorphism/96/connected.png',
+  inactive: 'https://img.icons8.com/3d-sugary/100/disconnected.png'
 };
-const ICO_FB = { icloud: '☁', appstore: '📱', pass: '🔑', loc: '📍', lock: '🔒', user: '👥', money: '💳', trash: '🗑', note: '📄', delmdm: '⊘', dev: '👤', zalo: '💬', mail: '✉', cloud3d: '☁', ok: '✅', hello: '👋', error: '⛔', success: '✅', wallet: '💰', vip: '👑', basic: '📦', maint: '🛠', restore: '♻', bank: '🏦', phone: '📞' };
-const ic = (k, c = '') => `<img class="ic ${c}" src="${ICO[k]}" alt="" draggable="false" data-fb="${ICO_FB[k]}" onerror="this.replaceWith(document.createTextNode(this.dataset.fb))">`;
+const ICO_ALT = { icloud: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAEYUlEQVR4nO2T+0+VdRzHqX+g1g+trR9yqzbn3NryB1ZLs1qm6US5GggEegDP4SKIiuEFEUUgIlIEhXPn4OGOQOANRyJeknSalivDNC8gejjnec7zPN9zjpxXw6TNrdlWP7Q233/A67XXZ99vSMjT/W+WfdD9gr5L3prWoVzStclSUrOsJu73Xo63KzsT23n+X8Fzjkjv5Bzy3srq8ZLeqbCqXSGlWWGFUyXJoZJoVUdjLf45/wi+sd/zel6f17P2kEJOj8LqLpX0dhV9i0qKU0VXr5BkVUk0Cc/yPb6ZfwssPqvNLT4rfbvtjEctHJTHNg7INzf2aWw4rLGuV2NNl2B1h0ZGi4a+USPVoaGzCpLMgsRaMfBE+M7v1bd3fif5dpyVKTojU3jSS/4Jic++8ZJ/RJDXK1jbLcjpEGS1CNKdAr1DkGL1sdLs49N9PpKfVFF2QRosPS8zJSg4JbNpUCL/uMxkRf5BwfqvBbkHBDktgsxGH+kOH6tsflLMfpJr/cRXPcj4S3jdcGBe+QW3r+y8TPFUwSkvWyYL+mXWH1FY162xplMju02Q1STIdAoyHX4M1gB6c4DUugBJewLmLVt49jG48SdtR+0PWrDiosRkQfGQTNFpmc0DEhv6JXKPSmT3esk6oJDRpqJvUknbr5Lm0MhwCLLsPrImJXUBdFUTxH8+cTWuhDcfwu3DYrH5qqDuimD3RYWyRyfafFImr99Dbt84mYfcGA5IpLZKrGiWSXZ6SXJ4SW1Q0TtUDDaBwezDUBtgxVcTJJQH+aRkYjx8G6+E2IaV45ZHgppLgvJzCoWnZfIGPGQfc5N+2EVal0xyq0RCs0ScUyLWIRNrl0huUNDZFHRWlVSTD12Nn+TK4B+C4iBRhZhC7NdU96TAeEWw95LgiyFBwQkva/skDL0eVnZ6SGhzE9MyToTTRViDi7D6cSLq3cTWS8TbZBLNCol1GvFVPhIqJ1heFiRmR5CIQq5NCpSpgqoLGiVnNDb1e8k+LKHr9hDbNs7SJhcfO+8zzzHGB/Yx3reOscDmYonNTaTFQ7RRJqZGZdkuQdyXAeIeCcK3oobYh7XBqYLK8xpFpxQ2HJMxHPSQ0OkmovU+8xvvMds+ylu2EUKtI4SaR5ltvct8i4uFJjeLayWWVnuJ3K0RU+FnWdkE0duDhBcwFGIbVqMsPwtqr2hUnFMpPKmQe0wmtcfDsg4Xi5rGmOMYYZb9DjOst5huvskM4y3eMI4wx3SPD4wuFuz1sLhaJny3RmSFj+jSB0QXBVlSgO7hS7Jc1cprf5y8v0bBCYU1R2VW9riJanfxUeNdQu23mWH9jWmW67xs+pVpphtMN95mVt0o7xrv8+FeNwurJcJ2qURU+IgsCRC9faIhBJ758y/suahGlQ5ppzcNyNrqoxJJ3eOEtd7jvf2jzLLf5jXLDV40XeM50y+8ZLrOq3U3mbnvDqE1d5lb7WJ+lcSiSq8/rEK7vLT0geEx+NP9p/sd80+co5McrSoAAAAASUVORK5CYII=' };
+const ICO_FB = { icloud: '☁', appstore: '📱', pass: '🔑', loc: '📍', lock: '🔒', user: '👥', money: '💳', trash: '🗑', note: '📄', delmdm: '⊘', dev: '👤', zalo: '💬', mail: '✉', cloud3d: '☁', ok: '✅', hello: '👋', error: '⛔', success: '✅', wallet: '💰', vip: '👑', basic: '📦', maint: '🛠', restore: '♻', bank: '🏦', phone: '📞', plus: '＋', active: '🟢', inactive: '🔴' };
+const ic = (k, c = '') => `<img class="ic ${c}" src="${ICO[k]}" alt="" decoding="async" draggable="false" ${ICO_ALT[k] ? `data-alt="${ICO_ALT[k]}"` : ''} data-fb="${ICO_FB[k]}" onerror="if(this.dataset.alt&&!this.dataset.t){this.dataset.t=1;this.src=this.dataset.alt}else this.replaceWith(document.createTextNode(this.dataset.fb))">`;
 
 /* ================= LOADER ĐĂNG NHẬP / ĐĂNG XUẤT ================= */
 const Loader = (() => {
@@ -1355,7 +1460,7 @@ function card(d) {
   <article class="card" data-id="${d.id}">
     <div class="card-h">
       <div class="t"><h3>${esc(d.name)} <button data-a="rename" title="Đổi tên">✎</button></h3><div class="model">${esc(d.model)}</div></div>
-      <div class="tags"><span class="tag ${d.plan === 'VIP' ? 'vip' : ''}">${ic(d.plan === 'VIP' ? 'vip' : 'basic')} ${esc(d.plan)}</span><span class="tag">✉ ${email}</span>${ROLE === 'admin' ? `<span class="tag" style="background:#eef2ff;color:#3730a3;border-color:#c7d2fe">👤 ${esc(ownerOf(d))}</span>` : ''}</div>
+      <div class="tags"><span class="tag ${d.plan === 'VIP' ? 'vip' : ''}">${ic(d.plan === 'VIP' ? 'vip' : 'basic')} ${esc(d.plan)}</span><span class="tag">✉ ${email}</span>${ROLE === 'admin' ? `<span class="tag" style="background:#eef2ff;color:#3730a3;border-color:#c7d2fe">${ic(ownerOf(d) === adminName() ? 'dev' : 'user')} ${esc(ownerOf(d))}</span>` : ''}</div>
     </div>
     <div class="body">
       <div class="phone ${phoneCls}" data-a="screen" title="Xem màn hình thiết bị">${d.online ? wifiOn : wifiOff}<span>${phoneTxt}</span>${d.notif && !d.notif.seen ? '<span class="bell">🔔</span>' : ''}</div>
@@ -1370,7 +1475,7 @@ function card(d) {
           ${d.phone ? `<b data-a="phone" style="cursor:pointer" title="Sửa SĐT">${esc(d.phone)}</b>` : `<button class="link" data-a="phone">Thêm SĐT khách</button>`}
           <button class="refresh ${refreshing.has(d.id) ? 'spin' : ''}" data-a="refresh">⟳ Làm mới</button>
         </div>
-        <div class="row"><span class="ic">🛡</span><span class="act ${stCls}">${stTxt}</span>${d.bypass ? '<span class="mini">Bypass ON</span>' : ''}${d.passCleared ? '<span class="mini" style="background:#e0e7ff;color:#3730a3">Pass đã xóa</span>' : ''}</div>
+        <div class="row">${ic(stCls === 'ok' ? 'active' : 'inactive')}<span class="act ${stCls}">${stTxt}</span>${d.bypass ? '<span class="mini">Bypass ON</span>' : ''}${d.passCleared ? '<span class="mini" style="background:#e0e7ff;color:#3730a3">Pass đã xóa</span>' : ''}</div>
         <div class="pkg">
           <div style="font-weight:600">⏱ Gói: ${esc(d.plan)}</div>
           <div class="bar-bg"><div class="bar-fg ${lvl}" style="width:${pct}%"></div></div>
@@ -1446,8 +1551,17 @@ function render() {
     <div class="stat"><small>Lãi tạm tính</small><b style="font-size:18px;margin-top:8px;color:#b45309">${fmtMoney(lc.reduce((a, c) => a + c.i, 0))}</b></div>`;
   $('#clock').textContent = fmtTime(T());
 }
+/* Màu chữ nhật ký hệ thống: đỏ · trắng · xanh dương · cam · vàng */
+function logCls(l) {
+  const m = String(l.msg || ''), t = l.type || '';
+  if (t === 'err' || /thất bại|lỗi|mất kết nối|từ chối|bị khóa|bị khoá|xóa trắng|xoá trắng|gỡ mdm|gỡ icloud|danh sách đen/i.test(m)) return 'lc-red';
+  if (/^Đang\b|chờ gửi|đang chờ|đang xử lý|chờ duyệt/i.test(m)) return 'lc-yellow';
+  if (t === 'warn' || /cảnh báo|sắp hết hạn|hết hạn|cần chú ý/i.test(m)) return 'lc-orange';
+  if (t === 'ok' || /thành công|đã hoàn tất|đã cập nhật|đã tạo|đã lưu|đã mở khóa|đã mở khoá/i.test(m)) return 'lc-blue';
+  return 'lc-white';
+}
 function renderLog() {
-  const L = S.logs.filter(l => ROLE === 'admin' || (l.own || adminName()) === CUR); $('#gLog').innerHTML = L.length ? L.map(l => `<div><time>${fmtTime(l.t)}</time><span class="${l.type}"><b>${esc(l.dev)}</b> · ${esc(l.msg)}</span></div>`).join('') : '<div>Chưa có hoạt động</div>';
+  const L = S.logs.filter(l => ROLE === 'admin' || (l.own || adminName()) === CUR); $('#gLog').innerHTML = L.length ? L.map(l => `<div><time>${fmtTime(l.t)}</time><span class="${l.type} ${logCls(l)}"><b>${esc(l.dev)}</b> · ${esc(l.msg)}</span></div>`).join('') : '<div>Chưa có hoạt động</div>';
 }
 
 /* ================= COMMAND ENGINE ================= */
@@ -1582,7 +1696,7 @@ function showDetail(d, tab = 'info') {
       <p style="font-size:12px;color:var(--muted)">Lãi đơn, tính theo ngày (30 ngày = 1 tháng, 365 ngày = 1 năm) và tự cập nhật theo thời gian.</p>${hasRent(d) ? (() => { const n = d.loanMonths || 1, pd = paidMonths(d); return `<h4 style="margin:14px 0 0;font-size:14px">📅 Tiền thuê từng tháng</h4><div class="rentlist">${Array.from({ length: n }, (_, i) => `<div class="${i < pd ? 'ok' : ''}"><span>Tháng ${i + 1}</span><b>${fmtMoney(rentOf(d, i))}</b><em>${i < pd ? '✓ Đã đóng' : 'Chưa đóng'}</em></div>`).join('')}<div class="rt"><span>Tổng tiền thuê</span><b>${fmtMoney(rentSum(d, 0, n))}</b><em></em></div></div>`; })() : ''}`
       : '<p>Thiết bị chưa có khoản vay. Bấm “Sửa thông tin” để thêm số tiền vay và lãi suất.</p>';
   }
-  if (tab === 'log') body = `<div class="loglist">${d.log.length ? d.log.map(l => `<div><time>${fmtTime(l.t)}</time><span class="${l.type}">${esc(l.msg)}</span></div>`).join('') : 'Chưa có nhật ký'}</div>`;
+  if (tab === 'log') body = `<div class="loglist">${d.log.length ? d.log.map(l => `<div><time>${fmtTime(l.t)}</time><span class="${l.type} ${logCls(l)}">${esc(l.msg)}</span></div>`).join('') : 'Chưa có nhật ký'}</div>`;
   if (tab === 'ren') body = `<div class="loglist">${d.renewals.length ? d.renewals.map(r => `<div><time>${fmtTime(r.t)}</time><span>${esc(r.plan)} · +${r.days} ngày → ${fmtDate(r.to)}</span></div>`).join('') : 'Chưa có lần gia hạn nào'}</div>`;
   modal(`<h4>Chi tiết thiết bị</h4>${tabs}${body}<div class="btns"><button class="b-cancel" id="mc">Đóng</button><button class="b-ok" id="ed">✎ Sửa thông tin</button></div>`);
   $('#mc').onclick = close;
@@ -1718,7 +1832,7 @@ function readForm(self) {
 
 function showAdd() {
   if (!walletGuard()) return;
-  modal(`<h4>Thêm thiết bị</h4>${walletNote()}${devForm()}${btns('Hủy', 'Đăng ký')}`, true);
+  modal(`<h4>${ic('plus')} Thêm thiết bị</h4>${walletNote()}${devForm()}${btns('Hủy', 'Đăng ký')}`, true);
   wireForm();
   $('#mc').onclick = close;
   $('#mo').onclick = async () => {
@@ -2034,24 +2148,64 @@ function bindCopy(root) {
       () => { b.textContent = 'Không chép được'; setTimeout(() => { b.textContent = old; }, 1500); });
   });
 }
+/* ===== Khung thanh toán VietQR (dùng cho thuê thiết bị + nạp ví) ===== */
+const VQ_SVG = {
+  dl: '<svg viewBox="0 0 24 24"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 8.5a4 4 0 0 1 .5 7.97"/><path d="M12 11v8m0 0-3-3m3 3 3-3"/></svg>',
+  share: '<svg viewBox="0 0 24 24"><path d="M12 15V4m0 0L8.5 7.5M12 4l3.5 3.5"/><path d="M6 11h-.5A1.5 1.5 0 0 0 4 12.5v6A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5v-6a1.5 1.5 0 0 0-1.5-1.5H18"/></svg>'
+};
+const vqRow = (k, v, cp, cls) => `<div class="vq-row${cls ? ' ' + cls : ''}"><div><small>${k}</small><b>${esc(v)}</b></div>${cp ? `<button type="button" class="cp" data-cp="${esc(cp)}">Sao chép</button>` : ''}</div>`;
+function vqCard(o) {
+  const bn = bankName(), code = String(RC.bank || '');
+  return `<div class="vq"><div class="vq-card">
+    <div class="vq-logo"><b>V</b>IETQR</div>
+    <div class="vq-qrrow">
+      <button type="button" class="vq-act" data-vq="dl">${VQ_SVG.dl}<span>Tải về</span></button>
+      <div class="vq-qr"><img alt="VietQR" src="${esc(qrSrc(o.amount, o.memo))}"></div>
+      <button type="button" class="vq-act" data-vq="share">${VQ_SVG.share}<span>Chia sẻ</span></button>
+    </div>
+    <div class="vq-partners"><span class="vq-napas">napas <em>247</em></span><i class="vq-sep"></i><span class="vq-bn">${esc(code)}</span></div>
+    <div class="vq-bank"><span class="vq-bl"><img alt="" src="https://cdn.vietqr.io/img/${encodeURIComponent(code)}.png" onerror="this.parentNode.textContent=this.dataset.c" data-c="${esc(code.slice(0, 4))}"></span><div><small>Ngân hàng</small><b>${esc(bn)}</b></div></div>
+    ${vqRow('Tên tài khoản', RC.holder)}${vqRow('Số tài khoản', RC.acc, RC.acc)}${vqRow('Số tiền', fmtMoney(o.amount), String(Math.round(o.amount)))}${vqRow('Nội dung CK', o.memo, o.memo, 'hl')}${o.extra || ''}
+  </div></div>`;
+}
+const vqBtns = () => `<div class="vq-btns"><button type="button" class="vq-no" id="payNo">Hủy bỏ</button><button type="button" class="vq-ok" id="payOk">Tôi đã chuyển khoản</button></div>`;
+async function vqDownload(src, name) {
+  try { const r = await fetch(src); if (!r.ok) throw 0; const b = await r.blob(), a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000); toast('Đã tải mã QR', 'success'); }
+  catch (e) { window.open(src, '_blank', 'noopener'); }
+}
+async function vqShare(src, text) {
+  try {
+    if (navigator.share) {
+      try { const r = await fetch(src), b = await r.blob(), f = new File([b], 'vietqr.png', { type: b.type || 'image/png' }); if (navigator.canShare && navigator.canShare({ files: [f] })) { await navigator.share({ files: [f], title: 'Mã VietQR', text }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
+      await navigator.share({ title: 'Mã VietQR', text, url: src }); return;
+    }
+  } catch (e) { if (e && e.name === 'AbortError') return; }
+  try { await navigator.clipboard.writeText(src); toast('Đã sao chép liên kết mã QR', 'success'); } catch (e) { window.open(src, '_blank', 'noopener'); }
+}
+function vqBind(box, o) {
+  const img = () => box.querySelector('.vq-qr img');
+  box.querySelectorAll('[data-vq]').forEach(b => b.onclick = () => {
+    const i = img(); if (!i) return toast('Không có mã QR để ' + (b.dataset.vq === 'dl' ? 'tải' : 'chia sẻ'), 'warn');
+    if (b.dataset.vq === 'dl') vqDownload(i.src, 'VietQR-' + o.memo + '.png');
+    else vqShare(i.src, `${bankName()} · ${RC.acc} · ${RC.holder} · ${fmtMoney(o.amount)} · ND: ${o.memo}`);
+  });
+}
 function payStart(o) {
   const TOTAL = Math.max(1, Math.min(120, +RC.qrTime || 15)) * 60; let left = TOTAL; const box = $('#payBox'), ov = $('#payOv'), memo = (o.order = genOrder()), R = 34, C = 2 * Math.PI * R;
   const end = () => { clearInterval(payTimer); ov.classList.remove('show'); };
   const row = (k, v, cp, hl) => `<div class="pr${hl ? ' hl' : ''}"><span>${k}</span><b>${esc(v)}</b>${cp ? `<button type="button" class="cp" data-cp="${esc(cp)}">Sao chép</button>` : ''}</div>`;
   box.className = 'modal pay';
   box.innerHTML = `<div class="pay-h"><div class="pay-ic"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6 15h4"/></svg></div><div><h4>Thanh toán đơn thuê</h4><p>Gói ${o.months} tháng · Tài khoản <b>${esc(o.name)}</b></p></div></div>
-    <div class="pay-amt"><small>Số tiền cần thanh toán</small><b>${fmtMoney(o.price)}</b></div>
-    <div class="pay-main"><div class="qrcard"><div class="qr-top"><b>VIETQR</b><span>${esc(bankName())}</span></div><div class="qrbox"><i></i><i></i><i></i><i></i><u class="scan"></u><img alt="VietQR" src="${esc(qrSrc(o.price, memo))}"></div><div class="qr-foot"><b>${esc(RC.holder)}</b><small>Quét mã để tự điền số tiền &amp; nội dung</small></div></div>
-      <div class="pay-side"><div class="ring" id="ring"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="${R}" class="rb"/><circle cx="40" cy="40" r="${R}" class="rf" id="ringF" stroke-dasharray="${C}" stroke-dashoffset="0"/></svg><span id="payCd"></span></div><small>Mã QR hết hạn sau</small></div></div>
-    <div class="pay-info">${row('Mã đơn hàng', memo, memo, 1)}${row('Ngân hàng', bankName())}${row('Số tài khoản', RC.acc, RC.acc)}${row('Chủ tài khoản', RC.holder)}${row('Số tiền', fmtMoney(o.price), String(Math.round(o.price)))}${row('Nội dung CK', memo, memo)}</div>
-    <ol class="pay-steps"><li>Quét mã bằng ứng dụng ngân hàng</li><li>Chuyển đúng số tiền và nội dung</li><li>Bấm “Đã thanh toán” để Admin xét duyệt</li></ol>
-    <div class="pay-btns"><button class="b-danger" id="payNo">Huỷ bỏ thanh toán</button><button class="b-ok pay-ok" id="payOk">Đã thanh toán</button></div>`;
+    ${vqCard({ amount: o.price, memo })}
+    <div class="vq-timer"><div class="ring" id="ring"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="${R}" class="rb"/><circle cx="40" cy="40" r="${R}" class="rf" id="ringF" stroke-dasharray="${C}" stroke-dashoffset="0"/></svg><span id="payCd"></span></div><small>Mã QR hết hạn sau</small></div>
+    <ol class="pay-steps"><li>Quét mã bằng ứng dụng ngân hàng</li><li>Chuyển đúng số tiền và nội dung</li><li>Bấm “Tôi đã chuyển khoản” để Admin xét duyệt</li></ol>
+    ${vqBtns()}`;
   ov.classList.add('show');
   const cd = () => { $('#payCd').textContent = `${pad(Math.floor(left / 60))}:${pad(left % 60)}`; $('#ringF').style.strokeDashoffset = C * (1 - left / TOTAL); $('#ring').classList.toggle('warn', left <= 59); };
   cd(); clearInterval(payTimer);
   payTimer = setInterval(() => { left--; if (left <= 0) { end(); toast('Mã QR đã hết hạn – giao dịch đã huỷ', 'warn'); } else cd(); }, 1000);
-  bindCopy(box);
-  { const img = box.querySelector('.qrbox img'), fb = RC.qrImg; let tried = false;
+  bindCopy(box); vqBind(box, { amount: o.price, memo });
+  { const img = box.querySelector('.vq-qr img'), fb = RC.qrImg; let tried = false;
     img.onerror = () => { if (fb && !tried) { tried = true; img.src = fb; return; } const d = document.createElement('div'); d.className = 'qr-fail'; d.textContent = 'Không tải được mã QR. Vui lòng chuyển khoản theo thông tin bên dưới.'; img.replaceWith(d); }; }
   $('#payNo').onclick = () => { end(); toast('Giao dịch đã huỷ', 'warn'); };
   $('#payOk').onclick = () => {
@@ -2246,7 +2400,7 @@ function genOrder() {
 }
 function enterApp(name) {
   $('#authScreen').classList.remove('show'); applyRole(name);
-  $('#curEmail').textContent = 'Xin chào, ' + name; $('#curUser').textContent = ROLE === 'admin' ? 'Quản trị viên gốc' : 'Tài khoản thuê'; $('#curAvatar').textContent = name.charAt(0).toUpperCase();
+  $('#curEmail').textContent = 'Xin chào, ' + name; $('#curUser').textContent = ROLE === 'admin' ? 'Quản trị viên gốc' : 'Tài khoản thuê'; if (ROLE === 'admin') $('#curAvatar').innerHTML = ic('dev', 'ic-av'); else $('#curAvatar').textContent = name.charAt(0).toUpperCase();
   $('#helloName').innerHTML = esc('Xin chào, ' + name) + ' ' + ic('hello', 'ic-hi'); $('#helloRole').textContent = ROLE === 'admin' ? 'Quản trị viên gốc' : 'Tài khoản thuê';
   $('#helloSub').textContent = new Date().toLocaleDateString(LCODE, { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' }) + ' · Chúc bạn một ngày làm việc hiệu quả';
 }
@@ -2271,10 +2425,17 @@ document.querySelectorAll('.pwtoggle').forEach(b => b.onclick = () => {
 function regUpdate() {
   const pw = $('#rg_pw').value, c = pwChecks(pw);
   document.querySelectorAll('#rg_rules li').forEach(li => li.classList.toggle('ok', c[li.dataset.r]));
-  const un = $('#rg_user').value.trim(), uc = { len: un.length >= 8, let: /[A-Za-z]/.test(un), num: /\d/.test(un) };
+  const score = Object.values(c).filter(Boolean).length + (pw.length >= 12 && c.up && c.num ? 1 : 0);
+  const meter = $('#rg_meter');
+  if (meter) {
+    meter.dataset.s = pw ? String(Math.max(1, Math.min(4, score))) : '0';
+    const label = meter.querySelector('span');
+    if (label) label.textContent = !pw ? 'Độ mạnh mật khẩu' : !pwValid(pw) ? 'Mật khẩu yếu – chưa thể đăng ký' : score >= 4 ? 'Mật khẩu mạnh – có thể đăng ký' : 'Mật khẩu đạt yêu cầu';
+  }
+  const un = $('#rg_user').value.trim(), uc = { len: un.length >= 8, let: /[A-Za-z]/.test(un), num: /\\d/.test(un) };
   document.querySelectorAll('#rg_urules li').forEach(li => li.classList.toggle('ok', uc[li.dataset.r]));
-  
 }
+
 ['rg_user', 'rg_pw', 'rg_pw2'].forEach(id => $('#' + id).addEventListener('input', () => { $('#rg_err').textContent = ''; regUpdate(); }));
 
 $('#regForm').addEventListener('submit', async e => {
@@ -2283,7 +2444,12 @@ $('#regForm').addEventListener('submit', async e => {
   [['rg_user', vUser], ['rg_phone', vPhone], ['rg_email', vEmail], ['rg_pw', vPw], ['rg_pw2', vPw2]].forEach(([id, f]) => { if (!f() && !first) first = id; });
   const m = +$('#rt_months').value, price = +RC.prices[m - 1] || 0;
   if (!price) { fe('rt_months', 'Gói này chưa được Admin đặt giá'); if (!first) first = 'rt_months'; } else fe('rt_months', '');
-  if (first) { focusBad(first); toast('Vui lòng điền đầy đủ và đúng các trường được đánh dấu đỏ', 'error'); return; }
+  // Mật khẩu yếu không được phép đi tiếp sang xác thực hoặc thanh toán.
+  if (!pwValid($('#rg_pw').value)) {
+    fe('rg_pw', 'Mật khẩu yếu: cần ít nhất 8 ký tự, 1 chữ in hoa và 1 chữ số');
+    if (!first) first = 'rg_pw';
+  }
+  if (first) { focusBad(first); toast('Không thể tạo tài khoản: vui lòng hoàn thiện các mục bắt buộc, đặc biệt là mật khẩu đủ mạnh.', 'error'); return; }
   if (!(await slideCaptcha())) { toast('Bạn chưa hoàn thành xác thực', 'error'); return; }
   const name = $('#rg_user').value.trim(), pw = $('#rg_pw').value, salt = newSalt(), hash = await hashPw(pw, salt);
   payStart({ name, months: m, price, salt, hash, pwPlain: pw, phone: normPhone($('#rg_phone').value.trim()), email: $('#rg_email').value.trim() });
@@ -2481,7 +2647,7 @@ function walletRefresh() {
   c.className = 'walletchip' + (low ? ' low' : ''); c.innerHTML = `${ic('wallet')} <span>${fmtMoney(b)}</span><i>＋</i>`;
   lastBal = b;
 }
-const walletNote = () => isFree() ? '<div class="walnote ok">👑 Admin gốc: thêm thiết bị <b>miễn phí</b></div>'
+const walletNote = () => isFree() ? '<div class="walnote ok">' + ic('dev') + ' Admin gốc: thêm thiết bị <b>miễn phí</b></div>'
   : `<div class="walnote ${myBal() < devFee() ? 'bad' : ''}">${ic('wallet')} Số dư: <b>${fmtMoney(myBal())}</b> · Phí thêm thiết bị: <b>${devFee() ? fmtMoney(devFee()) : 'Miễn phí'}</b></div>`;
 function walletGuard() {
   const u = meUser();
@@ -2531,13 +2697,11 @@ function topupStart(amount) {
   const row = (k, v, cp, hl) => `<div class="pr${hl ? ' hl' : ''}"><span>${k}</span><b>${esc(v)}</b>${cp ? `<button type="button" class="cp" data-cp="${esc(cp)}">Sao chép</button>` : ''}</div>`;
   box.className = 'modal pay';
   box.innerHTML = `<div class="pay-h"><div class="pay-ic"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6 15h4"/></svg></div><div><h4>Nạp tiền vào ví</h4><p>Tài khoản <b>${esc(CUR)}</b></p></div></div>
-    <div class="pay-amt"><small>Số tiền cần chuyển khoản</small><b>${fmtMoney(amount)}</b></div>
-    <div class="pay-main"><div class="qrcard"><div class="qr-top"><b>VIETQR</b><span>${esc(bankName())}</span></div><div class="qrbox"><i></i><i></i><i></i><i></i><u class="scan"></u><img alt="VietQR" src="${esc(qrSrc(amount, memo))}"></div><div class="qr-foot"><b>${esc(RC.holder)}</b><small>Quét mã để tự điền số tiền &amp; nội dung</small></div></div></div>
-    <div class="pay-info">${row('Mã nạp tiền', memo, memo, 1)}${row('Ngân hàng', bankName())}${row('Số tài khoản', RC.acc, RC.acc)}${row('Chủ tài khoản', RC.holder)}${row('Số tiền', fmtMoney(amount), String(Math.round(amount)))}${row('Nội dung CK', memo, memo)}${bonus ? row('🎁 Ưu đãi +' + bp + '%', '+' + fmtMoney(bonus)) + row('Ví nhận được', fmtMoney(amount + bonus)) : ''}</div>
-    <ol class="pay-steps"><li>Quét mã bằng ứng dụng ngân hàng</li><li>Chuyển <b>đúng số tiền và nội dung</b></li><li>Bấm “Đã chuyển khoản” để Admin xét duyệt cộng tiền</li></ol>
-    <div class="pay-btns"><button class="b-danger" id="payNo">Huỷ</button><button class="b-ok pay-ok" id="payOk">Đã chuyển khoản</button></div>`;
-  ov.classList.add('show'); bindCopy(box);
-  { const img = box.querySelector('.qrbox img'), fb = RC.qrImg; let tried = false;
+    ${vqCard({ amount, memo, extra: bonus ? vqRow('🎁 Ưu đãi +' + bp + '%', '+' + fmtMoney(bonus)) + vqRow('Ví nhận được', fmtMoney(amount + bonus)) : '' })}
+    <ol class="pay-steps"><li>Quét mã bằng ứng dụng ngân hàng</li><li>Chuyển <b>đúng số tiền và nội dung</b></li><li>Bấm “Tôi đã chuyển khoản” để Admin xét duyệt cộng tiền</li></ol>
+    ${vqBtns()}`;
+  ov.classList.add('show'); bindCopy(box); vqBind(box, { amount, memo });
+  { const img = box.querySelector('.vq-qr img'), fb = RC.qrImg; let tried = false;
     img.onerror = () => { if (fb && !tried) { tried = true; img.src = fb; return; } const d = document.createElement('div'); d.className = 'qr-fail'; d.textContent = 'Không tải được mã QR. Vui lòng chuyển khoản theo thông tin bên dưới.'; img.replaceWith(d); }; }
   $('#payNo').onclick = () => { ov.classList.remove('show'); toast('Đã huỷ nạp tiền', 'warn'); };
   $('#payOk').onclick = () => {
@@ -3092,6 +3256,15 @@ số dư giữ nguyên|balance unchanged|余额不变
 số dư ví không đổi|wallet balance unchanged|钱包余额不变
 Tiền đăng ký|Registration payment|注册费用
 Ngôn ngữ|Language|语言
+Bấm “Tôi đã chuyển khoản” để Admin xét duyệt cộng tiền|Click “I have made the transfer” for Admin to approve and credit|点击“我已转账”，由管理员审核并入账
+Bấm “Tôi đã chuyển khoản” để Admin xét duyệt|Click “I have made the transfer” for Admin to approve|点击“我已转账”，由管理员审核
+Tôi đã chuyển khoản|I have made the transfer|我已转账
+Hủy bỏ|Cancel|取消
+Tải về|Download|下载
+Chia sẻ|Share|分享
+Tên tài khoản|Account name|账户名称
+Đã tải mã QR|QR code downloaded|已下载二维码
+Đã sao chép liên kết mã QR|QR link copied|已复制二维码链接
 Đang đăng nhập|Signing in|正在登录
 Xác thực thông tin đăng nhập|Verifying credentials|验证登录信息
 Kiểm tra quyền truy cập|Checking access permissions|检查访问权限
